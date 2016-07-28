@@ -195,25 +195,25 @@ void Com_StdErrorStub(int e, const char* fmt, ...)
 
 }
 
-int isButtonPressed( int button, int buttons ) {
+int isButtonPressed( int button, int buttonData ) {
   int tmp, i = 0;
   int pwrs[20] = { 0 }; // Never going to need more than 20
 
-  if( buttons < button ) {
+  if( buttonData < button ) {
     return 0;
   }
 
-  if( buttons == button ) {
+  if( buttonData == button ) {
     return 1;
   }
 
-  while( buttons != 0 ) {
+  while( buttonData != 0 ) {
     tmp = 1;
-    while( tmp * 2 <= buttons ) {
+    while( tmp * 2 <= buttonData ) {
       tmp *= 2;
     }
 
-    buttons -= tmp;
+    buttonData -= tmp;
     pwrs[i] = tmp;
     i++;
   }

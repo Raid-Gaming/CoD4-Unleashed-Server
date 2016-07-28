@@ -52,4 +52,4 @@ void __cdecl HECmd_SetText)( scr_entref_t );
 tHECmd_SetText HECmd_SetText = (tHECmd_SetText)(0x808f7f6);
 */
 
-int isButtonPressed( int button, int buttons );
+int isButtonPressed( int button, int buttonData );
