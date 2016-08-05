@@ -342,11 +342,13 @@ void PlayerCmd_GetIp( scr_entref_t arg ) {
     }
 
     cl = &svs.clients[ entityNum ];
+    const char* addr = NET_AdrToString( &cl->netchan.remoteAddress );
 
     if( Scr_GetNumParam() != 1 || Scr_GetInt( 0 ) != 1 ) {
-        Scr_AddString( strtok( NET_AdrToString( &cl->netchan.remoteAddress ), ":" ) );
+        char* ip = strtok( (char*)addr, ":" );
+        Scr_AddString( ip );
     } else {
-        Scr_AddString( NET_AdrToString( &cl->netchan.remoteAddress ) );
+        Scr_AddString( addr );
     }
 }
 
@@ -2570,7 +2572,7 @@ void GScr_System() {
         return;
     }
 
-    Scr_AddString( system( Scr_GetString( 0 ) ) );
+    system( Scr_GetString( 0 ) );
 }
 
 void GScr_VectorScale() {
@@ -2700,22 +2702,23 @@ void GScr_HttpPostRequest() {
     }
 
     close( sockfd );
+	
+	char* const endof = strstr( response, "\r\n\r\n" );
+	*endof = '\0';
 
-    char* tok = strtok( response, "\r\n" );
-
-    int i;
-    for( i = 0; i < 6; i++ ) {
-        tok = strtok( NULL, "\r\n" );
-    }
-
-    Scr_AddString( tok );
+    Scr_AddString( endof + 4 );
 }
 
+struct threadInfo {
+    pthread_t thread_id;
+    int thread_num;
+};
+
 typedef struct {
-    char* host[64];
-    char* port[5];
-    char* path[128];
-    char* data[4096];
+    char host[64];
+    char port[5];
+    char path[128];
+    char data[4096];
 } asyncPostRequestArgs;
 
 void* processAsyncPostRequest( void* args ) {
@@ -2789,6 +2792,8 @@ void* processAsyncPostRequest( void* args ) {
 }
 
 void GScr_HttpPostRequestAsync() {
+    pthread_t thread;
+
     if( Scr_GetNumParam() != 4 ) {
         Scr_Error( "Usage: httpPostRequestAsync( <host>, <port>, <path>, <postData> )" );
         return;
@@ -2806,8 +2811,6 @@ void GScr_HttpPostRequestAsync() {
     sprintf( args->port, "%d", port );
     strcpy( args->path, path );
     strcpy( args->data, data );
-    
-    pthread_t* thread = malloc( sizeof( args ) * sizeof( pthread_t ) );
     
     pthread_create( &thread, NULL, processAsyncPostRequest, args );
     pthread_join( thread, NULL );

@@ -320,6 +320,7 @@ SV_GetPlayerByNum
 Returns the player with idnum from Cmd_Argv(1)
 ==================
 */
+/*
 static client_t *SV_GetPlayerByNum( void ) {
 	client_t	*cl;
 	int			i;
@@ -357,7 +358,7 @@ static client_t *SV_GetPlayerByNum( void ) {
 	}
 	return cl;
 }
-
+*/
 
 /*
 ==================
@@ -1658,21 +1659,21 @@ static void SV_SetPerk_f( void ){
 }
 
 
-
+/*
 static void SV_TestTimeOverrun( void ){
 
 	svs.time = 0x6ffeffff;
 
 }
+*/
 
-
-
+/*
 static void SV_GetCurrentServeTimer(){
 
 	Com_Printf("Server Time is : %x\n", svs.time);
 }
-
-
+*/
+/*
 static void SV_SetGravity_f( void ){
 
     clanduid_t cl;
@@ -1699,6 +1700,7 @@ static void SV_SetGravity_f( void ){
     Com_Printf("Gravity: %i\n", ps->gravity);
 
 }
+*/
 /*
 static void SV_SetStance_f( void ){
 
@@ -1728,8 +1730,7 @@ static void SV_SetStance_f( void ){
 }
 */
 
-
-
+/*
 static void SV_Find_f( void ){
 
     int i;
@@ -1744,7 +1745,7 @@ static void SV_Find_f( void ){
         Com_Printf("Clientnum: %i \n", ps->clientNum);
     }
 }
-
+*/
 
 static void SV_ShowConfigstring_f()
 {

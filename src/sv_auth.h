@@ -24,6 +24,7 @@
 #include "q_shared.h"
 #include "sys_net.h"
 #include "msg.h"
+#include "server.h"
 
 #ifndef __SV_AUTH_H__
 #define __SV_AUTH_H__
@@ -59,6 +60,7 @@ void Auth_Init();
 int Auth_GetUID(const char* username);
 const char* Auth_GetNameByUID( int uid );
 int Auth_GetClPowerByUID(int uid);
+int Auth_GetClPower(client_t* cl);
 authData_admin_t* Auth_GetAdminFromIndex( int index );
 
 
