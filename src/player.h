@@ -309,8 +309,8 @@ typedef struct usercmd_s {//Not Known
 	int			angles[3];
 	byte weapon;
 	byte offHandIndex;
-	byte field_16;
-	byte field_17;
+	byte buttonsVertical;
+	byte buttonsHorizontal;
 	int field_18;
 	int field_1C;
 } usercmd_t;

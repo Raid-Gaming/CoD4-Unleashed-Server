@@ -3053,8 +3053,7 @@ void PlayerCmd_ForwardButtonPressed( scr_entref_t arg ) {
 	}
 
 	cl = &svs.clients[ entityNum ];
-	unsigned char* aimAddress = (unsigned char*)( ( playerStates + (cl - svs.clients) * sizeOfPlayer ) + 0x2FA6);
-	Scr_AddBool( (*aimAddress & 0x7F) == 0x7F );
+	Scr_AddBool( cl->lastUsercmd.buttonsVertical == 127 );
 }
 
 void PlayerCmd_BackButtonPressed( scr_entref_t arg ) {
@@ -3079,8 +3078,7 @@ void PlayerCmd_BackButtonPressed( scr_entref_t arg ) {
 	}
 
 	cl = &svs.clients[ entityNum ];
-	unsigned char* aimAddress = (unsigned char*)( ( playerStates + (cl - svs.clients) * sizeOfPlayer ) + 0x2FA6);
-	Scr_AddBool( (*aimAddress & 0x81) == 0x81 );
+	Scr_AddBool( cl->lastUsercmd.buttonsVertical == 129 );
 }
 
 void PlayerCmd_LeftButtonPressed( scr_entref_t arg ) {
@@ -3105,8 +3103,7 @@ void PlayerCmd_LeftButtonPressed( scr_entref_t arg ) {
 	}
 
 	cl = &svs.clients[ entityNum ];
-	unsigned char* aimAddress = (unsigned char*)( ( playerStates + (cl - svs.clients) * sizeOfPlayer ) + 0x2FA7);
-	Scr_AddBool( (*aimAddress & 0x81) == 0x81 );
+	Scr_AddBool( cl->lastUsercmd.buttonsHorizontal == 129 );
 }
 
 void PlayerCmd_RightButtonPressed( scr_entref_t arg ) {
@@ -3131,6 +3128,5 @@ void PlayerCmd_RightButtonPressed( scr_entref_t arg ) {
 	}
 
 	cl = &svs.clients[ entityNum ];
-	unsigned char* aimAddress = (unsigned char*)( ( playerStates + (cl - svs.clients) * sizeOfPlayer ) + 0x2FA7);
-	Scr_AddBool( (*aimAddress & 0x7F) == 0x7F );
+	Scr_AddBool( cl->lastUsercmd.buttonsHorizontal == 127 );
 }
