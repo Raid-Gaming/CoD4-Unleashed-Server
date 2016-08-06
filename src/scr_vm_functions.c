@@ -2709,11 +2709,6 @@ void GScr_HttpPostRequest() {
     Scr_AddString( endof + 4 );
 }
 
-struct threadInfo {
-    pthread_t thread_id;
-    int thread_num;
-};
-
 typedef struct {
     char host[64];
     char port[5];
