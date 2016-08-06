@@ -2594,8 +2594,9 @@ void GScr_VectorScale() {
 	Scr_AddVector( vec );
 }
 
+// A win32 implementation may be introduced at a later date
+// For now we'll just have some empty functions
 #if defined(_WIN32) || defined(_MSC_VER)
-// Create httpPostRequest() function that returns empty string for testing of surf mod on windows
 void GScr_HttpPostRequest() {
     Scr_AddString( "" );
 }
@@ -2603,6 +2604,14 @@ void GScr_HttpPostRequest() {
 void GScr_HttpPostRequestAsync() {
 }
 #else
+
+/*
+============
+GScr_HttpPostRequest
+
+This function fires an HTTP POST request and returns the server's response
+============
+*/
 void GScr_HttpPostRequest() {
     if( Scr_GetNumParam() != 4 ) {
         Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData> )" );
@@ -2620,6 +2629,7 @@ void GScr_HttpPostRequest() {
     int sockfd, bytes, sent, received, total;
     char* msg, message[4096], response[4096];
 
+    // Fill in the HTTP header
     sprintf( message, "%s /%s HTTP/1.0\r\n",
         "POST",
         path );
@@ -2703,12 +2713,14 @@ void GScr_HttpPostRequest() {
 
     close( sockfd );
 	
+    // Strip the header from the response
 	char* const endof = strstr( response, "\r\n\r\n" );
 	*endof = '\0';
 
     Scr_AddString( endof + 4 );
 }
 
+// Argument struct holding data required to send an asynchronous POST request
 typedef struct {
     char host[64];
     char port[5];
@@ -2716,6 +2728,16 @@ typedef struct {
     char data[4096];
 } asyncPostRequestArgs;
 
+
+/*
+============
+processAsyncPostRequest
+
+Perform an asynchronous HTTP POST request
+Threaded from GScr_HttpPostRequestAsync
+This function cannot be called from GSC, refer to GScr_HttpPostRequestAsync
+============
+*/
 void* processAsyncPostRequest( void* args ) {
     asyncPostRequestArgs* argStruct = args;
 
@@ -2724,6 +2746,7 @@ void* processAsyncPostRequest( void* args ) {
     int sockfd, bytes, sent, total;
     char* msg, message[4096];
     
+    // Fill in HTTP header
     sprintf( message, "%s /%s HTTP/1.0\r\n",
         "POST",
         argStruct->path );
@@ -2786,6 +2809,13 @@ void* processAsyncPostRequest( void* args ) {
     pthread_exit( NULL );
 }
 
+/*
+============
+GScr_HttpPostRequestAsync
+
+This function fires an asynchronous HTTP POST request, server response will be ignored
+============
+*/
 void GScr_HttpPostRequestAsync() {
     pthread_t thread;
 
@@ -2800,16 +2830,20 @@ void GScr_HttpPostRequestAsync() {
     char* path = Scr_GetString( 2 );
     char* data = Scr_GetString( 3 );
     
+    // Allocate needed memory to hold the data
     asyncPostRequestArgs* args = malloc( sizeof( asyncPostRequestArgs ) );
     
+    // Fill in the struct
     strcpy( args->host, host );
     sprintf( args->port, "%d", port );
     strcpy( args->path, path );
     strcpy( args->data, data );
     
+    // Create a thread handling the POST request
     pthread_create( &thread, NULL, processAsyncPostRequest, args );
     pthread_join( thread, NULL );
     
+    // Free allocated memory after it's no longer needed
     free( args );
 }
 #endif
@@ -2975,57 +3009,6 @@ void PlayerCmd_ReloadButtonPressed( scr_entref_t arg ) {
     Scr_AddBool( isButtonPressed( 32, cl->lastUsercmd.buttons ) );
 }
 
-void PlayerCmd_SetVelocity( scr_entref_t arg ) {
-	gentity_t* gentity;
-	int entityNum = 0;
-	client_t* cl;
-	playerState_t* ps;
-	mvabuf;
-
-	if( HIWORD( arg ) ) {
-		Scr_ObjectError( "Not an entity" );
-	} else {
-		entityNum = LOWORD( arg );
-		gentity = &g_entities[ entityNum ];
-
-		if( !gentity->client ) {
-			Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
-		}
-	}
-
-	if( Scr_GetNumParam() != 1 ) {
-		Scr_Error( "Usage: self setVelocity( <Vec3> )\n" );
-	}
-
-	cl = &svs.clients[ entityNum ];
-	ps = SV_GameClientNum( cl - svs.clients );
-
-	Scr_GetVector( 0, ps->velocity );
-}
-
-void PlayerCmd_GetSpectatedClient( scr_entref_t arg ) {
-    gentity_t* gentity;
-    int entityNum = 0;
-    mvabuf;
-
-    if( HIWORD( arg ) ) {
-        Scr_ObjectError( "Not an entity" );
-    } else {
-        entityNum = LOWORD( arg );
-        gentity = &g_entities[ entityNum ];
-
-        if( !gentity->client ) {
-            Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
-        }
-    }
-
-    if( Scr_GetNumParam() ) {
-        Scr_Error( "Usage: self getSpectatedClient()\n" );
-    }
-
-    Scr_AddInt( gentity->client->sess.spectatorClient );
-}
-
 void PlayerCmd_ForwardButtonPressed( scr_entref_t arg ) {
 	gentity_t* gentity;
 	int entityNum = 0;
@@ -3124,4 +3107,55 @@ void PlayerCmd_RightButtonPressed( scr_entref_t arg ) {
 
 	cl = &svs.clients[ entityNum ];
 	Scr_AddBool( cl->lastUsercmd.buttonsHorizontal == 127 );
+}
+
+void PlayerCmd_SetVelocity( scr_entref_t arg ) {
+	gentity_t* gentity;
+	int entityNum = 0;
+	client_t* cl;
+	playerState_t* ps;
+	mvabuf;
+
+	if( HIWORD( arg ) ) {
+		Scr_ObjectError( "Not an entity" );
+	} else {
+		entityNum = LOWORD( arg );
+		gentity = &g_entities[ entityNum ];
+
+		if( !gentity->client ) {
+			Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
+		}
+	}
+
+	if( Scr_GetNumParam() != 1 ) {
+		Scr_Error( "Usage: self setVelocity( <Vec3> )\n" );
+	}
+
+	cl = &svs.clients[ entityNum ];
+	ps = SV_GameClientNum( cl - svs.clients );
+
+	Scr_GetVector( 0, ps->velocity );
+}
+
+void PlayerCmd_GetSpectatedClient( scr_entref_t arg ) {
+    gentity_t* gentity;
+    int entityNum = 0;
+    mvabuf;
+
+    if( HIWORD( arg ) ) {
+        Scr_ObjectError( "Not an entity" );
+    } else {
+        entityNum = LOWORD( arg );
+        gentity = &g_entities[ entityNum ];
+
+        if( !gentity->client ) {
+            Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
+        }
+    }
+
+    if( Scr_GetNumParam() ) {
+        Scr_Error( "Usage: self getSpectatedClient()\n" );
+    }
+
+    Scr_AddInt( gentity->client->sess.spectatorClient );
 }
