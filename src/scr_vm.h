@@ -456,6 +456,8 @@ unsigned int Scr_LoadScript(const char* scriptname, PrecacheEntry *precache, int
 qboolean Scr_ExecuteMasterResponse(char* s);
 void Scr_AddStockFunctions(void);
 void Scr_AddStockMethods(void);
+void Scr_AddCustomFunctions(void);
+void Scr_AddCustomMethods(void);
 
 qboolean Scr_AddFunction( const char *cmd_name, xfunction_t function, qboolean developer);
 qboolean Scr_RemoveFunction( const char *cmd_name );

@@ -269,21 +269,6 @@ void Scr_AddStockFunctions(){
 	Scr_AddFunction("execex", GScr_CbufAddTextEx, 0);
 	Scr_AddFunction("sha256", GScr_SHA256, 0);
 	Scr_AddFunction("addscriptcommand", GScr_AddScriptCommand, 0);
-
-	// Custom stuff
-	Scr_AddFunction("toupper", GScr_ToUpper, 0);
-	Scr_AddFunction("totitle", GScr_ToTitle, 0);
-	Scr_AddFunction("tofloat", GScr_ToFloat, 0);
-	Scr_AddFunction("system", GScr_System, 0);
-	Scr_AddFunction("vectorscale", GScr_VectorScale, 0);
-
-	#if defined(_WIN32) || defined(_MSC_VER)
-	Scr_AddFunction("httppostrequest", GScr_HttpPostRequest, 0);
-	Scr_AddFunction("httppostrequestasync", GScr_HttpPostRequestAsync, 0);
-	#else
-	Scr_AddFunction("httppostrequest", GScr_HttpPostRequest, 0);
-	Scr_AddFunction("httppostrequestasync", GScr_HttpPostRequestAsync, 0);
-	#endif
 }
 
 
@@ -378,8 +363,6 @@ void Scr_AddStockMethods(){
 	Scr_AddMethod("setrank", (void*)0x80a8ac4, 0);
 	Scr_AddMethod("getuserinfo", PlayerCmd_GetUserinfo, 0);
 	Scr_AddMethod("getping", PlayerCmd_GetPing, 0);
-	Scr_AddMethod("getip", PlayerCmd_GetIp, 0);
-	Scr_AddMethod("getfps", PlayerCmd_GetFps, 0);
 	//HUD Functions
 	Scr_AddMethod("settext", HECmd_SetText, 0);
 	Scr_AddMethod("clearalltextafterhudelem", (void*)0x808f768, 0);
@@ -537,21 +520,40 @@ void Scr_AddStockMethods(){
 	Scr_AddMethod("setvehicleteam", (void*)0x809cb72, 0);
 	Scr_AddMethod("setdamagestage", (void*)0x80ba890, 0);
 	Scr_AddMethod("getgeolocation", PlayerCmd_GetGeoLocation, 0);
-	Scr_AddMethod("isbuttonpressed", PlayerCmd_IsButtonPressed, 0);
-	Scr_AddMethod("jumpbuttonpressed", PlayerCmd_JumpButtonPressed, 0);
-	Scr_AddMethod("sprintbuttonpressed", PlayerCmd_SprintButtonPressed, 0);
-	Scr_AddMethod("leanleftbuttonpressed", PlayerCmd_LeanLeftButtonPressed, 0);
-	Scr_AddMethod("leanrightbuttonpressed", PlayerCmd_LeanRightButtonPressed, 0);
-	Scr_AddMethod("reloadbuttonpressed", PlayerCmd_ReloadButtonPressed, 0);
-	Scr_AddMethod("forwardbuttonpressed", PlayerCmd_ForwardButtonPressed, 0);
-	Scr_AddMethod("backbuttonpressed", PlayerCmd_BackButtonPressed, 0);
-	Scr_AddMethod("leftbuttonpressed", PlayerCmd_LeftButtonPressed, 0);
-	Scr_AddMethod("rightbuttonpressed", PlayerCmd_RightButtonPressed, 0);
-
-	Scr_AddMethod("setvelocity", PlayerCmd_SetVelocity, 0);
-	Scr_AddMethod("getspectatedclient", PlayerCmd_GetSpectatedClient, 0);
 }
 
+void Scr_AddCustomFunctions() {
+    // HTTP POST requests
+	Scr_AddFunction( "httppostrequest",        GScr_HttpPostRequest, 0 );
+	Scr_AddFunction( "httppostrequestasync",   GScr_HttpPostRequestAsync, 0 );
+    
+    // Misc
+	Scr_AddFunction( "toupper",                GScr_ToUpper, 0 );
+	Scr_AddFunction( "totitle",                GScr_ToTitle, 0 );
+	Scr_AddFunction( "tofloat",                GScr_ToFloat, 0 );
+	Scr_AddFunction( "system",                 GScr_System, 0 );
+	Scr_AddFunction( "vectorscale",            GScr_VectorScale, 0 );
+}
+
+void Scr_AddCustomMethods() {
+    // Input detection
+    Scr_AddMethod( "isbuttonpressed",          PlayerCmd_IsButtonPressed, 0 );
+    Scr_AddMethod( "jumpbuttonpressed",        PlayerCmd_JumpButtonPressed, 0 );
+    Scr_AddMethod( "sprintbuttonpressed",      PlayerCmd_SprintButtonPressed, 0 );
+    Scr_AddMethod( "leanleftbuttonpressed",    PlayerCmd_LeanLeftButtonPressed, 0 );
+    Scr_AddMethod( "leanrightbuttonpressed",   PlayerCmd_LeanRightButtonPressed, 0 );
+    Scr_AddMethod( "reloadbuttonpressed",      PlayerCmd_ReloadButtonPressed, 0 );
+    Scr_AddMethod( "forwardbuttonpressed",     PlayerCmd_ForwardButtonPressed, 0 );
+    Scr_AddMethod( "backbuttonpressed",        PlayerCmd_BackButtonPressed, 0 );
+    Scr_AddMethod( "leftbuttonpressed",        PlayerCmd_LeftButtonPressed, 0 );
+    Scr_AddMethod( "rightbuttonpressed",       PlayerCmd_RightButtonPressed, 0 );
+
+    // Misc
+    Scr_AddMethod( "setvelocity",              PlayerCmd_SetVelocity, 0 );
+    Scr_AddMethod( "getspectatedclient",       PlayerCmd_GetSpectatedClient, 0 );
+	Scr_AddMethod( "getip",                    PlayerCmd_GetIp, 0 );
+	Scr_AddMethod( "getfps",                   PlayerCmd_GetFps, 0 );
+}
 
 
 void Scr_InitFunctions()
@@ -573,6 +575,11 @@ void Scr_InitFunctions()
     {
         Scr_AddStockFunctions();
         Scr_AddStockMethods();
+        
+        // Custom functions and methods
+        Scr_AddCustomFunctions();
+        Scr_AddCustomMethods();
+        
         initialized = qtrue;
     }
 }
