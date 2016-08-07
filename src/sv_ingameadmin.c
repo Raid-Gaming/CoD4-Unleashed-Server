@@ -165,14 +165,8 @@ qboolean SV_ExecuteRemoteCmd(int clientnum, const char *msg){
 	power = Auth_GetClPower(cl);
 	powercmd = Cmd_GetPower(cmd);
 
-    if(strstr(cmd, "login") || strstr(cmd, "password"))
-    {
-            printPtr = "hiddencmd";
-            critcmd = qtrue;
-    }else{
-	    printPtr = buffer;
-            critcmd = qfalse;
-    }
+	printPtr = buffer;
+    critcmd = qfalse;
 
 	if(powercmd == -1){
             SV_SendServerCommand(redirectClient, "e \"^5Command^2: %s\n^3Command execution failed - Invalid command invoked - Type ^2$cmdlist ^3to get a list of all available commands\"", printPtr);
