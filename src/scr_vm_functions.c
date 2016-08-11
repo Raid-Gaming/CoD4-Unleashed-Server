@@ -42,18 +42,7 @@
 #include <time.h>
 #include "plugin_handler.h"
 
-#if defined(_WIN32) || defined(_MSC_VER)
-// Do nothing right now, MIGHT add compatibility with Windows at some point
-#else
-
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netdb.h>
-#include <pthread.h>
-
-#endif
+#include "httprequest.h"
 
 
 /*
@@ -2594,233 +2583,23 @@ void GScr_VectorScale() {
 	Scr_AddVector( vec );
 }
 
-// A win32 implementation may be introduced at a later date
-// For now we'll just have some empty functions
-#if defined(_WIN32) || defined(_MSC_VER)
-void GScr_HttpPostRequest() {
-    Scr_AddString( "" );
-}
-
-void GScr_HttpPostRequestAsync() {
-}
-#else
 
 /*
 ============
 GScr_HttpPostRequest
 
 This function fires an HTTP POST request and returns the server's response
+You can optionally set the receive argument to false to not receive any responses
 ============
 */
 void GScr_HttpPostRequest() {
-    if( Scr_GetNumParam() != 4 ) {
-        Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData> )" );
-        return;
-    }
-
-    // Where are we going to send it?
-    char* host = Scr_GetString( 0 );
-    int portno = Scr_GetInt( 1 );
-    char* path = Scr_GetString( 2 );
-    char* postData = Scr_GetString( 3 );
-
-    struct hostent* server;
-    struct sockaddr_in serv_addr;
-    int sockfd, bytes, sent, received, total;
-    char* msg, message[4096], response[4096];
-
-    // Fill in the HTTP header
-    sprintf( message, "%s /%s HTTP/1.0\r\n",
-        "POST",
-        path );
-    strcat( message, "Content-Type: application/x-www-form-urlencoded" );
-    strcat( message, "\r\n" );
-    sprintf( message + strlen( message ), "Content-Length: %d\r\n", strlen( postData ) );
-    strcat( message, "\r\n" );
-    strcat( message, postData );
-   
-    // Create the socket
-    sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-    if( sockfd < 0 ) {
-        Com_PrintError( "^1ERROR opening socket" );
-        close( sockfd );
-        return;
-    }
-
-    // Lookup the ip address
-    server = gethostbyname( host );
-    if( server == NULL ) {
-        Com_PrintError( "^1ERROR, no such host" );
-        close( sockfd );
-        return;
-    }
-
-    // Fill in the structure
-    memset( &serv_addr, 0, sizeof( serv_addr ) );
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons( portno );
-    memcpy( &serv_addr.sin_addr.s_addr, server->h_addr, server->h_length );
-
-    // Connect to socket
-    if( connect( sockfd, (struct sockaddr*)&serv_addr, sizeof( serv_addr ) ) < 0 ) {
-        Com_PrintError( "^1ERROR connecting to socket" );
-        close( sockfd );
-        return;
-    }
-
-    msg = message;
-
-    // Send the request
-    total = strlen( msg );
-    sent = 0;
-    do {
-        bytes = write( sockfd, msg + sent, total - sent );
-        if( bytes < 0 ) {
-            Com_PrintError( "^1ERROR writing message to socket" );
-            close( sockfd );
-            return;
-        }
-
-        if( bytes == 0 )
-            break;
-
-        sent += bytes;
-    } while( sent < total );
-
-    // Receive the response
-    memset( response, 0, sizeof( response ) );
-    total = sizeof( response ) - 1;
-    received = 0;
-    do {
-        bytes = read( sockfd, response + received, total - received );
-        if( bytes < 0 ) {
-            Com_PrintError( "^1ERROR reading response from socket" );
-            close( sockfd );
-            return;
-        }
-
-        if( bytes == 0 )
-            break;
-
-        received += bytes;
-    } while( received < total );
-
-    if( received == total ) {
-        Com_PrintError( "^1ERROR storing complete response from socket" );
-        close( sockfd );
-        return;
-    }
-
-    close( sockfd );
+	int params;
+	int getResponse = 1;
 	
-    // Strip the header from the response
-	char* const endof = strstr( response, "\r\n\r\n" );
-	*endof = '\0';
-
-    Scr_AddString( endof + 4 );
-}
-
-// Argument struct holding data required to send an asynchronous POST request
-typedef struct {
-    char host[64];
-    char port[5];
-    char path[128];
-    char data[4096];
-} asyncPostRequestArgs;
-
-
-/*
-============
-processAsyncPostRequest
-
-Perform an asynchronous HTTP POST request
-Threaded from GScr_HttpPostRequestAsync
-This function cannot be called from GSC, refer to GScr_HttpPostRequestAsync
-============
-*/
-void* processAsyncPostRequest( void* args ) {
-    asyncPostRequestArgs* argStruct = args;
-
-    struct hostent* server;
-    struct sockaddr_in serv_addr;
-    int sockfd, bytes, sent, total;
-    char* msg, message[4096];
+	params = Scr_GetNumParam();
     
-    // Fill in HTTP header
-    sprintf( message, "%s /%s HTTP/1.0\r\n",
-        "POST",
-        argStruct->path );
-    strcat( message, "Content-Type: application/x-www-form-urlencoded" );
-    strcat( message, "\r\n" );
-    sprintf( message + strlen( message ), "Content-Length: %d\r\n", strlen( argStruct->data ) );
-    strcat( message, "\r\n" );
-    strcat( message, argStruct->data );
-   
-    // Create the socket
-    sockfd = socket( AF_INET, SOCK_STREAM, 0 );
-    if( sockfd < 0 ) {
-        Com_PrintError( "^1ERROR opening socket" );
-        close( sockfd );
-        pthread_exit( NULL );
-    }
-
-    // Lookup the ip address
-    server = gethostbyname( argStruct->host );
-    if( server == NULL ) {
-        Com_PrintError( "^1ERROR, no such host" );
-        close( sockfd );
-        pthread_exit( NULL );
-    }
-    
-    // Fill in the structure
-    memset( &serv_addr, 0, sizeof( serv_addr ) );
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons( atoi( argStruct->port ) );
-    memcpy( &serv_addr.sin_addr.s_addr, server->h_addr, server->h_length );
-    
-    // Connect to socket
-    if( connect( sockfd, (struct sockaddr*)&serv_addr, sizeof( serv_addr ) ) < 0 ) {
-        Com_PrintError( "^1ERROR connecting to socket" );
-        close( sockfd );
-        pthread_exit( NULL );
-    }
-
-    msg = message;
-    
-    // Send the request
-    total = strlen( msg );
-    sent = 0;
-    do {
-        bytes = write( sockfd, msg + sent, total - sent );
-        if( bytes < 0 ) {
-            Com_PrintError( "^1ERROR writing message to socket" );
-            close( sockfd );
-            pthread_exit( NULL );
-        }
-
-        if( bytes == 0 )
-            break;
-
-        sent += bytes;
-    } while( sent < total );
-    
-    close( sockfd );
-    
-    pthread_exit( NULL );
-}
-
-/*
-============
-GScr_HttpPostRequestAsync
-
-This function fires an asynchronous HTTP POST request, server response will be ignored
-============
-*/
-void GScr_HttpPostRequestAsync() {
-    pthread_t thread;
-
-    if( Scr_GetNumParam() != 4 ) {
-        Scr_Error( "Usage: httpPostRequestAsync( <host>, <port>, <path>, <postData> )" );
+	if( params < 4 || params > 5 ) {
+        Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData>, <optional: receive> )" );
         return;
     }
 
@@ -2829,24 +2608,12 @@ void GScr_HttpPostRequestAsync() {
     int port = Scr_GetInt( 1 );
     char* path = Scr_GetString( 2 );
     char* data = Scr_GetString( 3 );
-    
-    // Allocate needed memory to hold the data
-    asyncPostRequestArgs* args = malloc( sizeof( asyncPostRequestArgs ) );
-    
-    // Fill in the struct
-    strcpy( args->host, host );
-    sprintf( args->port, "%d", port );
-    strcpy( args->path, path );
-    strcpy( args->data, data );
-    
-    // Create a thread handling the POST request
-    pthread_create( &thread, NULL, processAsyncPostRequest, args );
-    pthread_join( thread, NULL );
-    
-    // Free allocated memory after it's no longer needed
-    free( args );
+	
+	if( params == 5 )
+		getResponse = Scr_GetInt( 4 );
+	
+	Scr_AddString( asyncPostRequest( host, port, path, data, getResponse ) );
 }
-#endif
 
 void PlayerCmd_IsButtonPressed( scr_entref_t arg ) {
     gentity_t* gentity;

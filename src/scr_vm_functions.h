@@ -94,17 +94,7 @@ void GScr_ToTitle();
 void GScr_ToFloat();
 void GScr_System();
 void GScr_VectorScale();
-
-#if defined(_WIN32) || defined(_MSC_VER)
-// Create httpPostRequest() function that returns empty string for testing of surf mod on windows
 void GScr_HttpPostRequest();
-void GScr_HttpPostRequestAsync();
-#else
-void GScr_HttpPostRequest();
-
-void* processAsyncPostRequest( void* args );
-void GScr_HttpPostRequestAsync();
-#endif
 
 
 __cdecl void ClientScr_SetSessionTeam(gclient_t* gcl, client_fields_t* gfl);
