@@ -3,3 +3,6 @@ A custom CoD4 Dedicated Server mainly to improve the functionality and usability
 
 ## License
 This software is released under the GNU General Public License v3.0
+
+## Support
+The official support forums for CoD4x-Server can be found at http://revmods.me/forum/86-cod4x-server/
