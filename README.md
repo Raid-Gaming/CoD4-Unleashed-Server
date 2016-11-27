@@ -32,12 +32,3 @@ yaourt -S nasm gcc-multilib make
 ```
 
 Compiling is as simple as running the appropriate build script. E.g. for Linux: `./build_elf.sh`.
-
-## Requirements
-CoD4x-Server requires you to have a custom IWD file installed in the main folder. This IWD file can be found here: http://revmods.me/topic/520-pre-compiled-binaries-requirements/
-
-## Pre-compiled Binaries
-Pre-compiled binaries are available at http://revmods.me/forum/86-cod4x-server/
-
-## Support
-The official support forums for CoD4x-Server can be found at http://revmods.me/forum/86-cod4x-server/
