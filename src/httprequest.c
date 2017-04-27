@@ -38,6 +38,7 @@ void* processAsyncPostRequest( void* args ) {
     sprintf( message, "%s /%s HTTP/1.0\r\n",
         "POST",
         argStruct->path );
+	sprintf( message + strlen( message ), "Host: %s:%s\r\n", argStruct->host, argStruct->port );
     strcat( message, "Content-Type: application/x-www-form-urlencoded" );
     strcat( message, "\r\n" );
     sprintf( message + strlen( message ), "Content-Length: %d\r\n", strlen( argStruct->data ) );
