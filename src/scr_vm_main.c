@@ -543,7 +543,7 @@ void Scr_AddCustomMethods() {
     Scr_AddMethod( "leanrightbuttonpressed",   PlayerCmd_LeanRightButtonPressed, 0 );
     Scr_AddMethod( "reloadbuttonpressed",      PlayerCmd_ReloadButtonPressed, 0 );
     Scr_AddMethod( "forwardbuttonpressed",     PlayerCmd_ForwardButtonPressed, 0 );
-    Scr_AddMethod( "backbuttonpressed",        PlayerCmd_BackButtonPressed, 0 );
+    Scr_AddMethod( "backwardbuttonpressed",        PlayerCmd_BackButtonPressed, 0 );
     Scr_AddMethod( "leftbuttonpressed",        PlayerCmd_LeftButtonPressed, 0 );
     Scr_AddMethod( "rightbuttonpressed",       PlayerCmd_RightButtonPressed, 0 );
 
