@@ -524,7 +524,7 @@ void Scr_AddStockMethods(){
 
 void Scr_AddCustomFunctions() {
     // HTTP POST requests
-	Scr_AddFunction( "request",        GScr_HttpPostRequest, 0 );
+	Scr_AddFunction( "postrequest",        GScr_HttpPostRequest, 0 );
     
     // Misc
 	Scr_AddFunction( "toupper",                GScr_ToUpper, 0 );
