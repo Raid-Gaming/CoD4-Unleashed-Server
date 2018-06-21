@@ -18,7 +18,7 @@ Debian/Ubuntu 64-bit:
 ```bash
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt-get install nasm:i386 build-essential gcc-multilib
+sudo apt-get install nasm:i386 build-essential gcc-multilib g++-multilib
 ```
 
 openSUSE 32-bit:
