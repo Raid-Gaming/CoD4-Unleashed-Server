@@ -32,3 +32,6 @@ yaourt -S nasm gcc-multilib make
 ```
 
 Compiling is as simple as running the appropriate build script. E.g. for Linux: `./build_elf.sh`.
+
+## Documentation
+All included functions are documented in our official Scripting API at https://docs.raid-gaming.net/
