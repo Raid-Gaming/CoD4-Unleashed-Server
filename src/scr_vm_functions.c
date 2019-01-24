@@ -2926,3 +2926,26 @@ void PlayerCmd_GetSpectatedClient( scr_entref_t arg ) {
 
     Scr_AddInt( gentity->client->sess.spectatorClient );
 }
+
+void PlayerCmd_SetSpectatedClient(scr_entref_t arg) {
+	gentity_t* gentity;
+	int entityNum = 0;
+	mvabuf;
+
+	if (HIWORD(arg)) {
+		Scr_ObjectError("Not an entity");
+	} else {
+		entityNum = LOWORD(arg);
+		gentity = &g_entities[entityNum];
+
+		if (!gentity->client) {
+			Scr_ObjectError(va("Entity: %i is not a player", entityNum));
+		}
+	}
+
+	if (Scr_GetNumParam() != 1) {
+		Scr_Error("Usage: self setSpectatedClient(<int>)\n");
+	}
+
+	gentity->client->sess.spectatorClient = Scr_GetInt(0);
+}

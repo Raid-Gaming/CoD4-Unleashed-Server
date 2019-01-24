@@ -550,6 +550,7 @@ void Scr_AddCustomMethods() {
     // Misc
     Scr_AddMethod( "setvelocity",              PlayerCmd_SetVelocity, 0 );
     Scr_AddMethod( "getspectatedclient",       PlayerCmd_GetSpectatedClient, 0 );
+    Scr_AddMethod( "setspectatedclient",       PlayerCmd_SetSpectatedClient, 0 );
 	Scr_AddMethod( "getip",                    PlayerCmd_GetIp, 0 );
 	Scr_AddMethod( "getfps",                   PlayerCmd_GetFps, 0 );
 }

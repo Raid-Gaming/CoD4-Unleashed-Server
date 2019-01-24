@@ -57,6 +57,7 @@ void PlayerCmd_LeftButtonPressed(scr_entref_t arg);
 void PlayerCmd_RightButtonPressed(scr_entref_t arg);
 void PlayerCmd_SetVelocity(scr_entref_t arg);
 void PlayerCmd_GetSpectatedClient(scr_entref_t arg);
+void PlayerCmd_SetSpectatedClient(scr_entref_t arg);
 void GScr_StrTokByPixLen();
 void GScr_StrTokByLen();
 void GScr_StrPixLen();
