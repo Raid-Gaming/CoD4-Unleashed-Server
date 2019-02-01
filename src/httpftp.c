@@ -1,6 +1,6 @@
 /*
  *  httpftp.c
- *  CoD4X17a_testing
+ *  CoD4U_testing
  *
  */
 

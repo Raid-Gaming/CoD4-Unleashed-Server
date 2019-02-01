@@ -1,15 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
+    Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -327,7 +329,7 @@ void CON_Init( void )
 	characters  EOF,  EOL,  EOL2, ERASE, KILL, REPRINT,
 	STATUS, and WERASE, and buffers by lines.
 	ISIG: when any of the characters  INTR,  QUIT,  SUSP,  or
-	DSUSP are received, generate the corresponding sig­
+	DSUSP are received, generate the corresponding sigï¿½
 	nal
 	*/
 	tc.c_lflag &= ~(ECHO | ICANON);

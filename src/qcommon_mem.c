@@ -1,16 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -25,7 +26,7 @@
 #include "qcommon_mem.h"
 #include "qcommon.h"
 
-#ifdef COD4X17A
+#ifdef COD4U
     #define MEM_SIZE 150 //Megabyte
 #else
     cvar_t* com_hunkMegs;
@@ -49,7 +50,7 @@ void Mem_Init()
 
     void *memory;
     int sizeofmemory;
-#ifdef COD4X17A
+#ifdef COD4U
     sizeofmemory = 1024*1024*MEM_SIZE;
 #else
     com_hunkMegs = Cvar_RegisterInt("com_hunkMegs", 250, 150, 600, CVAR_LATCH, "Number of megabytes allocated for the hunk memory");

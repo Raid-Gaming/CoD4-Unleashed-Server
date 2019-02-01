@@ -1,16 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -81,7 +82,7 @@ as well as IPv6 connections, since there is no way to use the
 v4-only auth server for these new types of connections.
 =================
 */
-#ifdef COD4X17A
+#ifdef COD4U
 __optimize3 __regparm1 void SV_GetChallenge(netadr_t *from)
 {
 	int		i;
@@ -388,7 +389,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	challenge = atoi( Info_ValueForKey( userinfo, "challenge" ) );
 	qport = atoi( Info_ValueForKey( userinfo, "qport" ) );
 
-#ifdef COD4X17A
+#ifdef COD4U
 
 	qboolean		pluginreject;
 	int			c;
@@ -445,7 +446,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 				"error\nConnection refused:\nAn uncompleted connection from %s has been detected\nPlease try again later\n",
 				NET_AdrToString(&cl->netchan.remoteAddress));
 			Com_Printf("Rejected connection from %s. This is a Fake-Player-DoS protection\n", NET_AdrToString(&cl->netchan.remoteAddress));
-#ifdef COD4X17A
+#ifdef COD4U
 			Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
 			return;
@@ -456,7 +457,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	Com_sprintf(ip_str, sizeof(ip_str), "%s", NET_AdrToConnectionString( from ));
 	Info_SetValueForKey( userinfo, "ip", ip_str );
 
-#ifdef COD4X17A
+#ifdef COD4U
 
 	if(!newcl && svse.challenges[c].pingTime){
 	        ping = com_frameTime - svse.challenges[c].pingTime;
@@ -492,20 +493,20 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	if(denied[0]){
             NET_OutOfBandPrint( NS_SERVER, from, "error\n%s\n", denied);
 		Com_Printf("Rejecting a connection from a banned network address: %s\n", NET_AdrToString(from));
-#ifdef COD4X17A
+#ifdef COD4U
 	    Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
 	    return;
 	}
 
-#ifdef COD4X17A
+#ifdef COD4U
 	Q_strncpyz(pbguid, svse.challenges[c].pbguid, sizeof(pbguid));
 #else
 	Q_strncpyz(pbguid, Info_ValueForKey( userinfo, "pbguid" ), sizeof(pbguid));
 #endif
 
 
-#ifdef COD4X17A
+#ifdef COD4U
 	version = atoi( Info_ValueForKey( userinfo, "protocol" ));
 	if ( version != sv_protocol->integer ) {
 		if( sv_protocol->integer == 6 && version < 6)
@@ -565,7 +566,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		NET_OutOfBandPrint( NS_SERVER, from, "error\nConnection rejected: No or invalid GUID found/provided.\n" );
 		Com_Printf("Rejected a connection: No or invalid GUID found/provided. Length: %i\n",
 		strlen(pbguid));
-#ifdef COD4X17A
+#ifdef COD4U
 		Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
 		return;
@@ -595,7 +596,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 			canreserved = qfalse;
 		}
 		
-#ifdef COD4X17A
+#ifdef COD4U
 		PHandler_Event(PLUGINS_ONPLAYERWANTRESERVEDSLOT, from, pbguid, userinfo, svse.challenges[c].ipAuthorize, &canreserved);
 #else
 		PHandler_Event(PLUGINS_ONPLAYERWANTRESERVEDSLOT, from, pbguid, userinfo, 0, &canreserved);
@@ -614,7 +615,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	if(*sv_password->string && Q_strncmp(sv_password->string, password, 32)){
 		NET_OutOfBandPrint( NS_SERVER, from, "error\nThis server has set a join-password\n^1Invalid Password\n");
 		Com_Printf("Connection rejected from %s - Invalid Password\n", NET_AdrToString(from));
-#ifdef COD4X17A
+#ifdef COD4U
 		Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
 		return;
@@ -641,7 +642,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	    }
 	}
 	for(i = 0 ; i < 10 ; i++){//Find highest slot or the one which is already assigned to this player
-#ifdef COD4X17A
+#ifdef COD4U
 	    if(svse.connectqueue[i].firsttime == 0 || svse.connectqueue[i].challengeslot == c){
 #else
 	    if(svse.connectqueue[i].firsttime == 0 || svse.connectqueue[i].challengeslot == challenge){
@@ -686,7 +687,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		}
 		svse.connectqueue[i].attempts++;
 		svse.connectqueue[i].lasttime = Com_GetRealtime();
-#ifdef COD4X17A
+#ifdef COD4U
 		svse.connectqueue[i].challengeslot = c;
 #else
 		svse.connectqueue[i].challengeslot = challenge;
@@ -694,7 +695,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		return;
 	}
 
-#ifdef COD4X17A
+#ifdef COD4U
 	//gotnewcl:
 	Com_Memset(newcl, 0x00, sizeof(client_t));
 #else
@@ -708,7 +709,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
     #endif
 #endif
 
-#ifdef COD4X17A
+#ifdef COD4U
 	newcl->authentication = svse.challenges[c].ipAuthorize;
 #else
 	newcl->authentication = 0;
@@ -724,7 +725,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 
         Q_strncpyz(cl->originguid, pbguid, 33);
         Q_strncpyz(cl->pbguid, pbguid, 33);	// save the pbguid
-#ifdef COD4X17A
+#ifdef COD4U
         if(newcl->authentication != 1 && sv_authorizemode->integer != -1){
             Com_Memset(newcl->pbguid, '0', 8);
         }
@@ -745,7 +746,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
         if(denied[0]){
                 NET_OutOfBandPrint( NS_SERVER, from, "error\n%s", denied);
 		Com_Printf("Rejecting a connection from a banned GUID/UID\n");
-#ifdef COD4X17A
+#ifdef COD4U
 		Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
                 svse.connectqueue[i].lasttime = 0;
@@ -755,7 +756,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		return;
         }
 
-#ifdef COD4X17A
+#ifdef COD4U
 #ifdef PUNKBUSTER
 
 	const char		*PunkBusterStatus;
@@ -778,7 +779,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	newcl->gentity = SV_GentityNum(clientNum);
 	newcl->clscriptid = Scr_AllocArray();
 	newcl->protocol = version;
-#ifndef COD4X17A
+#ifndef COD4U
 #ifdef COD4X18UPDATE
 	if(newcl->protocol != sv_protocol->integer)
 	{
@@ -796,7 +797,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		NET_OutOfBandPrint( NS_SERVER, from, "error\n%s\n", denied2 );
 		Com_Printf("Game rejected a connection: %s\n", denied2);
 		SV_FreeClientScriptId(newcl);
-#ifdef COD4X17A
+#ifdef COD4U
 		Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 #endif
 		return;
@@ -808,7 +809,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 			 newcl->unsentBuffer, sizeof(newcl->unsentBuffer),
 			 newcl->fragmentBuffer, sizeof(newcl->fragmentBuffer));
 
-#ifdef COD4X17A
+#ifdef COD4U
 	svse.challenges[c].connected = qtrue;
 #else
 	ReliableMessageSetup(&newcl->relmsg, qport, NS_SERVER, from);
@@ -822,7 +823,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	newcl->lastPacketTime = svs.time;
 	newcl->lastConnectTime = svs.time;
 
-#ifndef COD4X17A
+#ifndef COD4U
 #ifdef COD4X18UPDATE
 	if(newcl->needupdate)
 	{
@@ -864,7 +865,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	}
 }
 
-#ifdef COD4X17A
+#ifdef COD4U
 __optimize3 __regparm2 void SV_ReceiveStats(netadr_t *from, msg_t* msg){
 
 	unsigned short qport;
@@ -1097,7 +1098,7 @@ __cdecl void SV_DropClient( client_t *drop, const char *reason ) {
 
 	G_DestroyAdsForPlayer(drop);
 
-#ifdef COD4X17A
+#ifdef COD4U
 	challenge_t *challenge;
 
 	if ( !drop->gentity ) {
@@ -1898,7 +1899,7 @@ void SV_SendClientGameState( client_t *client ) {
 	while(client->state != CS_FREE && client->netchan.unsentFragments){
 		SV_Netchan_TransmitNextFragment(client);
 	}
-#ifdef COD4X17A
+#ifdef COD4U
 	if(!client->canNotReliable){
 
 		if(client->receivedstats != 127)
@@ -2443,7 +2444,7 @@ void SV_UnmutePlayer_f(client_t* cl){
 	cl->mutedClients[muteClient] = 0;
 }
 
-#ifndef COD4X17A
+#ifndef COD4U
 
 #define NUM_STATS_PARTS 16
 #define NUM_STATS_MASK (NUM_STATS_PARTS -1)
@@ -2485,7 +2486,7 @@ static ucmd_t ucmds[] = {
 	{"wwwdl", SV_WWWDownload_f, 0},
 	{"muteplayer", SV_MutePlayer_f, 0},
 	{"unmuteplayer", SV_UnmutePlayer_f, 0},
-#ifndef COD4X17A
+#ifndef COD4U
 	{"stats", SV_Stats_f, 0},
 #endif
 	{NULL, NULL, 0}

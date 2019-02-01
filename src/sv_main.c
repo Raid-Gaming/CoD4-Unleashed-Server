@@ -1,16 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -817,7 +818,7 @@ __optimize3 __regparm1 void SVC_Info( netadr_t *from ) {
 
 
 	//Info_SetValueForKey( infostring, "gamename", com_gamename->string );
-#ifdef COD4X17A
+#ifdef COD4U
 	Info_SetValueForKey(infostring, "protocol", va("%d", sv_protocol->integer));
 #else
 	Info_SetValueForKey(infostring, "protocol", "6");
@@ -1392,7 +1393,7 @@ void SVC_SourceEngineQuery_Rules( netadr_t* from, msg_t* recvmsg )
 
 }
 
-#ifndef COD4X17A
+#ifndef COD4U
 
 void SV_RestartForUpdate(netadr_t* from, char* mymastersecret, char* message)
 {
@@ -1784,7 +1785,7 @@ __optimize3 __regparm2 void SV_ConnectionlessPacket( netadr_t *from, msg_t *msg 
 		SVC_RemoteCommand( from, msg );
 	} else if (!Q_stricmp(c, "connect")) {
 		SV_DirectConnect( from );
-#ifdef COD4X17A
+#ifdef COD4U
 	} else if (!Q_stricmp(c, "ipAuthorize")) {
 		SV_AuthorizeIpPacket( from );
 
@@ -1797,7 +1798,7 @@ __optimize3 __regparm2 void SV_ConnectionlessPacket( netadr_t *from, msg_t *msg 
 		SV_RestartForUpdate(from, SV_Cmd_Argv(1), SV_Cmd_Argv(2));
 #endif
 
-#ifndef COD4X17A
+#ifndef COD4U
 #ifdef COD4X18UPDATE
 
 	} else if (!Q_stricmp(c, "stats")) {
@@ -1927,7 +1928,7 @@ __optimize3 __regparm2 void SV_PacketEvent( netadr_t *from, msg_t *msg ) {
 		NET_OutOfBandPrint( NS_SERVER, from, "disconnect" );
 		return;
 	}
-#ifndef COD4X17A	
+#ifndef COD4U	
 	if(seq == 0xfffffff0)
 	{
 		ReliableMessagesReceiveNextFragment( &cl->relmsg , msg );
@@ -3135,7 +3136,7 @@ void SV_LoadLevel(const char* levelname)
 	SV_PreLevelLoad();
 	SV_SpawnServer(mapname);
 
-#ifndef COD4X17A
+#ifndef COD4U
 	char cs[MAX_STRING_CHARS];
 	char list[MAX_STRING_CHARS];
 	DB_BuildOverallocatedXAssetList(list, sizeof(list));

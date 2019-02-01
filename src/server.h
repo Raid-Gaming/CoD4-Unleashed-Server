@@ -1,16 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -37,7 +38,7 @@
 #include "cvar.h"
 #include "net_game_conf.h"
 
-#ifndef COD4X17A
+#ifndef COD4U
 #include "net_reliabletransport.h"
 #endif
 
@@ -161,7 +162,7 @@ typedef struct client_s {//90b4f8c
 	int			protocol;
 	qboolean		needupdate;
 	qboolean		updateconnOK;
-#ifdef COD4X17A
+#ifdef COD4U
 	byte			dummy767[110];
 #else
 	netreliablemsg_t relmsg;
@@ -431,7 +432,7 @@ typedef struct {//0x8c51780
 
 typedef struct {
 	unsigned long long	nextHeartbeatTime;
-#ifdef COD4X17A
+#ifdef COD4U
 	challenge_t		challenges[MAX_CHALLENGES];	// to prevent invalid IPs from connecting
 #endif
 	netadr_t		redirectAddress;			// for rcon return messages

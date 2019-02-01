@@ -1,11 +1,11 @@
 
 echo Compiling C-code...
 cd bin
-gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4X17A -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_unix.c
-gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4X17A -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_mach.c
-gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4X17A -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_cod4linker_mach.c
-gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4X17A -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_con_tty.c
-gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4X17A -I../lib_tomcrypt/math/tommath -c ../src/*.c
+gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4U -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_unix.c
+gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4U -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_mach.c
+gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4U -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_cod4linker_mach.c
+gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4U -I../lib_tomcrypt/math/tommath -c ../src/unix/sys_con_tty.c
+gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -I../lib_tomcrypt/headers -D COD4U -I../lib_tomcrypt/math/tommath -c ../src/*.c
 gcc -m32 -Wall -O0 -g -fno-omit-frame-pointer -c ../src/zlib/*.c
 cd ../
 
@@ -24,7 +24,7 @@ nasm -f macho src/pluginexports.asm    --prefix _ -o bin/pluginexports.o
 
 
 echo Linking...
-gcc -m32 -stdlib=libc++ -rdynamic -o bin/cod4x_mach bin/*.o -Llib/ -ltomcrypt_mach -ltommath_mach -Wl -ldl -lpthread -lm -lstdc++
+gcc -m32 -stdlib=libc++ -rdynamic -o bin/cod4u_mach bin/*.o -Llib/ -ltomcrypt_mach -ltommath_mach -Wl -ldl -lpthread -lm -lstdc++
 
 #rm bin/*.o
 

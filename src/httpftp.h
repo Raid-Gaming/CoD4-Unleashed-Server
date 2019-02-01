@@ -1,6 +1,6 @@
 /*
  *  httpftp.h
- *  CoD4X17a_testing
+ *  CoD4U_testing
  *
  *  Created by Florian on 4/10/14.
  *  Copyright 2014 Dorg. All rights reserved.

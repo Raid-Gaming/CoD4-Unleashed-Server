@@ -1,15 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
+    Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -25,12 +27,12 @@
 #define __SYS_COD4DEFS_H__
 
 
-#define EXECUTABLE_NAME "cod4x17a_dedrun"
+#define EXECUTABLE_NAME "cod4u_dedrun"
 
-#define PRODUCT_NAME				"CoD4x Dedicated Server"
+#define PRODUCT_NAME				"CoD4: Unleashed Dedicated Server"
 #define BASEGAME					"main"
-#define CLIENT_WINDOW_TITLE     	"CoD4x Dedicated Server"
-#define CLIENT_WINDOW_MIN_TITLE 	"CoD4x"
+#define CLIENT_WINDOW_TITLE     	"CoD4: Unleashed Dedicated Server"
+#define CLIENT_WINDOW_MIN_TITLE 	"CoD4U"
 
 #define PORT_MASTER 20810
 #define MASTER_SERVER_NAME "cod4master.activision.com"
@@ -40,13 +42,13 @@
 
 #define PRODUCT_VERSION "1.0"
 
-#ifdef COD4X17A
+#ifdef COD4U
     #define Q3_VERSION "1.7a"
 #else
     #define Q3_VERSION "1.8"
 #endif
 
-#define GAME_STRING "CoD4x"
+#define GAME_STRING "CoD4U"
 
 #include "version.h"
 #ifndef BUILD_NUMBER

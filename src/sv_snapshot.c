@@ -1,16 +1,17 @@
 /*
 ===========================================================================
+	Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
-    This file is part of CoD4X17a-Server source code.
+    This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4X17a-Server source code is free software: you can redistribute it and/or modify
+    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4X17a-Server source code is distributed in the hope that it will be useful,
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
@@ -405,7 +406,7 @@ Called by SV_SendClientSnapshot and SV_SendClientGameState
 __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	int rateMsec;
 
-#ifdef COD4X17A
+#ifdef COD4U
 	int len;
 	*(int32_t*)0x13f39080 = *(int32_t*)msg->data;
 	len = MSG_WriteBitsCompress( 0, msg->data + 4 ,(byte*)0x13f39084 , msg->cursize - 4);
@@ -418,7 +419,7 @@ __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 
 	if(client->demorecording && !client->demowaiting)
 	{
-#ifdef COD4X17A
+#ifdef COD4U
 		SV_WriteDemoMessageForClient((byte*)0x13f39080, len, client);
 #else
 		SV_WriteDemoMessageForClient(msg->data, msg->cursize, client);
@@ -426,7 +427,7 @@ __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	}
 
 	// record information about the message
-#ifdef COD4X17A
+#ifdef COD4U
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageSize = len;
 #else
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageSize = msg->cursize;
@@ -435,7 +436,7 @@ __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 	client->frames[client->netchan.outgoingSequence & PACKET_MASK].messageAcked = 0xFFFFFFFF;
 
 	// send the datagram
-#ifdef COD4X17A
+#ifdef COD4U
 	SV_Netchan_Transmit( client, (byte*)0x13f39080, len );
 #else
 	SV_Netchan_Transmit( client, msg->data, msg->cursize );
@@ -488,7 +489,7 @@ __cdecl void SV_SendMessageToClient( msg_t *msg, client_t *client ) {
 			client->nextSnapshotTime = svs.time + 1000;
 		}
 	}
-#ifdef COD4X17A
+#ifdef COD4U
 	sv.bpsTotalBytes += len;
 #else
 	sv.bpsTotalBytes += msg->cursize;
@@ -587,7 +588,7 @@ void SV_SendClientMessages( void ) {
 			snapClients[i] = 0;		
 			continue; // not connected
 		}
-#ifndef COD4X17A		
+#ifndef COD4U		
 		ReliableMessageSetCurrentTime(&c->relmsg, svs.time);
 		ReliableMessagesTransmitNextFragment(&c->relmsg);
 		Net_TestingFunction(&c->relmsg);

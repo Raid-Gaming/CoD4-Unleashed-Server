@@ -1,4 +1,4 @@
-#ifndef COD4X17A
+#ifndef COD4U
 #include "q_shared.h"
 #include "qcommon.h"
 #include "msg.h"
