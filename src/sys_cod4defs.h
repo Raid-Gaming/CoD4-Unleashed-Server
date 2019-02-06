@@ -32,7 +32,7 @@
 #define PRODUCT_NAME				"CoD4: Unleashed Dedicated Server"
 #define BASEGAME					"main"
 #define CLIENT_WINDOW_TITLE     	"CoD4: Unleashed Dedicated Server"
-#define CLIENT_WINDOW_MIN_TITLE 	"CoD4U"
+#define CLIENT_WINDOW_MIN_TITLE 	"CoD4: Unleashed"
 
 #define PORT_MASTER 20810
 #define MASTER_SERVER_NAME "cod4master.activision.com"
@@ -42,13 +42,16 @@
 
 #define PRODUCT_VERSION "1.0"
 
+/*
 #ifdef COD4U
     #define Q3_VERSION "1.7a"
 #else
     #define Q3_VERSION "1.8"
 #endif
+*/
+#define Q3_VERSION "1.7u"
 
-#define GAME_STRING "CoD4U"
+#define GAME_STRING "CoD4: Unleashed"
 
 #include "version.h"
 #ifndef BUILD_NUMBER
