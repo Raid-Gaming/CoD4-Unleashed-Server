@@ -534,6 +534,8 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction( "tofloat",                GScr_ToFloat, 0 );
 	Scr_AddFunction( "system",                 GScr_System, 0 );
 	Scr_AddFunction( "vectorscale",            GScr_VectorScale, 0 );
+
+	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
 }
 
 void Scr_AddCustomMethods() {

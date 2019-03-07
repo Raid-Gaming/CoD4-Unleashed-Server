@@ -1245,6 +1245,13 @@ void GScr_GetRealTime(){
     Scr_AddInt(Com_GetRealtime() - 1325376000);
 }
 
+void GScr_GetEpochTime() {
+	if (Scr_GetNumParam()) {
+		Scr_Error("Usage: getEpochTime()\n");
+	}
+	Scr_AddInt(Com_GetRealtime());
+}
+
 
 /*
 ============
