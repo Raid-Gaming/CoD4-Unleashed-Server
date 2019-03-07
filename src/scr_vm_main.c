@@ -536,6 +536,7 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction( "vectorscale",            GScr_VectorScale, 0 );
 
 	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
+	Scr_AddFunction("epochtimetostring", GScr_EpochTimeToString, 0);
 }
 
 void Scr_AddCustomMethods() {

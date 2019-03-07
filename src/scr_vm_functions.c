@@ -1292,6 +1292,31 @@ void GScr_TimeToString(){
     Scr_AddString(timestring);
 }
 
+void GScr_EpochTimeToString() {
+    char timestring[128];
+    char* format;
+    struct tm *time_s;
+    int zone;
+
+    if (Scr_GetNumParam() != 3) {
+        Scr_Error("Usage: epochTimeToString(<epochTime>, <UTC/Local>, <format>)\n");
+    }
+
+    time_t time = Scr_GetInt(0);
+    zone = Scr_GetInt(1);
+    format = Scr_GetString(2);
+
+    if (zone) {
+        time_s = gmtime(&time);
+	} else {
+        time_s = localtime(&time);
+	}
+
+    strftime(timestring, sizeof(timestring), format, time_s);
+
+    Scr_AddString(timestring);
+}
+
 
 /*
 ============

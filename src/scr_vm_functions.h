@@ -99,6 +99,7 @@ void GScr_System();
 void GScr_VectorScale();
 void GScr_HttpPostRequest();
 void GScr_GetEpochTime();
+void GScr_EpochTimeToString();
 
 
 __cdecl void ClientScr_SetSessionTeam(gclient_t* gcl, client_fields_t* gfl);
