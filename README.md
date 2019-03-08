@@ -28,7 +28,7 @@ sudo zypper install nasm gcc-32bit
 
 Arch Linux 32-bit:
 ```bash
-yaourt -S nasm gcc-multilib make
+sudo pacman -S base-devel nasm
 ```
 
 Compiling is as simple as running the appropriate build script. E.g. for Linux: `./build_elf.sh`.
