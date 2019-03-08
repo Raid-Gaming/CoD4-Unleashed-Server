@@ -2620,6 +2620,8 @@ void GScr_VectorScale() {
 
 /*
 ============
+DEPRECATED
+
 GScr_HttpPostRequest
 
 This function fires an HTTP POST request and returns the server's response
@@ -2627,13 +2629,15 @@ You can optionally set the receive argument to false to not receive any response
 ============
 */
 void GScr_HttpPostRequest() {
+	Com_PrintWarning("Deprecation warning: httpPostRequest is deprecated, you should use httpGet, httpPost, ...\r\n");
+
 	int params;
 	int getResponse = 1;
 	
 	params = Scr_GetNumParam();
     
 	if( params < 4 || params > 5 ) {
-        Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData>, <optional: receive> )" );
+        Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData>, <optional: receive> )\n" );
         return;
     }
 
@@ -2662,7 +2666,7 @@ void PlayerCmd_IsButtonPressed( scr_entref_t arg ) {
         gentity = &g_entities[ entityNum ];
 
         if( !gentity->client ) {
-            Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
+            Scr_ObjectError( va( "Entity: %i is not a player\n", entityNum ) );
         }
     }
     

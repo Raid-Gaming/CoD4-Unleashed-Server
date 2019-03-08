@@ -97,7 +97,7 @@ void GScr_ToTitle();
 void GScr_ToFloat();
 void GScr_System();
 void GScr_VectorScale();
-void GScr_HttpPostRequest();
+void GScr_HttpPostRequest(); /* DEPRECATED */
 void GScr_GetEpochTime();
 void GScr_EpochTimeToString();
 
