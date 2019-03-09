@@ -37,7 +37,7 @@ void* processHttpRequest(void* args) {
 	sprintf(message + strlen(message), "Host: %s:%s\r\n", argStruct->host, argStruct->port);
 
 	// GET cannot have a body, only append data if method is not GET
-	if (strcmp(argStruct->method, "GET") != 0) {
+	if (strcmp(argStruct->method, "GET") != 0 && strlen(argStruct->data) > 0) {
 		sprintf(message + strlen(message), "Content-Type: %s\r\n", argStruct->contentType);
 		sprintf(message + strlen(message), "Content-Length: %d\r\n", strlen(argStruct->data));
 		strcat(message, "\r\n");
@@ -230,7 +230,7 @@ void GScr_HttpGet() {
 		path,
 		GET,
 		"application/json",
-		NULL,
+		"",
 		params == 4 ? Scr_GetInt(3) : 1
 	));
 }
