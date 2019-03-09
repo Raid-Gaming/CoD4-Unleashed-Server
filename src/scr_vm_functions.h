@@ -95,6 +95,7 @@ void GScr_TypeTest();
 void GScr_ToUpper();
 void GScr_ToTitle();
 void GScr_ToFloat();
+void GScr_IsArray();
 void GScr_System();
 void GScr_VectorScale();
 void GScr_HttpPostRequest(); /* DEPRECATED */

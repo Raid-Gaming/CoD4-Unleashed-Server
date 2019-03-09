@@ -535,13 +535,14 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction("httppatch", GScr_HttpPatch, 0);
 	Scr_AddFunction("httpdelete", GScr_HttpDelete, 0);
 	Scr_AddFunction("httprequest", GScr_HttpRequest, 0);
-    
+
     // Misc
 	Scr_AddFunction( "toupper",                GScr_ToUpper, 0 );
 	Scr_AddFunction( "totitle",                GScr_ToTitle, 0 );
 	Scr_AddFunction( "tofloat",                GScr_ToFloat, 0 );
 	Scr_AddFunction( "system",                 GScr_System, 0 );
 	Scr_AddFunction( "vectorscale",            GScr_VectorScale, 0 );
+	Scr_AddFunction("isarray", GScr_IsArray, 0);
 
 	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
 	Scr_AddFunction("epochtimetostring", GScr_EpochTimeToString, 0);

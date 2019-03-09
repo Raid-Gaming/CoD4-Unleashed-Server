@@ -2589,6 +2589,14 @@ void GScr_ToFloat() {
     }
 }
 
+void GScr_IsArray() {
+	if (Scr_GetNumParam() != 1) {
+		Scr_Error("Usage: isArray(<var>)\n");
+	}
+
+	Scr_AddBool(Scr_GetType(0) == 1);
+}
+
 void GScr_System() {
     if( Scr_GetNumParam() != 1 ) {
         Scr_Error( "Usage: system( <command> )" );
