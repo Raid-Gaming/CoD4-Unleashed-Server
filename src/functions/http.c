@@ -1,7 +1,3 @@
-#include <string.h>
-#include <stdlib.h>
-
-#include "../qcommon_io.h"
 #include "http.h"
 
 #if defined(_WIN32) || defined(_MSC_VER)

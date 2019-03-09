@@ -1,6 +1,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "../qcommon_io.h"
+#include "../scr_vm.h"
+
 // Argument struct holding data required to send an asynchronous HTTP request
 typedef struct {
 	// HTTP request info
