@@ -95,9 +95,12 @@ void GScr_TypeTest();
 void GScr_ToUpper();
 void GScr_ToTitle();
 void GScr_ToFloat();
+void GScr_IsArray();
 void GScr_System();
 void GScr_VectorScale();
-void GScr_HttpPostRequest();
+void GScr_HttpPostRequest(); /* DEPRECATED */
+void GScr_GetEpochTime();
+void GScr_EpochTimeToString();
 
 
 __cdecl void ClientScr_SetSessionTeam(gclient_t* gcl, client_fields_t* gfl);
