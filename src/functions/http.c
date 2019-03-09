@@ -242,8 +242,8 @@ You can optionally set the receive argument to false to not receive any response
 void GScr_HttpPost() {
 	int params = Scr_GetNumParam();
 
-	if (params < 4 || params > 5) {
-		Scr_Error("Usage: httpPost(<host>, <port>, <path>, <data>, <optional: receive>\n");
+	if (params < 4 || params > 6) {
+		Scr_Error("Usage: httpPost(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
 		return;
 	}
 
@@ -257,9 +257,9 @@ void GScr_HttpPost() {
 		port,
 		path,
 		POST,
-		"application/json",
+		params > 4 ? Scr_GetString(4) : "application/json",
 		data,
-		params == 5 ? Scr_GetInt(4) : 1
+		params == 6 ? Scr_GetInt(5) : 1
 	));
 }
 
@@ -270,8 +270,8 @@ You can optionally set the receive argument to false to not receive any response
 void GScr_HttpPut() {
 	int params = Scr_GetNumParam();
 
-	if (params < 4 || params > 5) {
-		Scr_Error("Usage: httpPut(<host>, <port>, <path>, <data>, <optional: receive>\n");
+	if (params < 4 || params > 6) {
+		Scr_Error("Usage: httpPut(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
 		return;
 	}
 
@@ -285,9 +285,9 @@ void GScr_HttpPut() {
 		port,
 		path,
 		PUT,
-		"application/json",
+		params > 4 ? Scr_GetString(4) : "application/json",
 		data,
-		params == 5 ? Scr_GetInt(4) : 1
+		params == 6 ? Scr_GetInt(5) : 1
 	));
 }
 
@@ -298,8 +298,8 @@ You can optionally set the receive argument to false to not receive any response
 void GScr_HttpPatch() {
 	int params = Scr_GetNumParam();
 
-	if (params < 4 || params > 5) {
-		Scr_Error("Usage: httpPatch(<host>, <port>, <path>, <data>, <optional: receive>\n");
+	if (params < 4 || params > 6) {
+		Scr_Error("Usage: httpPatch(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
 		return;
 	}
 
@@ -313,9 +313,9 @@ void GScr_HttpPatch() {
 		port,
 		path,
 		PATCH,
-		"application/json",
+		params > 4 ? Scr_GetString(4) : "application/json",
 		data,
-		params == 5 ? Scr_GetInt(4) : 1
+		params == 6 ? Scr_GetInt(5) : 1
 	));
 }
 
@@ -326,8 +326,8 @@ You can optionally set the receive argument to false to not receive any response
 void GScr_HttpDelete() {
 	int params = Scr_GetNumParam();
 
-	if (params < 3 || params > 5) {
-		Scr_Error("Usage: httpDelete(<host>, <port>, <path>, <optional: data>, <optional: receive>\n");
+	if (params < 3 || params > 6) {
+		Scr_Error("Usage: httpDelete(<host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>\n");
 		return;
 	}
 
@@ -341,9 +341,9 @@ void GScr_HttpDelete() {
 		port,
 		path,
 		DELETE,
-		"application/json",
+		params > 4 ? Scr_GetString(4) : "application/json",
 		data,
-		params == 5 ? Scr_GetInt(4) : 1
+		params == 6 ? Scr_GetInt(5) : 1
 	));
 }
 
@@ -354,8 +354,8 @@ You can optionally set the receive argument to false to not receive any response
 void GScr_HttpRequest() {
 	int params = Scr_GetNumParam();
 
-	if (params < 4 || params > 6) {
-		Scr_Error("Usage: httpRequest(<method>, <host>, <port>, <path>, <optional: data>, <optional: receive>\n");
+	if (params < 4 || params > 7) {
+		Scr_Error("Usage: httpRequest(<method>, <host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>\n");
 		return;
 	}
 
@@ -369,8 +369,8 @@ void GScr_HttpRequest() {
 		port,
 		path,
 		strToHttpMethod(Scr_GetString(0)),
-		"application/json",
+		params > 5 ? Scr_GetString(5) : "application/json",
 		data,
-		params == 6 ? Scr_GetInt(5) : 1
+		params == 7 ? Scr_GetInt(6) : 1
 	));
 }
