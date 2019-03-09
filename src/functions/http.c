@@ -216,7 +216,7 @@ void GScr_HttpGet() {
 	int params = Scr_GetNumParam();
 
 	if (params < 3 || params > 4) {
-		Scr_Error("Usage: httpGet(<host>, <port>, <path>, <optional: receive>\n");
+		Scr_Error("Usage: httpGet(<host>, <port>, <path>, <optional: receive>)\n");
 		return;
 	}
 
@@ -243,7 +243,7 @@ void GScr_HttpPost() {
 	int params = Scr_GetNumParam();
 
 	if (params < 4 || params > 6) {
-		Scr_Error("Usage: httpPost(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
+		Scr_Error("Usage: httpPost(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>)\n");
 		return;
 	}
 
@@ -271,7 +271,7 @@ void GScr_HttpPut() {
 	int params = Scr_GetNumParam();
 
 	if (params < 4 || params > 6) {
-		Scr_Error("Usage: httpPut(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
+		Scr_Error("Usage: httpPut(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>)\n");
 		return;
 	}
 
@@ -299,7 +299,7 @@ void GScr_HttpPatch() {
 	int params = Scr_GetNumParam();
 
 	if (params < 4 || params > 6) {
-		Scr_Error("Usage: httpPatch(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>\n");
+		Scr_Error("Usage: httpPatch(<host>, <port>, <path>, <data>, <optional: contentType>, <optional: receive>)\n");
 		return;
 	}
 
@@ -327,7 +327,7 @@ void GScr_HttpDelete() {
 	int params = Scr_GetNumParam();
 
 	if (params < 3 || params > 6) {
-		Scr_Error("Usage: httpDelete(<host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>\n");
+		Scr_Error("Usage: httpDelete(<host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>)\n");
 		return;
 	}
 
@@ -355,7 +355,7 @@ void GScr_HttpRequest() {
 	int params = Scr_GetNumParam();
 
 	if (params < 4 || params > 7) {
-		Scr_Error("Usage: httpRequest(<method>, <host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>\n");
+		Scr_Error("Usage: httpRequest(<method>, <host>, <port>, <path>, <optional: data>, <optional: contentType>, <optional: receive>)\n");
 		return;
 	}
 
