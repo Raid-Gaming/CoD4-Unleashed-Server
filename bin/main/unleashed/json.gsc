@@ -154,7 +154,14 @@ decode(str) {
 				for (; str[i] != "," && str[i] != "}" && str[i] != "]"; i++) {
 					value += str[i];
 				}
-				obj[key] = toFloat(value);
+
+				if (value == "false") {
+					obj[key] = false;
+				} else if (value == "true") {
+					obj[key] = true;
+				} else {
+					obj[key] = toFloat(value);
+				}
 				break;
 			}
 		}
@@ -195,7 +202,13 @@ decode(str) {
 				break;
 			
 			default:
-				obj[obj.size] = toFloat(value);
+				if (value == "false") {
+					obj[obj.size] = false;
+				} else if (value == "true") {
+					obj[obj.size] = true;
+				} else {
+					obj[obj.size] = toFloat(value);
+				}
 				break;
 			}
 		}
