@@ -14,7 +14,7 @@
 #if defined(_WIN32) || defined(_MSC_VER)
 
 // No win32 implementation yet
-char* asyncHttpRequest(char* host, int port, char* path, enum HttpMethod method, char* data, int getResponse) {
+char* asyncHttpRequest(char* host, int port, char* path, enum HttpMethod method, char* contentType, char* data, int getResponse) {
 	return "";
 }
 
