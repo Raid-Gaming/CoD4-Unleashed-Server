@@ -2865,7 +2865,7 @@ void PlayerCmd_BackButtonPressed( scr_entref_t arg ) {
 	}
 
 	if( Scr_GetNumParam() ) {
-		Scr_Error( "Usage: self forwardButtonPressed()\n" );
+		Scr_Error( "Usage: self backwardButtonPressed()\n" );
 	}
 
 	cl = &svs.clients[ entityNum ];
@@ -2890,7 +2890,7 @@ void PlayerCmd_LeftButtonPressed( scr_entref_t arg ) {
 	}
 
 	if( Scr_GetNumParam() ) {
-		Scr_Error( "Usage: self forwardButtonPressed()\n" );
+		Scr_Error( "Usage: self leftButtonPressed()\n" );
 	}
 
 	cl = &svs.clients[ entityNum ];
@@ -2915,7 +2915,7 @@ void PlayerCmd_RightButtonPressed( scr_entref_t arg ) {
 	}
 
 	if( Scr_GetNumParam() ) {
-		Scr_Error( "Usage: self forwardButtonPressed()\n" );
+		Scr_Error( "Usage: self rightButtonPressed()\n" );
 	}
 
 	cl = &svs.clients[ entityNum ];
