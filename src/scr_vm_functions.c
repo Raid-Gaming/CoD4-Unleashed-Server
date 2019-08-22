@@ -1283,9 +1283,9 @@ void GScr_TimeToString(){
     format = Scr_GetString(2);
 
     if(zone)
-        time_s = gmtime( &time );
-    else
         time_s = localtime( &time );
+    else
+        time_s = gmtime( &time );
 
     strftime( timestring, sizeof(timestring), format, time_s );
 
@@ -1307,9 +1307,9 @@ void GScr_EpochTimeToString() {
     format = Scr_GetString(2);
 
     if (zone) {
-        time_s = gmtime(&time);
-	} else {
         time_s = localtime(&time);
+	} else {
+        time_s = gmtime(&time);
 	}
 
     strftime(timestring, sizeof(timestring), format, time_s);
