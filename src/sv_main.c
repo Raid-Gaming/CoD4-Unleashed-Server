@@ -3497,6 +3497,7 @@ __optimize3 __regparm1 qboolean SV_Frame( unsigned int usec ) {
 		NET_Clear();
 
 	SV_PreFrame( );
+	SV_CalculateClientFramerate();
 
 	// run the game simulation in chunks
 	while ( sv.timeResidual >= frameUsec ) {
