@@ -805,11 +805,10 @@ __cdecl void SV_ClipMoveToEntity(struct moveclip_s *clip, svEntity_t *entity, st
 void SV_Cmd_Init();
 void SV_CopyCvars();
 
+void SV_CalculateClientFramerate();
+
 #ifdef COD4X18UPDATE
 void SV_ConnectWithUpdateProxy(client_t *cl);
 #endif
 
 #endif
-
-
-
