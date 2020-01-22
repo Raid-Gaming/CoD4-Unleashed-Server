@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased](Unreleased)
 
-- No changes currently
+### Fixed
+
+- Fixed getFPS function not reporting lag spikes properly
 
 ## [1.1.1](Hotfix) - 2019-03-09
 
