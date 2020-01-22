@@ -26,3 +26,8 @@ bin/cod4u_lnx
 bin/cod4u_mach
 bin/cod4u_win32.exe
 bin/cod4u_win32.def
+
+build_elf_official.sh
+build_win32_official.cmd
+
+assets/
