@@ -27,10 +27,10 @@
 
 enum PluginEvents{
     // plugin handling events
-    
+
     //PLUGINS_ONINIT,
     PLUGINS_ONINFOREQUEST,
-    
+
     // runtime events:
 
     PLUGINS_ONPLAYERDC,
@@ -59,5 +59,3 @@ enum PluginEvents{
 };
 
 extern char PHandler_Events[PLUGINS_ITEMCOUNT][32]; // defined in plugin_handler.c
-
-

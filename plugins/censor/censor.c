@@ -36,7 +36,7 @@ badwordsList_t *badwords;
 /*
 =============
 Q_strncpyz
- 
+
 Safe strncpy that ensures a trailing zero
 =============
 */
@@ -49,7 +49,7 @@ void Q_strncpyz( char *dest, const char *src, int destsize ) {
 		Plugin_Error( P_ERROR_DISABLE, "Q_strncpyz: NULL src" );
 	}
 	if ( destsize < 1 ) {
-		Plugin_Error(P_ERROR_DISABLE,"Q_strncpyz: destsize < 1" ); 
+		Plugin_Error(P_ERROR_DISABLE,"Q_strncpyz: destsize < 1" );
 	}
 
 	strncpy( dest, src, destsize-1 );
@@ -70,7 +70,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
           return 1;
 
 
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -78,7 +78,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 		if (!n--) {
 			return 0;		// strings are equal until end point
 		}
-		
+
 		if (c1 != c2) {
 			if (c1 >= 'a' && c1 <= 'z') {
 				c1 -= ('a' - 'A');
@@ -91,7 +91,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 			}
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
@@ -119,7 +119,7 @@ char* removeColors(char *output,char *string,size_t size)
 		else{
 			output[j]=string[i];
 			j++;
-		}			
+		}
 	}
 	output[j]=0;
 	return output;

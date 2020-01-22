@@ -248,17 +248,17 @@ int sub_530FC0(client_t *client, const char *command)
 	{
 
 		if ( client->reliableCommands[i & (MAX_RELIABLE_COMMANDS - 1)].cmdType == 0 )
-			continue;	
+			continue;
 
 		if(client->reliableCommands[i & (MAX_RELIABLE_COMMANDS - 1)].command[0] != command[0])
 			continue;
-		
+
 		if ( command[0] >= 120 && command[0] <= 122 )
 			continue;
-			
+
 		if ( !strcmp(&command[1], &client->reliableCommands[i & (MAX_RELIABLE_COMMANDS - 1)].command[1]) )
 			return i;
-		
+
 
 		switch ( command[0] )
 		{
@@ -303,7 +303,7 @@ void __cdecl SV_AddServerCommand(client_t *client, int type, const char *cmd)
     }
 	if ( client->canNotReliable )
 		return;
-	
+
 	if ( client->reliableSequence - client->reliableAcknowledge >= MAX_RELIABLE_COMMANDS / 2 || client->state != CS_ACTIVE)
 	{
 		sub_5310E0(client);
@@ -312,7 +312,7 @@ void __cdecl SV_AddServerCommand(client_t *client, int type, const char *cmd)
 			return;
 
 	}
-	
+
 	v4 = sub_530FC0(client, cmd);
 
     if ( v4 < 0 )
@@ -574,7 +574,7 @@ __optimize3 __regparm3 static leakyBucket_t *SVC_BucketForAddress( netadr_t *add
 		interval = now - bucket->lastTime;
 
 		// Reclaim expired buckets
-		if ( bucket->lastTime > 0 && ( interval > ( burst * period ) || interval < 0 ) ) 
+		if ( bucket->lastTime > 0 && ( interval > ( burst * period ) || interval < 0 ) )
 		{
 			if ( bucket->prev != NULL ) {
 				bucket->prev->next = bucket->next;
@@ -592,7 +592,7 @@ __optimize3 __regparm3 static leakyBucket_t *SVC_BucketForAddress( netadr_t *add
 		if ( bucket->type == NA_BAD ) {
 			bucket->type = address->type;
 			switch ( address->type ) {
-				case NA_IP:	bucket->ipv._4[0] = address->ip[0]; 
+				case NA_IP:	bucket->ipv._4[0] = address->ip[0];
 						bucket->ipv._4[1] = address->ip[1];
 						bucket->ipv._4[2] = address->ip[2];
 						bucket->ipv._4[3] = address->ip[3];
@@ -844,7 +844,7 @@ __optimize3 __regparm1 void SVC_Info( netadr_t *from ) {
 	else
 	    Info_SetValueForKey( infostring, "pswrd", "0");
 
-	
+
 	    Info_SetValueForKey( infostring, "ff", va("%d", Cvar_VariableIntegerValue("scr_team_fftype")));
 
         if(Cvar_GetVariantString("scr_game_allowkillcam")){
@@ -944,12 +944,12 @@ void CLC_SourceEngineQuery_Info(msg_t* msg, queryinfo_t* query)
 {
 	int extrafields;
 	char stringbuf[8192];
-	
+
 	//OBB-Header already read
 	MSG_ReadLong(msg);
 	//I message is already read
 	MSG_ReadByte(msg);
-	
+
 	//Start of message
 	query->protocol = MSG_ReadByte(msg);
 	MSG_ReadString(msg, query->hostname, sizeof(query->hostname));
@@ -968,7 +968,7 @@ void CLC_SourceEngineQuery_Info(msg_t* msg, queryinfo_t* query)
 	//Reading 0 ?
 	query->secure = MSG_ReadByte(msg);
 	MSG_ReadString(msg, query->gameversion, sizeof(query->gameversion));
-	
+
 	/* The extra datafields */
 	extrafields = MSG_ReadByte(msg);
 
@@ -981,7 +981,7 @@ void CLC_SourceEngineQuery_Info(msg_t* msg, queryinfo_t* query)
 	{
 		//Read the steam id
 		query->steamid_lower = MSG_ReadLong(msg);
-		query->steamid_upper = MSG_ReadLong(msg);		
+		query->steamid_upper = MSG_ReadLong(msg);
 	}
 	if(extrafields & 0x40)
 	{
@@ -997,11 +997,11 @@ void CLC_SourceEngineQuery_Info(msg_t* msg, queryinfo_t* query)
 	if(extrafields & 0x01)
 	{
 		query->gameid_lower = MSG_ReadLong(msg);
-		query->gameid_upper = MSG_ReadLong(msg);			
-	}	
+		query->gameid_upper = MSG_ReadLong(msg);
+	}
 	/* Finished with message of type "I" */
 
-	
+
 }
 
 void CLC_SourceEngineQuery_ReadChallenge(msg_t* msg, queryinfo_t* query)
@@ -1010,7 +1010,7 @@ void CLC_SourceEngineQuery_ReadChallenge(msg_t* msg, queryinfo_t* query)
 	MSG_ReadLong(msg);
 	//A message is already read
 	MSG_ReadByte(msg);
-	
+
 	query->challenge = MSG_ReadLong(msg);
 }
 
@@ -1018,7 +1018,7 @@ void CLC_SourceEngineQuery_ReadSplitMessage(msg_t* msg, querysplitmsg_t* query)
 {
 	int receivedindex;
 	int splitsize;
-	
+
 	/* reading the split header */
 	MSG_ReadLong(msg);
 	/* An unique number */
@@ -1032,7 +1032,7 @@ void CLC_SourceEngineQuery_ReadSplitMessage(msg_t* msg, querysplitmsg_t* query)
 		Com_PrintWarning("CLC_SourceEngineQuery_ReadSplitMessage: Received out of range splitmessage index packet\n");
 		return;
 	}
-	
+
 	query->receivedchunks |= (1 << receivedindex);
 	/* Splitsize */
 	splitsize = MSG_ReadShort(msg);
@@ -1057,14 +1057,14 @@ void CLC_SourceEngineQuery_ReadPlayer(msg_t* msg, queryplayers_t* query)
 	//MSG_WriteByte(&playermsg, 'D');
 	/* numClients is 0 for now */
 	query->count = MSG_ReadByte(msg);
-	
+
 	if(query->count > (  sizeof(query->players)/sizeof(query->players[0])))
 	{
 		Com_PrintWarning("CLC_SourceEngineQuery_ReadPlayer: Received out of range player count\n");
 		query->count = 0;
 		return;
 	}
-	
+
 	for ( i = 0; i < numcl ; i++)
 	{
 		query->players[i].cid = MSG_ReadByte(msg);
@@ -1082,7 +1082,7 @@ void CLC_SourceEngineQuery_ReadRules(msg_t* msg, queryrules_t* query)
 	//MSG_ReadByte(msg);
 	/* count */
 	query->count = MSG_ReadShort(msg);
-	
+
 	if(query->count > ( sizeof(query->rules)/sizeof(query->rules[0])))
 	{
 		Com_PrintWarning("CLC_SourceEngineQuery_ReadPlayer: Received out of range player count\n");
@@ -1104,16 +1104,16 @@ void SVC_SourceEngineQuery_Info( netadr_t* from, const char* challengeStr, const
 	byte buf[MAX_INFO_STRING];
 
 	qboolean masterserver = qfalse;
-	
+
 	if(mymastersecret[0])
-	{	
+	{
 		if(strcmp(mymastersecret, masterServerSecret))
 		{
 			return;
 		}
 		masterserver = qtrue;
 	}
-	
+
 	if(!masterserver)
 	{
 		// Allow getstatus to be DoSed relatively easily, but prevent
@@ -1122,8 +1122,8 @@ void SVC_SourceEngineQuery_Info( netadr_t* from, const char* challengeStr, const
 			//	Com_DPrintf( "SVC_Info: overall rate limit exceeded, dropping request\n" );
 			return;
 		}
-		
-		
+
+
 		// Prevent using getstatus as an amplifier
 		if ( SVC_RateLimitAddress( from, 4, sv_queryIgnoreTime->integer*1000 )) {
 			//	Com_DPrintf( "SVC_Info: rate limit from %s exceeded, dropping request\n", NET_AdrToString( *from ) );
@@ -1184,23 +1184,23 @@ void SVC_SourceEngineQuery_Info( netadr_t* from, const char* challengeStr, const
 	MSG_WriteString(&msg, "1.7a");
 	/*The extra datafield for port*/
 	MSG_WriteByte(&msg, 0x80);
-	
+
 	MSG_WriteShort(&msg, NET_GetHostPort());
-	
+
 	if(challengeStr[0])
 	{
 		MSG_WriteString( &msg, challengeStr);
 		MSG_WriteString( &msg, sv_g_gametype->string );
-		
+
 		MSG_WriteByte( &msg, Cvar_VariableIntegerValue("scr_team_fftype"));
 		MSG_WriteByte( &msg, Cvar_VariableBooleanValue("scr_game_allowkillcam"));
 		MSG_WriteByte( &msg, Cvar_VariableBooleanValue("scr_hardcore"));
 		MSG_WriteByte( &msg, Cvar_VariableBooleanValue("scr_oldschool"));
 		MSG_WriteByte( &msg, sv_voice->boolean);
 
-		
+
 		if(masterserver)
-		{	
+		{
 			MSG_WriteLong( &msg, psvs.masterServer_id);
 			MSG_WriteLong( &msg, BUILD_NUMBER);
 			MSG_WriteString( &msg, masterServerSecret);
@@ -1246,7 +1246,7 @@ void SVC_SourceEngineQuery_SendSplitMessage( netadr_t* from, msg_t* longmsg )
 		return;
 	}
 	/* This will become a split response */
-	
+
 	MSG_Init(&msg, buf, sizeof(buf));
 
 	numpackets = 1 + (longmsg->cursize / SPLIT_SIZE);
@@ -1401,9 +1401,9 @@ void SV_RestartForUpdate(netadr_t* from, char* mymastersecret, char* message)
 	{
 		return;
 	}
-	
+
 	Sys_Restart(message);
-	
+
 }
 
 #endif
@@ -1501,7 +1501,7 @@ __optimize3 __regparm2 static void SVC_RemoteCommand( netadr_t *from, msg_t *msg
 	}else
 #endif
 		Cmd_ExecuteSingleCommand(0,0, cmd_aux);
-	
+
 	Com_EndRedirect ();
 
 }
@@ -1863,7 +1863,7 @@ __optimize3 __regparm2 void SV_ConnectionlessPacket( netadr_t *from, msg_t *msg 
 
 		if(clnum == -1)
 			return;
-		
+
 		PbSvAddEvent(13, clnum, msg->cursize-4, (char *)&msg->data[4]);
 		return;
 #endif
@@ -1887,11 +1887,11 @@ __optimize3 __regparm2 void SV_PacketEvent( netadr_t *from, msg_t *msg ) {
 	client_t    *cl;
 	unsigned short qport;
 	int seq;
-	
+
 	if(!com_sv_running->boolean)
             return;
 
-	if ( msg->cursize < 4 ) 
+	if ( msg->cursize < 4 )
 	{
 		return;
 	}
@@ -1928,7 +1928,7 @@ __optimize3 __regparm2 void SV_PacketEvent( netadr_t *from, msg_t *msg ) {
 		NET_OutOfBandPrint( NS_SERVER, from, "disconnect" );
 		return;
 	}
-#ifndef COD4U	
+#ifndef COD4U
 	if(seq == 0xfffffff0)
 	{
 		ReliableMessagesReceiveNextFragment( &cl->relmsg , msg );
@@ -1967,14 +1967,14 @@ __optimize3 __regparm2 void SV_PacketEvent( netadr_t *from, msg_t *msg ) {
 		cl->reliableAcknowledge = cl->reliableSequence;
 		return;
 	}
-	
+
 	SV_Netchan_Decode(cl, &msg->data[msg->readcount], msg->cursize - msg->readcount);
-	
+
 	if ( cl->state == CS_ZOMBIE )
 	{
 		return;
 	}
-	
+
 	cl->lastPacketTime = svs.time;  // don't timeout
 
 	SV_ExecuteClientMessage( cl, msg );
@@ -2138,11 +2138,11 @@ void SV_FinalMessage( const char *message, qboolean arg2 ) {
 
 
 	// send it twice, ignoring rate
-	for ( j = 0 ; j < 2 ; j++ ) 
+	for ( j = 0 ; j < 2 ; j++ )
 	{
 
 
-		for ( i = 0, cl = svs.clients ; i < sv_maxclients->integer ; i++, cl++ ) 
+		for ( i = 0, cl = svs.clients ; i < sv_maxclients->integer ; i++, cl++ )
 		{
 			if ( cl->state == CS_ACTIVE ) {
 				// don't send a disconnect to a local client
@@ -2173,7 +2173,7 @@ void SV_DisconnectAllClients(){
 	int i;
 	client_t    *cl;
 
-	for ( i = 0, cl = svs.clients ; i < sv_maxclients->integer ; i++, cl++ ) 
+	for ( i = 0, cl = svs.clients ; i < sv_maxclients->integer ; i++, cl++ )
 	{
 
 		if( cl->state >= CS_CONNECTED ){
@@ -2495,7 +2495,7 @@ void SV_InitServerId(){
 		sprintf(&masterServerSecret[2*i], "%02x", masterServerSecretBin[i]);
 	}
 	masterServerSecret[sizeof(masterServerSecret) -1] = '\0';
-	
+
 }
 
 void SV_CopyCvars()
@@ -3026,7 +3026,7 @@ void SV_SetServerStaticHeader()
 
 
 void SV_InitArchivedSnapshot(){
-	
+
 	svs.nextArchivedSnapshotFrames = 0;
 	svs.nextArchivedSnapshotBuffer = 0;
 	svs.nextCachedSnapshotEntities = 0;
@@ -3072,7 +3072,7 @@ void SV_PreLevelLoad(){
 	client_t* client;
 	int i;
 	char buf[MAX_STRING_CHARS];
-	
+
 	Com_UpdateRealtime();
 	time_t realtime = Com_GetRealtime();
 	char *timestr = ctime(&realtime);
@@ -3433,9 +3433,9 @@ unsigned int SV_FrameUsec()
 	if(sv_fps)
 	{
 		unsigned int frameUsec;
-		
+
 		frameUsec = 1000000 / sv_fps->integer;
-		
+
 		if(frameUsec < sv.timeResidual)
 			return 0;
 		else
@@ -3650,7 +3650,7 @@ __optimize3 __regparm1 qboolean SV_Frame( unsigned int usec ) {
 			for(client = svs.clients, i = 0; i < sv_maxclients->integer; i++, client++){
 				if(client->state != CS_ACTIVE)
 					continue;
-			
+
 				if(client->netchan.remoteAddress.type == NA_BOT)
 					continue;
 
@@ -3728,14 +3728,14 @@ const char* SV_GetNextMap()
 void SV_ShowClientUnAckCommands( client_t *client )
 {
 	int i;
-	
+
 	Com_Printf("-- Unacknowledged Server Commands for client %i:%s --\n", client - svs.clients, client->name);
-	
+
 	for ( i = client->reliableAcknowledge + 1; i <= client->reliableSequence; ++i )
 	{
 		Com_Printf("cmd %5d: %8d: %s\n", i, client->reliableCommands[i & (MAX_RELIABLE_COMMANDS -1)].cmdTime,
 				   client->reliableCommands[i & (MAX_RELIABLE_COMMANDS -1)].command );
 	}
-	
+
 	Com_Printf("-----------------------------------------------------\n");
 }

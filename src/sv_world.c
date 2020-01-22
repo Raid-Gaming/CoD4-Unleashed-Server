@@ -110,14 +110,14 @@ __cdecl void SV_ClipMoveToEntity(moveclip_t *clip, svEntity_t *entity, trace_t *
 			return;
 
 		if(touch->r.ownerNum){
-		
+
 			if( touch->r.ownerNum - 1 == clip->passEntityNum )
 			    return;
 
 
 			if( touch->r.ownerNum - 1 == clip->passOwnerNum )
 			    return;
-		
+
 		}
 
 		if(!G_ShouldEntitiesClip(clip, touchNum, touch))
@@ -131,7 +131,7 @@ __cdecl void SV_ClipMoveToEntity(moveclip_t *clip, svEntity_t *entity, trace_t *
 
 	if(CM_TraceBox(clip->start, mins, maxs, trace->fraction))
 		return;
-	
+
 	clipHandle = SV_ClipHandleForEntity(touch);
 
 	origin = touch->r.currentOrigin;
@@ -153,4 +153,3 @@ __cdecl void SV_ClipMoveToEntity(moveclip_t *clip, svEntity_t *entity, trace_t *
 	}
 
 }
-

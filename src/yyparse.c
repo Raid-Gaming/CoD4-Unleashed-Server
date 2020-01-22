@@ -50,4 +50,3 @@ yy_buffer_state* __cdecl yy_create_buffer(FILE *file, int bufferSize)
   yybufState->yy_is_interactive = 0;
   return yybufState;
 }
-

@@ -53,7 +53,7 @@
 #ifdef __linux
 
 #define __optimize2 __attribute__ ((optimize("-O2")))
-#define __optimize3 __attribute__ ((optimize("-O3"))) __attribute__ ((noinline)) 
+#define __optimize3 __attribute__ ((optimize("-O3"))) __attribute__ ((noinline))
 
 #else
 
@@ -96,7 +96,7 @@ typedef unsigned short WORD;
 #endif
 
 typedef unsigned char byte;
-typedef enum {qfalse, qtrue}	qboolean; 
+typedef enum {qfalse, qtrue}	qboolean;
 
 #ifndef STDCALL
 #define STDCALL __attribute__((stdcall))

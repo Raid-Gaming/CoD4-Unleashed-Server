@@ -8,7 +8,7 @@ typedef struct {
     char port[5];
     char path[128];
     char data[4096];
-	
+
 	// Server response
 	char getResponse[1];
 	char response[4096];

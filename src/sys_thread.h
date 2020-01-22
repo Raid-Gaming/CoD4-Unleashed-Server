@@ -26,7 +26,7 @@
 #ifndef __SYS_THREAD_H__
 #define __SYS_THREAD_H__
 
-#include <stdarg.h> 
+#include <stdarg.h>
 
 
 #ifdef _WIN32

@@ -94,4 +94,3 @@ qboolean Com_LoadBinaryImage();
 
 
 #endif
-

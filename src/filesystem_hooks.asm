@@ -33,9 +33,9 @@ FS_ShutdownServerReferencedFFs:
 global FS_LoadedIwdPureChecksums
 FS_LoadedIwdPureChecksums:
     jmp dword [oFS_LoadedIwdPureChecksums]
-	
-SECTION .rodata	
-	
+
+SECTION .rodata
+
 oFS_ShutdownIwdPureCheckReferences dd 0x81866b6
 oFS_ShutdownServerIwdNames dd 0x8186cfe
 oFS_ShutdownServerReferencedIwds dd 0x818789c

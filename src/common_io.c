@@ -98,7 +98,7 @@ __cdecl void Com_PrintMessage( int dumbIWvar, char *msg, msgtype_t type) {
 
 	if(type != MSG_NORDPRINT && !lock)
 	{
-	
+
 		Sys_EnterCriticalSection(CRIT_REDIRECTPRINT);
 
 		if ( !lock) {
@@ -128,12 +128,12 @@ __cdecl void Com_PrintMessage( int dumbIWvar, char *msg, msgtype_t type) {
 				return;
 			}
 		}
-		
+
 		Sys_LeaveCriticalSection(CRIT_REDIRECTPRINT);
-	
+
 	}
 
-	
+
 	// echo to dedicated console and early console
 	Sys_Print( msg );
 
@@ -266,15 +266,15 @@ A Com_Printf that only shows up if the "developer" cvar is set
 void QDECL Com_DPrintf( const char *fmt, ...) {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-		
+
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 
@@ -285,15 +285,15 @@ void QDECL Com_DPrintf( const char *fmt, ...) {
 void QDECL Com_DPrintfWrapper( int drop, const char *fmt, ...) {
 	va_list		argptr;
 	char		msg[MAXPRINTMSG];
-		
+
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 
@@ -315,11 +315,11 @@ void QDECL Com_DPrintNoRedirect( const char *fmt, ... ) {
 	if ( !Com_IsDeveloper() ) {
 		return;			// don't confuse non-developers with techie stuff...
 	}
-	
+
 	msg[0] = '^';
 	msg[1] = '2';
 
-	va_start (argptr,fmt);	
+	va_start (argptr,fmt);
 	Q_vsnprintf (&msg[2], (sizeof(msg)-3), fmt, argptr);
 	va_end (argptr);
 

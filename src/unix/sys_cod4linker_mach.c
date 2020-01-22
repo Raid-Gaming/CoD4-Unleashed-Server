@@ -307,16 +307,16 @@ int ___xstat(int __ver, const char *__filename, struct lnx_stat *__stat_buf)
 	struct stat mach_stat_buf;
 	struct stat *tran_stat = &mach_stat_buf;
 	int ret = stat(__filename, tran_stat);
-	
+
 	__stat_buf->st_dev = tran_stat->st_dev;
-	__stat_buf->st_ino = tran_stat->st_ino;	
-	__stat_buf->st_mode = tran_stat->st_mode;	
-	__stat_buf->st_nlink = tran_stat->st_nlink;	
-	__stat_buf->st_uid = tran_stat->st_uid;	
-	__stat_buf->st_gid = tran_stat->st_gid;	
-	__stat_buf->st_rdev = tran_stat->st_rdev;	
-	__stat_buf->st_size = tran_stat->st_size;	
-	__stat_buf->st_blksize = tran_stat->st_blksize;	
+	__stat_buf->st_ino = tran_stat->st_ino;
+	__stat_buf->st_mode = tran_stat->st_mode;
+	__stat_buf->st_nlink = tran_stat->st_nlink;
+	__stat_buf->st_uid = tran_stat->st_uid;
+	__stat_buf->st_gid = tran_stat->st_gid;
+	__stat_buf->st_rdev = tran_stat->st_rdev;
+	__stat_buf->st_size = tran_stat->st_size;
+	__stat_buf->st_blksize = tran_stat->st_blksize;
 	__stat_buf->st_blocks = tran_stat->st_blocks;
     __stat_buf->st_atim = tran_stat->st_atimespec;
 	__stat_buf->st_mtim = tran_stat->st_mtimespec;
@@ -330,17 +330,17 @@ int ___fxstat(int __ver, int __filedesc, struct lnx_stat *__stat_buf)
 	struct stat mach_stat_buf;
 	struct stat *tran_stat = &mach_stat_buf;
     int ret = fstat(__filedesc, tran_stat);
-	
-	
+
+
 	__stat_buf->st_dev = tran_stat->st_dev;
-	__stat_buf->st_ino = tran_stat->st_ino;	
-	__stat_buf->st_mode = tran_stat->st_mode;	
-	__stat_buf->st_nlink = tran_stat->st_nlink;	
-	__stat_buf->st_uid = tran_stat->st_uid;	
-	__stat_buf->st_gid = tran_stat->st_gid;	
-	__stat_buf->st_rdev = tran_stat->st_rdev;	
-	__stat_buf->st_size = tran_stat->st_size;	
-	__stat_buf->st_blksize = tran_stat->st_blksize;	
+	__stat_buf->st_ino = tran_stat->st_ino;
+	__stat_buf->st_mode = tran_stat->st_mode;
+	__stat_buf->st_nlink = tran_stat->st_nlink;
+	__stat_buf->st_uid = tran_stat->st_uid;
+	__stat_buf->st_gid = tran_stat->st_gid;
+	__stat_buf->st_rdev = tran_stat->st_rdev;
+	__stat_buf->st_size = tran_stat->st_size;
+	__stat_buf->st_blksize = tran_stat->st_blksize;
 	__stat_buf->st_blocks = tran_stat->st_blocks;
 	__stat_buf->st_atim = tran_stat->st_atimespec;
 	__stat_buf->st_mtim = tran_stat->st_mtimespec;

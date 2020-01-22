@@ -31,7 +31,7 @@
     // ----------------------------------------------------------------------------//
 
     //      == Commands ==
-    
+
     __cdecl char* Plugin_Cmd_Argv(int arg);                // Get a command argument with index arg.
     __cdecl int Plugin_Cmd_Argc();                         // Get number of command arguments
     __cdecl char *Plugin_Cmd_Args( char* buff, int bufsize );
@@ -46,9 +46,9 @@
     __cdecl int Plugin_ParseTokenLength(char* token);               // Tokenize a string - get the token's length
     __cdecl void Plugin_ParseReset(void);               			// Tokenize a string - Reset the parsers position
     __cdecl void Plugin_Cbuf_AddText(const char* text);
-    
+
     //      == Cvars ==
-    
+
     // All of the Cvars module functions are self explanatory
     __cdecl CONVAR_T* Plugin_Cvar_RegisterString(const char *var_name, const char *var_value, int flags, const char *var_description);
     __cdecl CONVAR_T* Plugin_Cvar_RegisterBool(const char *var_name, qboolean var_value, int flags, const char *var_description);
@@ -116,15 +116,15 @@
     __cdecl int Plugin_GetServerTime();                                      // Self explanatory
 
 	//	-- Functions for clients --
-	
+
 	__cdecl void Plugin_DropClient( int clientnum, const char *reason );	// Kicks the client from server
 	__cdecl void Plugin_BanClient( unsigned int clientnum, int seconds, int invokerid, char *reason ); //Bans the client for seconds from server. Seconds can be "-1" to create a permanent ban. invokerid can be 0 or the numeric uid. banreason can be NULL or a valid char* pointer.
 
     //  -- TCP Connection functions --
-    /* 
+    /*
     connection is a static constant number. Every plugin can use a connection 0 up to 3. This is not a socket. This is handled internal.
     You can not use the same number for 2 open connections on the same time.
-    
+
     */
     __cdecl qboolean Plugin_TcpConnect(int connection, const char* remote);      // Open a new TCP connection - Returns qfalse if failed, remote can be a domainname
     __cdecl int Plugin_TcpGetData(int connection, void *buf, int size);          // Receive TCP data - buf and size is the receiving buffer. It returns -1 if the connection is closed. It returns 0 when no new data is available. All other return values is the number of bytes received.

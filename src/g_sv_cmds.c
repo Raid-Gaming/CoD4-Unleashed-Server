@@ -153,7 +153,7 @@ __cdecl void Cmd_CallVote_f( gentity_t *ent ) {
 
 	// special case for g_gametype, check for bad values
 	if ( !Q_stricmp( arg1, "typemap" ) ) {
-	
+
 		if(*g_voteVoteGametypes->string){
 			if(!strstr(g_voteVoteGametypes->string, arg2)){
 				SV_GameSendServerCommand( ent - g_entities, 0, va("%c \"Voting for gametype %s is disabled on this server\"\0", 0x65, arg2));
@@ -178,9 +178,9 @@ __cdecl void Cmd_CallVote_f( gentity_t *ent ) {
 		}
 		Com_sprintf( level.voteString, sizeof( level.voteString ), "set g_votedGametype %s; set g_votedMapName %s\n", arg2, arg3);
 		Com_sprintf( level.voteDisplayString, sizeof( level.voteDisplayString ), "Set next map to: %s and gametype to: \x14%s", arg3, g_gametypes->gametype[i].gametypereadable);
-		
+
 	} else if ( !Q_stricmp( arg1, "g_gametype" ) ) {
-	
+
 		if(*g_voteVoteGametypes->string){
 			if(!strstr(g_voteVoteGametypes->string, arg2)){
 				SV_GameSendServerCommand( ent - g_entities, 0, va("%c \"Voting for gametype %s is disabled on this server\"\0", 0x65, arg2));
@@ -371,7 +371,7 @@ void StopFollowing( gentity_t *ent ) {
 	{
 		G_GetPlayerViewOrigin(ent->client->ps, vieworigin);
 		BG_GetPlayerViewDirection(ent->client->ps, forward, NULL, up);
-		
+
 
 	}
 
@@ -495,7 +495,7 @@ __cdecl void G_Say( gentity_t *ent, gentity_t *target, int mode, const char *cha
 		return;
 	}
 */
-	if(text[0] != 0x15 && text[0] != 0x14 && !g_allowConsoleSay->boolean) 
+	if(text[0] != 0x15 && text[0] != 0x14 && !g_allowConsoleSay->boolean)
 		return;
 
 	// echo the text to the console

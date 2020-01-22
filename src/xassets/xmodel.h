@@ -19,36 +19,36 @@ typedef struct cbrushside_s
   char edgeCount;
 }cbrushside_t;
 #pragma pack(pop)
- 
+
 typedef struct DObjAnimMat_s
 {
   float quat[4];
   float trans[3];
   float transWeight;
 }DObjAnimMat_t;
- 
+
 typedef struct XSurfaceVertexInfo_s
 {
   short vertCount[4];
   unsigned short *vertsBlend;
 }XSurfaceVertexInfo_t;
- 
+
 typedef union
 {
   unsigned int packed;
   char array[4];
 }GfxColor_t;
- 
+
 typedef union
 {
   unsigned int packed;
 }PackedTexCoords_t;
- 
+
 typedef union
 {
   unsigned int packed;
 }PackedUnitVec_t;
- 
+
 typedef struct GfxPackedVertex_s
 {
   float xyz[3];
@@ -60,7 +60,7 @@ typedef struct GfxPackedVertex_s
   PackedUnitVec_t tangent;
 #endif
 }GfxPackedVertex_t;
- 
+
 typedef struct GfxPackedVertexInfo_s
 {
   GfxColor_t color;
@@ -68,25 +68,25 @@ typedef struct GfxPackedVertexInfo_s
   PackedUnitVec_t normal;
   PackedUnitVec_t tangent;
 }GfxPackedVertexInfo_t;
- 
+
 typedef struct XSurfaceCollisionAabb_s
 {
   unsigned short mins[3];
   unsigned short maxs[3];
 }XSurfaceCollisionAabb_t;
- 
+
 typedef struct XSurfaceCollisionNode_s
 {
   XSurfaceCollisionAabb_t aabb;
   unsigned short childBeginIndex;
   unsigned short childCount;
 }XSurfaceCollisionNode_t;
- 
+
 typedef struct XSurfaceCollisionLeaf_s
 {
   unsigned short triangleBeginIndex;
 }XSurfaceCollisionLeaf_t;
- 
+
 typedef struct XSurfaceCollisionTree_s
 {
   float trans[3];
@@ -96,7 +96,7 @@ typedef struct XSurfaceCollisionTree_s
   unsigned int leafCount;
   XSurfaceCollisionLeaf_t *leafs;
 }XSurfaceCollisionTree_t;
- 
+
 typedef struct XRigidVertList_s
 {
   unsigned short boneOffset;
@@ -105,14 +105,14 @@ typedef struct XRigidVertList_s
   unsigned short triCount;
   XSurfaceCollisionTree_t *collisionTree;
 }XRigidVertList_t;
- 
+
 typedef struct UnknownXSurface_s
 {
   char unknown[8];
 }UnknownXSurface_t;
- 
+
 typedef unsigned short r_index16_t;
- 
+
 #pragma pack(push, 4)
 typedef struct XSurface_s
 {
@@ -145,7 +145,7 @@ typedef struct XSurface_s
   int partBits[4];
 #endif
 }XSurface_t;
- 
+
 typedef struct BrushWrapper_s
 {
   float mins[3];
@@ -161,14 +161,14 @@ typedef struct BrushWrapper_s
   cplane_t *planes;
 }BrushWrapper_t;
 #pragma pack(pop)
- 
+
 typedef struct PhysMass_s
 {
   float centerOfMass[3];
   float momentsOfInertia[3];
   float productsOfInertia[3];
 }PhysMass_t;
- 
+
 typedef struct PhysGeomInfo_s
 {
   BrushWrapper_t *brush;
@@ -177,33 +177,33 @@ typedef struct PhysGeomInfo_s
   float offset[3];
   float halfLengths[3];
 }PhysGeomInfo_t;
- 
+
 typedef struct PhysGeomList_s
 {
   unsigned int count;
   PhysGeomInfo_t *geoms;
   PhysMass_t mass;
 }PhysGeomList_t;
- 
+
 typedef struct XBoneInfo_s
 {
   float bounds[2][3];
   float offset[3];
   float radiusSquared;
 }XBoneInfo_t;
- 
+
 typedef struct XModelHighMipBounds_s
 {
   float mins[3];
   float maxs[3];
 }XModelHighMipBounds_t;
- 
+
 typedef struct XModelStreamInfo_s
 {
   XModelHighMipBounds_t *highMipBounds;
 }XModelStreamInfo_t;
- 
- 
+
+
 typedef struct XModelCollSurf_s
 {
   float mins[3];
@@ -212,7 +212,7 @@ typedef struct XModelCollSurf_s
   int contents;
   int surfFlags;
 }XModelCollSurf_t;
- 
+
 typedef struct XModelLodInfo_s
 {
   float dist;
@@ -220,12 +220,12 @@ typedef struct XModelLodInfo_s
   unsigned short surfIndex;
   int partBits[4];
 }XModelLodInfo_t;
- 
- 
+
+
  typedef void xScriptString_t;
  typedef void  xMaterial_t;
  typedef void  xPhysPreset_t;
- 
+
 typedef struct XModel_s
 {
   const char *name;
@@ -245,7 +245,7 @@ typedef struct XModel_s
   int field_88;
   int field_8C;
   int field_90;
-  int field_94;  
+  int field_94;
   XModelCollSurf_t *collSurfs;
   int numCollSurfs;
   int contents;

@@ -515,7 +515,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 		}else{
 			NET_OutOfBandPrint( NS_SERVER, from, "error\nServer uses a different protocol version: %i\n You use protocol version: %i", sv_protocol->integer, version );
 		}
-		
+
 		Com_Printf("rejected connect from version %i\n", version);
 		Com_Memset( &svse.challenges[c], 0, sizeof( svse.challenges[c] ));
 		return;
@@ -558,7 +558,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 #ifdef COD4X18UPDATE
 	if(version < 7)
 	{
-		
+
 	}else
 #endif
 	if(strlen(pbguid) < 10)
@@ -590,18 +590,18 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	if(!newcl)
 	{
 		if ( !strcmp( password, sv_privatePassword->string ))
-		{ 
+		{
 			canreserved = qtrue;
 		}else{
 			canreserved = qfalse;
 		}
-		
+
 #ifdef COD4U
 		PHandler_Event(PLUGINS_ONPLAYERWANTRESERVEDSLOT, from, pbguid, userinfo, svse.challenges[c].ipAuthorize, &canreserved);
 #else
 		PHandler_Event(PLUGINS_ONPLAYERWANTRESERVEDSLOT, from, pbguid, userinfo, 0, &canreserved);
 #endif
-		if ( canreserved == qtrue) 
+		if ( canreserved == qtrue)
 		{
 			for ( j = 0; j < sv_privateClients->integer ; j++) {
 				cl = &svs.clients[j];
@@ -815,7 +815,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	ReliableMessageSetup(&newcl->relmsg, qport, NS_SERVER, from);
 #endif
 	Com_Printf( "Going from CS_FREE to CS_CONNECTED for %s num %i guid %s from: %s\n", nick, clientNum, newcl->pbguid, NET_AdrToConnectionString(from));
-	
+
 	Q_strncpyz(newcl->xversion, Info_ValueForKey( userinfo, "xver"), sizeof(newcl->xversion));
 
 	newcl->state = CS_CONNECTED;
@@ -875,7 +875,7 @@ __optimize3 __regparm2 void SV_ReceiveStats(netadr_t *from, msg_t* msg){
 	int buffersize;
 
 	qport = MSG_ReadShort( msg );
-	
+
 	// find which client the message is from
 	cl = SV_ReadPackets(from, qport);
 	if(cl == NULL)
@@ -883,7 +883,7 @@ __optimize3 __regparm2 void SV_ReceiveStats(netadr_t *from, msg_t* msg){
 		Com_DPrintf("SV_ReceiveStats: Received statspacket from disconnected remote client: %s qport: %d\n", NET_AdrToString(from), qport);
 		return;
 	}
-	
+
 	curstatspacket = MSG_ReadByte(msg);
 	if(curstatspacket > 6){
 		Com_Printf("Invalid stat packet %i of stats data\n", curstatspacket);
@@ -1038,7 +1038,7 @@ void SV_UserinfoChanged( client_t *cl ) {
 	cl->wwwDownload = qfalse;
 	if(Info_ValueForKey(cl->userinfo, "cl_wwwDownload"))
 		cl->wwwDownload = qtrue;
-		
+
 	PHandler_Event(PLUGINS_ONCLIENTUSERINFOCHANGED, cl);
 
 }
@@ -1337,7 +1337,7 @@ __optimize3 __regparm3 void SV_UserMove( client_t *cl, msg_t *msg, qboolean delt
 		cl->clFrames++;
 
 		SV_ClientThink( cl, &cmds[ i ] );
-	
+
 		PHandler_Event(PLUGINS_ONCLIENTMOVECOMMAND, cl, &cmds[ i ]);
 
 		if(cl->demorecording && !cl->demowaiting)
@@ -2056,13 +2056,13 @@ __optimize3 __regparm2 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) 
 		SV_DropClient(cl, "SV_ExecuteClientMessage: Client sent oversize message");
 		return;
 	}
-	
+
 	clnum = cl - svs.clients;
-	
+
 	if ( sv_shownet->integer == clnum ) {
 		Com_Printf( "------------------\n" );
 	}
-	
+
 	serverId = cl->serverId;
 
 	if ( serverId != sv_serverId && !cl->wwwDl_var01 && !cl->wwwDownloadStarted && !cl->wwwDl_var02 )
@@ -2072,7 +2072,7 @@ __optimize3 __regparm2 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) 
 			while(qtrue)
 			{
 				c = MSG_ReadBits(&decompressMsg, 3);
-				
+
 				if ( sv_shownet->integer == clnum )
 				{
 					if ( !clc_strings[c] ) {
@@ -2081,7 +2081,7 @@ __optimize3 __regparm2 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) 
 						Com_Printf( "%3i:%s\n",  decompressMsg.readcount - 1, clc_strings[c] );
 					}
 				}
-				
+
 				if(c == clc_clientCommand)
 				{
 					if ( !SV_ClientCommand( cl, &decompressMsg, 1 ) || cl->state == CS_ZOMBIE)
@@ -2110,7 +2110,7 @@ __optimize3 __regparm2 void SV_ExecuteClientMessage( client_t *cl, msg_t *msg ) 
 	while(qtrue)
 	{
 		c = MSG_ReadBits(&decompressMsg, 3);
-						
+
 		if ( sv_shownet->integer == clnum )
 		{
 			if ( !clc_strings[c] ) {
@@ -2199,7 +2199,7 @@ static void SV_VerifyPaks_f( client_t *cl ) {
 	// certain pk3 files, namely we want the client to have loaded the
 	// ui and cgame that we think should be loaded based on the pure setting
 	if ( sv_pure->boolean != 0 ) {
-	
+
 /*		nCurArg = 0;
 		nClientPaks = SV_Cmd_Argc() - 3;
 
@@ -2244,7 +2244,7 @@ static void SV_VerifyPaks_f( client_t *cl ) {
 		{
 			nServerChkSum[i] = atoi(Cmd_Argv( i ));
 		}
-		
+
 		Cmd_EndTokenizedString();
 
 		// check if the number of checksums was correct
@@ -2389,20 +2389,20 @@ void SV_WWWDownload_f( client_t *cl ) {
 	{
 	    if(cl->wwwDl_var02)
 		Com_PrintWarning("Duplicated wwwdl ack from client: '%s'\n", cl->name);
-	
+
 	    cl->wwwDl_var02 = qtrue;
-	
+
 	}else if(!Q_stricmp(download, "bbl8r")){
-	
+
 		SV_DropClient(cl, "Client dropped to download files");
-	
+
 	}else if(!cl->wwwDl_var02){
 
 		Com_PrintWarning("SV_WWWDownload: unexpected wwwdl '%s' for client '%s'\n", download, cl->name);
 		SV_DropClient(cl, "Unexpected www download message.");
 
 	}else if(!Q_stricmp(download, "done")){
-	
+
 		cl->wwwDl_var01 = 0;
 		if ( cl->download ) {
 			FS_FCloseFile( cl->download );
@@ -2431,7 +2431,7 @@ void SV_WWWDownload_f( client_t *cl ) {
 	}else if(!Q_stricmp(download, "chkfail")){
 
 		Com_PrintWarning("Client '%s' reports that the redirect download for '%s' had wrong checksum.\n        You should make sure that your files on your redirect are the same files you have on your server\n", cl->name, cl->downloadName);
-		
+
 		cl->wwwDl_var01 = 0;
 		if ( cl->download ) {
 			FS_FCloseFile( cl->download );
@@ -2456,7 +2456,7 @@ void SV_MutePlayer_f(client_t* cl){
 
 	if(muteClient > 63 || muteClient < 0)
 		return;
-	
+
 	cl->mutedClients[muteClient] = 1;
 }
 
@@ -2467,7 +2467,7 @@ void SV_UnmutePlayer_f(client_t* cl){
 
 	if(muteClient > 63 || muteClient < 0)
 		return;
-	
+
 	cl->mutedClients[muteClient] = 0;
 }
 
@@ -2658,26 +2658,26 @@ void SV_DelayDropClient(client_t *client, const char *dropmsg)
 
 
 void SV_WriteClientVoiceData(msg_t *msg, client_t *client)
-{	
+{
 	int i;
-	
+
 	MSG_WriteByte(msg, client->unsentVoiceData);
-	
+
 	for(i = 0; i < client->unsentVoiceData; i++)
 	{
 		MSG_WriteByte( msg, client->voicedata[i].num );
 		MSG_WriteByte( msg, client->voicedata[i].dataLen );
 		MSG_WriteData( msg, client->voicedata[i].data, client->voicedata[i].dataLen );
 	}
-	
+
 }
 
 void SV_SendClientVoiceData(client_t *client)
 {
-	
+
 	msg_t msg;
 	byte buff[0x20000];
-	
+
 	if ( client->state < CS_ACTIVE || client->unsentVoiceData == 0)
 	{
 		return;
@@ -2698,11 +2698,11 @@ void SV_GetVoicePacket(netadr_t *from, msg_t *msg)
 {
 	unsigned short qport;
 	client_t *cl;
-	
+
 	qport = (unsigned short)MSG_ReadShort(msg);
 
 	cl = SV_ReadPackets(from, qport);
-	
+
 	if ( cl && cl->state >= CS_CONNECTED)
 	{
 		cl->lastPacketTime = svs.time;
@@ -2722,20 +2722,20 @@ client_t* SV_ReadPackets(netadr_t *from, unsigned short qport)
 	// find which client the message is from
 	for (i = 0, cl = svs.clients; i < sv_maxclients->integer; i++, cl++)
 	{
-		
+
 		if ( cl->state == CS_FREE ) {
 			continue;
 		}
 		if ( !NET_CompareBaseAdr( from, &cl->netchan.remoteAddress ) ) {
 			continue;
 		}
-		
+
 		// it is possible to have multiple clients from a single IP
 		// address, so they are differentiated by the qport variable
 		if ( cl->netchan.qport != qport ) {
 			continue;
 		}
-		
+
 		// the IP port can't be used to differentiate them, because
 		// some address translating routers periodically change UDP
 		// port assignments
@@ -2744,7 +2744,7 @@ client_t* SV_ReadPackets(netadr_t *from, unsigned short qport)
 			cl->netchan.remoteAddress.port = from->port;
 		}
 		return cl;
-	
+
 	}
 	return NULL;
 }

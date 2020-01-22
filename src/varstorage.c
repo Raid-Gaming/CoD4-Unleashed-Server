@@ -580,7 +580,7 @@ qboolean HStorage_GetBeginDataSetupIterInternal( vsMemObj_t* obj, int tableindex
 
     hashtable = (int*)&HStorage_GetMemoryStart(obj)[ obj->store.hashtableOffset ];
     units = (vsMemUnit_t*)&HStorage_GetMemoryStart(obj)[ obj->store.memUnitsOffset ];
- 
+
     /* Not found */
     if(tableindex == -1 )
     {

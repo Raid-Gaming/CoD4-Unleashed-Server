@@ -100,5 +100,3 @@ int Sys_Chmod(const char* filename, int mode);
 void Sys_Restart(const char* reason);
 
 #endif
-
-

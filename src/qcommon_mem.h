@@ -47,5 +47,3 @@ void __cdecl Sys_OutOfMemError(const char* filename, int line);
 #define S_Malloc Z_Malloc
 
 #endif
-
-

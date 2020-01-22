@@ -122,7 +122,7 @@ void Com_ParseCommandLine( char *commandLine ) {
 	int numQuotes, i;
 
     while ( *commandLine ) {
-		
+
 		// look for a + seperating character
         // if commandLine came from a file, we might have real line seperators
         if ( (*commandLine == '+') || *commandLine == '\n'  || *commandLine == '\r' ) {
@@ -138,7 +138,7 @@ void Com_ParseCommandLine( char *commandLine ) {
         }
         commandLine++;
     }
-	
+
 	for (i = 0; i < com_numConsoleLines; i++)
 	{
 		line = com_consoleLines[i];
@@ -146,7 +146,7 @@ void Com_ParseCommandLine( char *commandLine ) {
 		while ( (*line == ' ' || *line == '\"') && *line != '\0') {
 			line++;
 		}
-		
+
 		memmove(com_consoleLines[i], line, strlen(line) +1);
 
 		numQuotes = 0;
@@ -161,7 +161,7 @@ void Com_ParseCommandLine( char *commandLine ) {
 			}
 			if(*line == '\"' && *(line -1) != ' ')
 				break;
-			
+
 			if(*line == '\"')
 				numQuotes++;
 
@@ -176,7 +176,7 @@ void Com_ParseCommandLine( char *commandLine ) {
 			}
 			if(*line == '\"' && *(line +1) != ' ' && *(line +1) != '\0'  )
 				break;
-			
+
 			if(*line == '\"')
 				numQuotes++;
 
@@ -185,7 +185,7 @@ void Com_ParseCommandLine( char *commandLine ) {
 				line ++;
 			}
 		}
-		
+
 		/* if we have bad quotes or an odd number of quotes we replace them all with ' ' */
 		if(*line != '\0' || numQuotes & 1)
 		{
@@ -195,12 +195,12 @@ void Com_ParseCommandLine( char *commandLine ) {
 				if(*line == '\"')
 				{
 					*line = ' ';
-					
+
 				}
 				line++;
 			}
 		}
-		
+
 	}
 }
 
@@ -227,4 +227,3 @@ qboolean Com_SafeMode( void ) {
 	Cmd_EndTokenizedString( );
 	return qfalse;
 }
-

@@ -288,22 +288,22 @@ void* dlsym(void* handle, const char* proc){
 int ___xstat(int __ver, const char *__filename, struct lnx_stat *__stat_buf)
 {
 	__stat_buf->st_dev = 0;
-	__stat_buf->st_ino = 0;	
-	__stat_buf->st_mode = 0;	
-	__stat_buf->st_nlink = 0;	
-	__stat_buf->st_uid = 0;	
-	__stat_buf->st_gid = 0;	
+	__stat_buf->st_ino = 0;
+	__stat_buf->st_mode = 0;
+	__stat_buf->st_nlink = 0;
+	__stat_buf->st_uid = 0;
+	__stat_buf->st_gid = 0;
 	__stat_buf->st_rdev = 0;
 	__stat_buf->st_size = 0;
-	
-	HANDLE hFile = CreateFile((LPCTSTR)__filename, 
+
+	HANDLE hFile = CreateFile((LPCTSTR)__filename,
 						GENERIC_READ,
 						FILE_SHARE_READ,
 						NULL,
 						OPEN_EXISTING,
 						FILE_FLAG_OVERLAPPED | FILE_FLAG_NO_BUFFERING,
 						NULL );
-	
+
 	if( hFile == INVALID_HANDLE_VALUE )
 	{
 		return -1;
@@ -321,13 +321,13 @@ int ___xstat(int __ver, const char *__filename, struct lnx_stat *__stat_buf)
 int ___fxstat(int __ver, int __filedesc, struct lnx_stat *__stat_buf)
 {
 	__stat_buf->st_dev = 0;
-	__stat_buf->st_ino = 0;	
-	__stat_buf->st_mode = 0;	
-	__stat_buf->st_nlink = 0;	
-	__stat_buf->st_uid = 0;	
-	__stat_buf->st_gid = 0;	
-	__stat_buf->st_rdev = 0;	
-	__stat_buf->st_size = _filelength( __filedesc );	
+	__stat_buf->st_ino = 0;
+	__stat_buf->st_mode = 0;
+	__stat_buf->st_nlink = 0;
+	__stat_buf->st_uid = 0;
+	__stat_buf->st_gid = 0;
+	__stat_buf->st_rdev = 0;
+	__stat_buf->st_size = _filelength( __filedesc );
 
 	if(__stat_buf->st_size == -1)
 		return -1;
@@ -347,13 +347,13 @@ qboolean Sys_CoD4Linker()
     Sys_CoD4LinkObject(LD_srand , srand );
 	Sys_CoD4LinkObject(LD_mkdir , _mkdir );
     Sys_CoD4LinkObject(LD_isalpha , isalpha );
-    Sys_CoD4LinkObject(LD_strerror , strerror );	
-    Sys_CoD4LinkObject(LD___cxa_atexit , _isdead );	
-//    Sys_CoD4LinkObject(LD__Znaj , _Znam );	
+    Sys_CoD4LinkObject(LD_strerror , strerror );
+    Sys_CoD4LinkObject(LD___cxa_atexit , _isdead );
+//    Sys_CoD4LinkObject(LD__Znaj , _Znam );
     Sys_CoD4LinkObject(LD_sysconf , _isdead_dbg );
 	Sys_CoD4LinkObject(LD___cxa_begin_catch , _isdead_dbg );
-    Sys_CoD4LinkObject(LD_qsort , qsort );	
-//    Sys_CoD4LinkObject(LD__ZNSs4_Rep10_M_destroyERKSaIcE , _ZNSs4_Rep10_M_destroyERKSaIcE );	
+    Sys_CoD4LinkObject(LD_qsort , qsort );
+//    Sys_CoD4LinkObject(LD__ZNSs4_Rep10_M_destroyERKSaIcE , _ZNSs4_Rep10_M_destroyERKSaIcE );
 //    Sys_CoD4LinkObject(LD_sem_trywait , sem_trywait );
 //	  Sys_CoD4LinkObject(LD__ZdaPv , _ZdaPv );
     Sys_CoD4LinkObject(LD_sqrtf , sqrtf );
@@ -363,8 +363,8 @@ qboolean Sys_CoD4Linker()
     Sys_CoD4LinkObject(LD_isspace , isspace );
     Sys_CoD4LinkObject(LD_vsprintf , vsprintf );
     Sys_CoD4LinkObject(LD_localtime , _isdead_dbg );
-    Sys_CoD4LinkObject(LD_strchr , strchr );	
-    
+    Sys_CoD4LinkObject(LD_strchr , strchr );
+
 	Sys_CoD4LinkObject(LD_vsnprintf , vsnprintf );
     Sys_CoD4LinkObject(LD_getenv , _isdead_dbg );
 //    Sys_CoD4LinkObject(LD_sem_wait , sem_wait );
@@ -507,8 +507,8 @@ qboolean Sys_CoD4Linker()
 //     Sys_CoD4LinkObject(LD__ZNSs6assignEPKcj , _ZNSs6assignEPKcm );
 //     Sys_CoD4LinkObject(LD__ZNSs9_M_mutateEjjj , _ZNSs9_M_mutateEmmm );
      Sys_CoD4LinkObject(LD_geteuid , _isdead_dbg );
-	
-	
+
+
 	return qfalse;
 
 }

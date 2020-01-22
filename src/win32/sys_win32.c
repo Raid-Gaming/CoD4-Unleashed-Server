@@ -58,7 +58,7 @@ Set FPU control word to default value
 	#define _MCW_PC 0x00030000U
 	#define _RC_NEAR 0x00000000U
 	#define _PC_53 0x00010000U
-	  
+
 	unsigned int _controlfp(unsigned int new, unsigned int mask);
 #endif
 
@@ -175,7 +175,7 @@ int Sys_GetPageSize()
 {
 	SYSTEM_INFO SystemInfo;
 	GetSystemInfo( &SystemInfo );
-	
+
 	return SystemInfo.dwPageSize;
 }
 
@@ -234,9 +234,9 @@ void Sys_ShowErrorDialog(const char* functionName)
 	}else{
 		Q_strncpyz(errMessageBuf, "Unknown Error", sizeof(errMessageBuf));
 	}
-	
+
 	Com_sprintf(displayMessageBuf, sizeof(displayMessageBuf), "Error in function: %s\nThe error is: %s", functionName, errMessageBuf);
-	
+
 	MessageBoxA(HWND, displayMessageBuf, "System Error", MB_OK | MB_ICONERROR);
 }
 
@@ -286,9 +286,9 @@ void Sys_ListFilteredFiles( const char *basedir, char *subdirs, char *filter, ch
 
 	do {
 		if (findinfo.attrib & _A_SUBDIR) {
-		
+
 			if (Q_stricmp(findinfo.name, ".") && Q_stricmp(findinfo.name, "..")) {
-			
+
 				if (strlen(subdirs)) {
 					Com_sprintf( newsubdirs, sizeof(newsubdirs), "%s\\%s", subdirs, findinfo.name);
 				}
@@ -470,7 +470,7 @@ qboolean Sys_DirectoryHasContent(const char *dir)
 
 	if(strlen(dir) > MAX_OSPATH - 6 || dir[0] == '\0')
 		return qfalse;
-		
+
     Q_strncpyz(searchpath, dir, sizeof(searchpath));
 	if( searchpath[strlen(searchpath) -1] ==  '\\' )
 	{
@@ -550,18 +550,18 @@ Win32 specific initialisation
 void Sys_PlatformInit( void )
 {
 #if 0
-	void *allocptr = (void*)0x8040000;  /* Image base of cod4_lnxded-bin */ 
+	void *allocptr = (void*)0x8040000;  /* Image base of cod4_lnxded-bin */
 	void *received_mem;
 	int commitsize;
 	int finalsize, delta, pagesize;
 	char errormsg[256];
-	
+
 	commitsize = 0;
 	commitsize += 0xa1bc; /* Offset of .plt */
 	commitsize += 0xa60; /* Size of .plt */
-	commitsize += 0x4; /* Offset of .text */	
+	commitsize += 0x4; /* Offset of .text */
 	commitsize += 0x1bf1a4; /* Size of .text */
-	commitsize += 0x3c; /* Offset of .rodata */	
+	commitsize += 0x3c; /* Offset of .rodata */
 	commitsize += 0x36898; /* Size of .rodata */
 	commitsize += 0x2aee8; /* Offset of .data */
 	commitsize += 0x9454; /* Size of .data */
@@ -569,10 +569,10 @@ void Sys_PlatformInit( void )
 	commitsize += 0xc182240; /* Size of .bss */
 	/* .= 0xc3b6c40 */
 	pagesize = Sys_GetPageSize();
-	
+
 	delta = commitsize % pagesize;
 	finalsize = commitsize + (pagesize - delta) + pagesize;
-	
+
 	received_mem = VirtualAlloc(allocptr, finalsize, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
 	if(received_mem != allocptr)
 	{
@@ -660,23 +660,23 @@ qboolean Sys_CreateNewThread(void* (*ThreadMain)(void*), threadid_t *tid, void* 
 	char errMessageBuf[512];
 	DWORD lastError;
 
-	
+
 	HANDLE thid = CreateThread(	NULL, // LPSECURITY_ATTRIBUTES lpsa,
 								0, // DWORD cbStack,
 								(LPTHREAD_START_ROUTINE)ThreadMain, // LPTHREAD_START_ROUTINE lpStartAddr,
 								arg, // LPVOID lpvThreadParm,
 								0, // DWORD fdwCreate,
 								tid );
-	
+
 	if(thid == NULL)
 	{
 		lastError = GetLastError();
-		
+
 		if(lastError != 0)
 		{
 			FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM, NULL, lastError, MAKELANGID(LANG_NEUTRAL,SUBLANG_DEFAULT), (LPSTR)errMessageBuf, sizeof(errMessageBuf) -1, NULL);
 			Com_PrintError("Failed to start thread with error: %s\n", errMessageBuf);
-		
+
 		}else{
 			Com_PrintError("Failed to start thread!\n");
 		}
@@ -687,7 +687,7 @@ qboolean Sys_CreateNewThread(void* (*ThreadMain)(void*), threadid_t *tid, void* 
 
 
 qboolean __cdecl Sys_IsMainThread( void )
-{	
+{
 	return Sys_ThreadisSame(mainthread);
 }
 
@@ -696,7 +696,7 @@ qboolean Sys_ThreadisSame(threadid_t threadid)
 	threadid_t thread = GetCurrentThreadId();
 
 	return threadid == thread;
-	
+
 }
 
 void Sys_ExitThread(int code)
@@ -750,11 +750,11 @@ void Sys_WaitForErrorConfirmation(const char* error)
 	MSG msg;
 	unsigned int maxwait;
 	threadid_t tid;
-	
+
 	CON_Show( 1, qtrue );
 
 	Sys_CreateNewThread(Sys_ErrorBoxThread, &tid, (void*)error);
-	
+
 	// wait for the user to quit or wait for max 60 seconds
 	maxwait = Sys_Milliseconds() + 60000;
 	do{
@@ -775,12 +775,12 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
     char sys_cmdline[MAX_STRING_CHARS];
 	char *lastSep;
 	DWORD copylen;
-	
+
 	if(lpCmdLine != NULL)
 		Q_strncpyz( sys_cmdline, lpCmdLine, sizeof( sys_cmdline ) );
 	else
 		sys_cmdline[0] = '\0';
-		
+
 	g_wv.hInstance = hInstance;
 
 	copylen = GetModuleFileName(NULL, lpFilename, sizeof(lpFilename));
@@ -793,7 +793,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	}else{
 		Sys_SetExeFile( lpFilename );
 		lastSep = strrchr(lpFilename, '\\');
-		
+
 		if(lastSep != NULL)
 		{
 			*lastSep = '\0';
@@ -805,10 +805,10 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 			Sys_SetBinaryPath( lpFilename );
 		}else{
 			MessageBoxA(NULL, "GetModuleFileName() returned an unexpected filepath.", CLIENT_WINDOW_TITLE " Error", MB_OK | MB_ICONERROR);
-			return 1;	
+			return 1;
 		}
 	}
-	
+
     return Sys_Main(sys_cmdline);
 }
 

@@ -457,7 +457,7 @@ void CON_Shutdown( void ) {
 void CON_Show( int visLevel, qboolean quitOnClose ) {
 	s_wcd.quitOnClose = quitOnClose;
 	mvabuf;
-	
+
 	if ( visLevel == s_wcd.visLevel ) {
 		return;
 	}
@@ -574,6 +574,3 @@ void CON_Print( const char *pMsg ) {
 	SendMessage( s_wcd.hwndBuffer, EM_SCROLLCARET, 0, 0 );
 	SendMessage( s_wcd.hwndBuffer, EM_REPLACESEL, 0, (LPARAM) buffer );
 }
-
-
-

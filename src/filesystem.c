@@ -25,7 +25,7 @@
 /*****************************************************************************
  * name:		files.c
  *
- * desc:		handle based filesystem for Quake III Arena 
+ * desc:		handle based filesystem for Quake III Arena
  *
  * $Archive: /MissionPack/code/qcommon/files.c $
  *
@@ -36,7 +36,7 @@
 
 QUAKE3 FILESYSTEM
 
-All of Quake's data access is through a hierarchical file system, but the contents of 
+All of Quake's data access is through a hierarchical file system, but the contents of
 the file system can be transparently merged from several sources.
 
 A "qpath" is a reference to game file data.  MAX_ZPATH is 256 characters, which must include
@@ -92,7 +92,7 @@ should be exactly the same executables as release versions, but with different d
 automatically restricts where game media can come from to prevent add-ons from working.
 
 After the paths are initialized, quake will look for the product.txt file.  If not
-found and verified, the game will run in restricted mode.  In restricted mode, only 
+found and verified, the game will run in restricted mode.  In restricted mode, only
 files contained in demoq3/pak0.pk3 will be available for loading, and only if the zip header is
 verified to not have been modified.  A single exception is made for q3config.cfg.  Files
 can still be written out in restricted mode, so screenshots and demos are allowed.
@@ -288,7 +288,7 @@ FS_Initialized
 */
 
 qboolean FS_Initialized() {
-	
+
 	return (fs_searchpaths != NULL);
 }
 
@@ -300,11 +300,11 @@ return load stack
 */
 int FS_LoadStack() {
 	int val;
-	
+
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 	val = fs_loadStack;
 	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
-	
+
 	return val;
 }
 
@@ -312,13 +312,13 @@ void FS_LoadStackInc()
 {
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 	fs_loadStack++;
-	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);	
+	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 }
 void FS_LoadStackDec()
 {
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 	fs_loadStack--;
-	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);	
+	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 }
 
 
@@ -329,7 +329,7 @@ static fileHandle_t FS_HandleForFileForThread(int FsThread)
   signed int i;
   mvabuf;
 
-	
+
   if ( FsThread == 1 )
   {
     startIndex = 49;
@@ -344,24 +344,24 @@ static fileHandle_t FS_HandleForFileForThread(int FsThread)
     startIndex = 1;
 	size = 48;
   }
-  
+
   Sys_EnterCriticalSection(CRIT_FILESYSTEM);
-	
+
   for (i = 0 ; size > i ; i++)
   {
     if ( fsh[i + startIndex].handleFiles.file.o == NULL )
     {
 		if ( fs_debug->integer > 1 )
 			Sys_Print(va("^4Open filehandle: %d\n", i + startIndex));
-		
+
 		Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
-		
+
 		return i + startIndex;
     }
   }
-  
+
   Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
-	
+
   if ( !FsThread )
   {
 	for(i = 1; i < MAX_FILE_HANDLES; i++)
@@ -391,7 +391,7 @@ static FILE	*FS_FileForHandle( fileHandle_t f ) {
 	if ( !fsh[f].handleFiles.file.o ) {
 		Com_Error( ERR_DROP, "FS_FileForHandle: NULL" );
 	}
-	
+
 	return fsh[f].handleFiles.file.o;
 }
 
@@ -571,7 +571,7 @@ qboolean FS_CreatePath (char *OSPath) {
 	}
 
 	for (ofs = OSPath+1 ; *ofs ; ofs++) {
-		if (*ofs == PATH_SEP) {	
+		if (*ofs == PATH_SEP) {
 			// create the directory
 			*ofs = 0;
 			Sys_Mkdir (OSPath);
@@ -727,7 +727,7 @@ char* FS_SV_GetFilepath( const char *file, char* testpath, int lenpath )
 
 	if(lenpath < MAX_OSPATH)
 		Com_Error(ERR_FATAL, "FS_SV_GetFilepath: Given buffer has less than %d bytes length\n", MAX_OSPATH );
-	
+
 	FS_BuildOSPathForThread(fs_homepath->string, file, "", testpath, 0 );
 	FS_StripTrailingSeperator( testpath );
 
@@ -912,7 +912,7 @@ Ignore case and seprator char distinctions
 */
 qboolean FS_FilenameCompare( const char *s1, const char *s2 ) {
 	int		c1, c2;
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -930,12 +930,12 @@ qboolean FS_FilenameCompare( const char *s1, const char *s2 ) {
 		if ( c2 == '\\' || c2 == ':' ) {
 			c2 = '/';
 		}
-		
+
 		if (c1 != c2) {
 			return -1;		// strings not equal
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
@@ -1038,7 +1038,7 @@ Ignore case and seprator char distinctions
 */
 int FS_PathCmp( const char *s1, const char *s2 ) {
 	int		c1, c2;
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -1056,7 +1056,7 @@ int FS_PathCmp( const char *s1, const char *s2 ) {
 		if ( c2 == '\\' || c2 == ':' ) {
 			c2 = '/';
 		}
-		
+
 		if (c1 < c2) {
 			return -1;		// strings not equal
 		}
@@ -1064,7 +1064,7 @@ int FS_PathCmp( const char *s1, const char *s2 ) {
 			return 1;
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
@@ -1135,12 +1135,12 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 
 	// make absolutely sure that it can't back up the path.
 	// The searchpaths do guarantee that something will always
-	// be prepended, so we don't need to worry about "c:" or "//limbo" 
+	// be prepended, so we don't need to worry about "c:" or "//limbo"
 	if(strstr(filename, ".." ) || strstr(filename, "::"))
 	{
 	        if(file == NULL)
 	                return qfalse;
-	
+
 		*file = 0;
 		return -1;
 	}
@@ -1200,7 +1200,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 		else if(search->dir)
 		{
 			dir = search->dir;
-		
+
 			FS_BuildOSPathForThread(dir->path, dir->gamedir, filename, netpath, FsThread);
 			filep = fopen (netpath, "rb");
 
@@ -1208,14 +1208,14 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 			{
 			        len = FS_fplength(filep);
 				fclose(filep);
-				
+
 				if(len)
 					return len;
                                 else
                                         return 1;
 			}
 		}
-		
+
 		return -1;
 	}
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
@@ -1227,7 +1227,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 	FS_SetFilenameForHandle(*file, filename);
 
 	fsh[*file].handleFiles.unique = uniqueFILE;
-	
+
 	// is the element a pak file?
 	if(search->pack)
 	{
@@ -1239,7 +1239,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 			// look through all the pak file elements
 			pak = search->pack;
 			pakFile = pak->hashTable[hash];
-		
+
 			do
 			{
 				// case and separator insensitive comparisons
@@ -1248,9 +1248,9 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 					// found it!
 
 					// mark the pak as having been referenced and mark specifics on cgame and ui
-					// shaders, txt, arena files  by themselves do not count as a reference as 
-					// these are loaded from all pk3s 
-					// from every pk3 file.. 
+					// shaders, txt, arena files  by themselves do not count as a reference as
+					// these are loaded from all pk3s
+					// from every pk3 file..
 					len = strlen(filename);
 
 
@@ -1274,9 +1274,9 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 					{
 						// open a new file on the pakfile
 						fsh[*file].handleFiles.file.z = unzOpen(pak->pakFilename);
-					
+
 						if(fsh[*file].handleFiles.file.z == NULL)
-							
+
 							Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 
 							Com_Error(ERR_FATAL, "Couldn't open %s", pak->pakFilename);
@@ -1286,7 +1286,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 
 					Q_strncpyz(fsh[*file].name, filename, sizeof(fsh[*file].name));
 					fsh[*file].zipFile = qtrue;
-				
+
 					// set the file position in the zip file (also sets the current file info)
 					unzSetOffset(fsh[*file].handleFiles.file.z, pakFile->pos);
 
@@ -1298,7 +1298,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 					fsh[*file].zipFilePos = pakFile->pos;
 
 					Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
-					
+
 					if(fs_debug->integer)
 					{
 						Sys_Print(va("^4FS_FOpenFileRead: %s (found in '%s')\n", filename, pak->pakFilename));
@@ -1316,7 +1316,7 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 					}
 					return 1;
 				}
-			
+
 				pakFile = pakFile->next;
 			} while(pakFile != NULL);
 		}
@@ -1333,13 +1333,13 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 		if (filep == NULL)
 		{
 			*file = 0;
-			Sys_LeaveCriticalSection(CRIT_FILESYSTEM);	
+			Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 			return -1;
 		}
 
 		Q_strncpyz(fsh[*file].name, filename, sizeof(fsh[*file].name));
 		fsh[*file].zipFile = qfalse;
-		
+
 		if(fs_debug->integer)
 		{
 		Sys_Print(va("^4FS_FOpenFileRead: %s (found in '%s/%s')\n", filename, dir->path, dir->gamedir));
@@ -1373,14 +1373,14 @@ long FS_FOpenFileReadForThread(const char *filename, fileHandle_t *file, int fsT
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 
-	
+
 	if(!FS_Initialized())
 		Com_Error(ERR_FATAL, "Filesystem call made without initialization");
-	
+
 	for(search = fs_searchpaths; search; search = search->next)
 	{
 	        len = FS_FOpenFileReadDir(filename, search, file, 0, qfalse, fsThread);
-	
+
 	        if(file == NULL)
 	        {
 				if(len > 0)
@@ -1393,7 +1393,7 @@ long FS_FOpenFileReadForThread(const char *filename, fileHandle_t *file, int fsT
 	        {
 				if(len >= 0 && *file)
 				{
-					Sys_LeaveCriticalSection(CRIT_FILESYSTEM);					
+					Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 					return len;
 				}
 	        }
@@ -1587,7 +1587,7 @@ void FS_FreeFile( void *buffer ) {
  */
 void FS_FreeFileKeepBuf( )
 {
-	
+
 	FS_LoadStackDec();
 }
 
@@ -1603,7 +1603,7 @@ Properly handles line reads
 int FS_ReadLine( void *buffer, int len, fileHandle_t f ) {
 	char		*read;
 	char		*buf;
-	
+
 	if ( !FS_Initialized() ) {
 		Com_Error( ERR_FATAL, "Filesystem call made without initialization\n" );
 	}
@@ -1653,7 +1653,7 @@ int FS_SV_FOpenFileRead( const char *filename, fileHandle_t *fp ) {
 
 	f = FS_HandleForFile();
 	if(f == 0){
-		
+
 		Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 		return 0;
 	}
@@ -1717,7 +1717,7 @@ fileHandle_t FS_SV_FOpenFileAppend( const char *filename ) {
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 
-	
+
 	if ( !FS_Initialized() ) {
 		Com_Error( ERR_FATAL, "Filesystem call made without initialization" );
 	}
@@ -1904,8 +1904,8 @@ int FS_ReadFile( const char *qpath, void **buffer ) {
 	byte*			buf;
 	int			len;
 
-	
-	
+
+
 	if ( !qpath || !qpath[0] ) {
 		Com_Error( ERR_FATAL, "FS_ReadFile with empty name\n" );
 	}
@@ -1920,7 +1920,7 @@ int FS_ReadFile( const char *qpath, void **buffer ) {
 		}
 		return -1;
 	}
-	
+
 	if ( !buffer ) {
 		FS_FCloseFile( h);
 		return len;
@@ -1967,7 +1967,7 @@ int FS_SV_ReadFile( const char *qpath, void **buffer ) {
 		}
 		return -1;
 	}
-	
+
 	if ( !buffer ) {
 		FS_FCloseFile( h);
 		return len;
@@ -2261,9 +2261,9 @@ void FS_SV_HomeCopyFile( char *from, char *to ) {
 	if ( fs_debug->integer ) {
 		Sys_Print(va("FS_SVHomeCopyFile: %s --> %s\n", from_ospath, to_ospath ));
 	}
-	
+
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
-	
+
 	f = fopen( from_ospath, "rb" );
 	if ( !f ) {
 		Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
@@ -2534,7 +2534,7 @@ qboolean FS_GameDirDomainFunc(const char *cvar_name, const char *fs_gamestring)
 
   if ( !*fs_gamestring )
     return qtrue;
-	
+
   if ( Q_stricmpn(fs_gamestring, "mods", 4) || strlen(fs_gamestring) < 6 ||
 		(fs_gamestring[4] != '/' && fs_gamestring[4] != '\\') ||
 		strstr(fs_gamestring, "..") ||
@@ -2653,10 +2653,10 @@ Shuts down and clears a single searchpath only
 void FS_ShutdownSearchpath(searchpath_t *clear)
 {
 	searchpath_t    **back, *p;
-	
+
 	back = &fs_searchpaths;
 	while ( 1 )
-	{	
+	{
 		p = *back;
 		if( p == NULL )
 		{
@@ -2815,7 +2815,7 @@ void FS_Startup(const char* gameName)
     if ( fs_homepath->string[0] && Q_stricmp(fs_homepath->string, fs_basepath->string) )
       FS_AddGameDirectory(fs_homepath->string, fs_basegame->string);
   }
-	
+
   if ( fs_gameDirVar->string[0] && !Q_stricmp(gameName, BASEGAME) && Q_stricmp(fs_gameDirVar->string, gameName) && levelname && levelname->string[0])
   {
 	if ( fs_cdpath->string[0] )
@@ -2935,7 +2935,7 @@ void FS_AddGameDirectory_Single(const char *path, const char *dir_nolocal, qbool
     search->next = sp;
     prev->next = search;
     FS_AddIwdFilesForGameDirectory(path, dir);
-	
+
 	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 
 }
@@ -3018,11 +3018,11 @@ void FS_AddIwdFilesForGameDirectory(const char *path, const char *dir)
   if ( !numfiles && !Q_stricmp(dir, BASEGAME) && !Q_stricmp(path, fs_basepath->string) )
     Com_Error(ERR_FATAL, "No IWD files found in /main");
 
-	
+
   for(i = 0; i < numfiles; i++)
-  {	
+  {
 	sorted[i] = pakfiles[i];
-	
+
 	if ( !Q_strncmp(sorted[i], "localized_", 10) )
 	{
 		Com_Memcpy(sorted[i],  "          ", 10);
@@ -3083,11 +3083,11 @@ void FS_AddIwdFilesForGameDirectory(const char *path, const char *dir)
 			{
 				FS_ShutdownSearchpath(sp);
 				break; //Break out - sp is now invalid
-			}	
+			}
 		}
-		
+
 		Q_strncpyz(pak->pakGamename, dir, sizeof(pak->pakGamename));
-		
+
 		search = (searchpath_t *)Z_Malloc(sizeof(searchpath_t));
 		search->pack = pak;
 		search->localized = islocalized;
@@ -3379,7 +3379,7 @@ void FS_Shutdown( qboolean closemfp ) {
 	int i;
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
-	
+
 	for ( i = 0; i < MAX_FILE_HANDLES; i++ ) {
 		if ( fsh[i].handleSync ) {
 			FS_FCloseFile( i );
@@ -3427,7 +3427,7 @@ void FS_ClearPakReferences( int flags ) {
 	searchpath_t *search;
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
-	
+
 	if ( !flags ) {
 		flags = -1;
 	}
@@ -3437,7 +3437,7 @@ void FS_ClearPakReferences( int flags ) {
 			search->pack->referenced &= ~flags;
 		}
 	}
-	
+
 	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 }
 
@@ -3451,7 +3451,7 @@ FS_Restart
 void FS_Restart( int checksumFeed ) {
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
-	
+
 	// free anything we currently have loaded
 	FS_Shutdown( qfalse );
 
@@ -3497,7 +3497,7 @@ void FS_Restart( int checksumFeed ) {
 
 	Q_strncpyz( lastValidBase, fs_basepath->string, sizeof( lastValidBase ) );
 	Q_strncpyz( lastValidGame, fs_gamedirvar->string, sizeof( lastValidGame ) );
-	
+
 	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 
 }
@@ -3629,7 +3629,7 @@ fileHandle_t __cdecl FS_FOpenFileAppend( const char *filename ) {
 
 	Sys_EnterCriticalSection(CRIT_FILESYSTEM);
 
-	
+
 	if ( !FS_Initialized() ) {
 		Com_Error( ERR_FATAL, "Filesystem call made without initialization\n" );
 	}
@@ -3666,10 +3666,10 @@ fileHandle_t __cdecl FS_FOpenFileAppend( const char *filename ) {
 
 	fsh[f].handleFiles.file.o = fopen( ospath, "ab" );
 	fsh[f].handleSync = qfalse;
-	
+
 	Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 
-	
+
 	if ( !fsh[f].handleFiles.file.o ) {
 		f = 0;
 	}
@@ -3826,7 +3826,7 @@ static fsPureSums_t *fs_iwdPureChecks;
 
 void __cdecl FS_AddIwdPureCheckReference(searchpath_t *search)
 {
-	
+
     fsPureSums_t *checks;
     fsPureSums_t *newCheck;
 
@@ -3856,9 +3856,9 @@ void __cdecl FS_AddIwdPureCheckReference(searchpath_t *search)
         fs_iwdPureChecks = newCheck;
 	return;
     }
-	
+
     for( checks = fs_iwdPureChecks; checks->next != NULL; checks = checks->next );
-	
+
     checks->next = newCheck;
 }
 
@@ -3889,10 +3889,10 @@ void __cdecl FS_ReferencedIwds(char **outChkSums, char **outPathNames)
   static char chkSumString[8192];
   static char pathString[8192];
   char chksum[1024];
-  
+
   chkSumString[0] = 0;
   pathString[0] = 0;
-  
+
   for ( puresum = fs_iwdPureChecks; puresum; puresum = puresum->next )
   {
 	Com_sprintf(chksum, sizeof(chksum), "%i ", puresum->checksum);
@@ -3905,14 +3905,14 @@ void __cdecl FS_ReferencedIwds(char **outChkSums, char **outPathNames)
     Q_strcat(pathString, sizeof(pathString), "/");
     Q_strcat(pathString, sizeof(pathString), puresum->baseName);
   }
-  
+
   if ( !fs_gameDirVar->string[0] )
   {
 		*outChkSums = chkSumString;
 		*outPathNames = pathString;
 		return;
   }
-  
+
   for ( search = fs_searchpaths; search; search = search->next )
   {
         if ( search->pack && !search->localized )
@@ -3983,16 +3983,16 @@ int FS_PureServerSetLoadedIwds(const char *paksums, const char *paknames)
   int lpakSums[1024];
 
   rt = 0;
-  
+
   Cmd_TokenizeString(paksums);
-  
+
   numPakSums = Cmd_Argc();
-  
+
   if ( numPakSums > sizeof(lpakSums)/sizeof(lpakSums[0]))
   {
     numPakSums = sizeof(lpakSums)/sizeof(lpakSums[0]);
   }
-  
+
   for ( i = 0 ; i < numPakSums ; i++ ) {
 	lpakSums[i] = atoi( Cmd_Argv( i ) );
   }
@@ -4000,16 +4000,16 @@ int FS_PureServerSetLoadedIwds(const char *paksums, const char *paknames)
 
   Cmd_TokenizeString(paknames);
   numPakNames = Cmd_Argc();
-  
+
   if ( numPakNames > sizeof(lpakNames)/sizeof(lpakNames[0]) )
   {
     numPakNames = sizeof(lpakNames)/sizeof(lpakNames[0]);
   }
-  
+
   for ( i = 0 ; i < numPakNames ; i++ ) {
 	lpakNames[i] = CopyString( Cmd_Argv( i ) );
   }
-  
+
   Cmd_EndTokenizedString();
 
   if ( numPakSums != numPakNames )
@@ -4017,10 +4017,10 @@ int FS_PureServerSetLoadedIwds(const char *paksums, const char *paknames)
     Com_Error(ERR_FATAL, "iwd sum/name mismatch");
 	return rt;
   }
-  
+
 	if ( numPakSums )
 	{
-  
+
 		for(pureSums = fs_iwdPureChecks; pureSums; pureSums = pureSums->next)
 		{
 
@@ -4051,14 +4051,14 @@ int FS_PureServerSetLoadedIwds(const char *paksums, const char *paknames)
 			  i = 0;
 			  continue;
 			}
-			
+
 			for ( l = 0; l < numPakNames; ++l )
 			{
 				Z_Free(lpakNames[l]);
 				lpakNames[l] = NULL;
 			}
 			return 0;
-		  
+
 		  }
 		  ++i;
 		}
@@ -4080,4 +4080,3 @@ int FS_PureServerSetLoadedIwds(const char *paksums, const char *paknames)
     }
     return rt;
 }
-

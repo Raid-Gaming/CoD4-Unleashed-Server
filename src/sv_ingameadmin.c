@@ -90,7 +90,7 @@ void SV_ReliableSendRedirect(char *sendbuf, qboolean lastcommand){
 			if(outputbuf[i] == '"') outputbuf[i] = 0x27;	//replace all " with ' because no " are accepted
 			if(outputbuf[i] == 0x0a) lastlinebreak = i;		//search for the last linebreak
 		}
-		if(lastlinebreak > 0){ 
+		if(lastlinebreak > 0){
 			i = lastlinebreak;	//found a linebreak and send everything until that position
 			remaining -= i-1;
 			sendbuf += i+1;
@@ -124,7 +124,7 @@ qboolean SV_ExecuteRemoteCmd(int clientnum, const char *msg){
 	while ( msg[i] != ' ' && msg[i] != '\0' && msg[i] != '\n' && i < 32 ){
 		i++;
 	}
-	
+
 	if(i > 29 || i < 3) return qfalse;
 
 	Q_strncpyz(cmd,msg,i+1);
@@ -187,7 +187,7 @@ qboolean SV_ExecuteRemoteCmd(int clientnum, const char *msg){
 	j = Cmd_GetInvokerPower();
 
 	Cmd_SetCurrentInvokerInfo(cl->uid, power, clientnum);
-	
+
 	Cmd_ExecuteSingleCommand( 0, 0, buffer );
 #ifdef PUNKBUSTER
 	if(!Q_stricmpn(buffer, "pb_sv_", 6)) PbServerForceProcess();
@@ -229,4 +229,3 @@ void QDECL SV_PrintAdministrativeLog( const char *fmt, ... ) {
 	Com_PrintAdministrativeLog( msg );
 
 }
-

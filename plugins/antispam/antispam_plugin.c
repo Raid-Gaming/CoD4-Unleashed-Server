@@ -73,7 +73,7 @@ PCL void OnMessageSent(char *message,int slot, qboolean *show, int type){
 	for(i=j;i<ANTISPAM_MAXMESSAGES;++i){
 	    data.players[slot].messages[i] = 0;
 	}
-	
+
 	// j now holds the value of how many messages this player has sent in the last 60 seconds. If it is too much - dont show the msg
 	// if it is ok - show the message and add time to messages[j]
 	if(j<data.maxMPM->integer){
@@ -88,11 +88,11 @@ PCL void OnMessageSent(char *message,int slot, qboolean *show, int type){
 }
 PCL void OnInfoRequest(pluginInfo_t *info){	// Function used to obtain information about the plugin
     // Memory pointed by info is allocated by the server binary, just fill in the fields
-    
+
     // =====  MANDATORY FIELDS  =====
     info->handlerVersion.major = PLUGIN_HANDLER_VERSION_MAJOR;
     info->handlerVersion.minor = PLUGIN_HANDLER_VERSION_MINOR;	// Requested handler version
-    
+
     // =====  OPTIONAL  FIELDS  =====
     info->pluginVersion.major = 1;
     info->pluginVersion.minor = 0;	// Plugin version

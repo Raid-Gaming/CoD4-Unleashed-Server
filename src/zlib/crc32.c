@@ -434,21 +434,3 @@ uLong ZEXPORT crc32_combine(crc1, crc2, len2)
     crc1 ^= crc2;
     return crc1;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

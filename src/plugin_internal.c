@@ -36,7 +36,7 @@
 
 
 
-/* 
+/*
 ============
  TCP module
 ============
@@ -114,7 +114,7 @@ void PHandler_TcpCloseConnection(int pID, int connection)
     ptcs->sock = -1;
 }
 
-/* 
+/*
 =====================================
  Functionality providers for exports
 =====================================
@@ -369,11 +369,11 @@ void PHandler_PluginList_f()
             Com_Printf("| %-3d| %-21s| %-9s| %-19d| %-21d|\n",j,pluginFunctions.plugins[j].name,pluginFunctions.plugins[j].enabled==0 ? "no" : "yes",pluginFunctions.plugins[j].mallocs,pluginFunctions.plugins[j].usedMem);
 
         }
-        
+
         Com_Printf("*----------------------------------------------------------------------------------*\n");
         Com_Printf("\nTotal of %d loaded plugins.\n",i);
     }
-    
+
     Com_Printf("\nPlugin handler version: %d.%d.\n", PLUGIN_HANDLER_VERSION_MAJOR, PLUGIN_HANDLER_VERSION_MINOR);
 
 }
@@ -387,7 +387,7 @@ int PHandler_CallerID() // Can now be inlined, why not ^^
 {
     return pluginFunctions.hasControl;
     //Legacy code
-    /* 
+    /*
     void *funcptrs[3];
     int i,j;
     j = Sys_Backtrace(funcptrs,3);
@@ -542,4 +542,3 @@ void PHandler_ScrAddMethod(char *name, xfunction_t function, qboolean replace, i
     pluginFunctions.plugins[pID].scr_methods[i].xcommand = function;
     pluginFunctions.plugins[pID].scriptmethods ++;
 }
-

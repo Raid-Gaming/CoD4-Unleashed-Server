@@ -52,7 +52,7 @@ void QDECL SV_EnterLeaveLog( const char *fmt, ... ) {
 	struct tm 	*newtime;
 	char*		ltime;
 	time_t		realtime;
-	
+
 	Sys_EnterCriticalSection(CRIT_LOGFILE);
 
         // logfile
@@ -154,7 +154,7 @@ void Com_PrintLogfile( const char *msg )
 			FS_HomeRemove( "qconsole.log.old" );
 			/* Now try to rename it */
 			FS_Rename( "qconsole.log", "qconsole.log.old" );
-			
+
 			logfile = FS_FOpenFileWrite( "qconsole.log" );
 
 			if ( com_logfile->integer > 1 && logfile ) {
@@ -168,7 +168,7 @@ void Com_PrintLogfile( const char *msg )
 				FS_Write(logwritestart, strlen(logwritestart), logfile);
 			}
 	    }
-	    if ( logfile && FS_Initialized()) 
+	    if ( logfile && FS_Initialized())
 	    {
 	    	FS_Write(msg, strlen(msg), logfile);
 	    }
@@ -200,7 +200,7 @@ void Com_CloseLogFiles()
 		FS_FCloseFile( enterleavelogfile );
 		enterleavelogfile = 0;
 	}
-	
+
 	Sys_LeaveCriticalSection(CRIT_LOGFILE);
 
 }

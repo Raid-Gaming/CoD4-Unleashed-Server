@@ -83,19 +83,19 @@ void SV_UpdateServerCommandsToClientRecover( client_t *client, msg_t *msg )
 {
 	int i;
 	int cmdlen;
-	
+
 	for(i = client->reliableAcknowledge + 1; i <= client->reliableSequence; i++)
 	{
-		
+
 		cmdlen = strlen(client->reliableCommands[i & ( MAX_RELIABLE_COMMANDS - 1 )].command);
-		
+
 		if ( cmdlen + msg->cursize + 6 >= msg->maxsize )
 			break;
-		
+
 		MSG_WriteByte(msg, svc_serverCommand);
 		MSG_WriteLong(msg, i);
 		MSG_WriteString(msg, client->reliableCommands[i & ( MAX_RELIABLE_COMMANDS - 1 )].command);
-	
+
 	}
 	if ( i - 1 > client->reliableSent )
 	client->reliableSent = i - 1;
@@ -165,7 +165,7 @@ __cdecl void SV_WriteSnapshotToClient(client_t* client, msg_t* msg){
 
         } else if(oldframe->first_client <  svsHeader.nextSnapshotClients - svsHeader.numSnapshotClients) {
 
-            Com_PrintWarning("%s: Delta request from out of date clients - delta against client %i, oldest is %i, current is %i.  Their old snapshot had %i clients in it\n", 
+            Com_PrintWarning("%s: Delta request from out of date clients - delta against client %i, oldest is %i, current is %i.  Their old snapshot had %i clients in it\n",
                             client->name, oldframe->first_client, svs.nextSnapshotClients - svs.numSnapshotClients, svs.nextSnapshotClients, oldframe->num_clients);
             oldframe = NULL;
             lastframe = 0;
@@ -515,13 +515,13 @@ void SV_SendClientSnapshot(client_t *cl){
 void SV_BeginClientSnapshot(client_t *client, msg_t *msg)
 {
 	static byte tempSnapshotMsgBuf[NETCHAN_UNSENTBUFFER_SIZE];
-	
-	
+
+
 	MSG_Init( msg, tempSnapshotMsgBuf, sizeof(tempSnapshotMsgBuf) );
 	MSG_ClearLastReferencedEntity( msg );
-	
+
 	MSG_WriteLong( msg, client->lastClientCommand );
-	
+
 	if ( client->state == CS_ACTIVE || client->state == CS_ZOMBIE )
 		SV_UpdateServerCommandsToClient( client, msg );
 }
@@ -531,24 +531,24 @@ void SV_EndClientSnapshot(client_t *client, msg_t *msg)
 
 	if ( client->state != CS_ZOMBIE )
 		SV_WriteDownloadToClient(client, msg);
-		
+
 	MSG_WriteByte(msg, svc_EOF);
-		
+
 	if ( msg->overflowed == qtrue)
-	{		
+	{
 		Com_PrintWarning( "WARNING: msg overflowed for %s, trying to recover\n", client->shortname);
-		
+
 		if ( client->state == CS_ACTIVE || client->state == CS_ZOMBIE )
 		{
 			SV_ShowClientUnAckCommands(client);
-			
+
 			MSG_Clear( msg );
 			MSG_WriteLong(msg, client->lastClientCommand);
-			
+
 			SV_UpdateServerCommandsToClientRecover( client, msg );
-			
+
 			MSG_WriteByte(msg, svc_EOF);
-						
+
 		}
 		if ( msg->overflowed == qtrue)
 		{
@@ -557,7 +557,7 @@ void SV_EndClientSnapshot(client_t *client, msg_t *msg)
 			SV_DropClient(client, "EXE_SERVERMESSAGEOVERFLOW");
 		}
 	}
-		
+
 	SV_SendMessageToClient(msg, client);
 }
 
@@ -580,105 +580,105 @@ void SV_SendClientMessages( void ) {
 	 */
 	sv.bpsTotalBytes = 0; // NERVE - SMF - net debugging
 	sv.ubpsTotalBytes = 0; // NERVE - SMF - net debugging
-	
+
 	// send a message to each connected client
 	for ( i = 0, c = svs.clients ; i < sv_maxclients->integer ; i++, c++ ) {
 		if ( !c->state || c->netchan.remoteAddress.type == NA_BOT)
 		{
-			snapClients[i] = 0;		
+			snapClients[i] = 0;
 			continue; // not connected
 		}
-#ifndef COD4U		
+#ifndef COD4U
 		ReliableMessageSetCurrentTime(&c->relmsg, svs.time);
 		ReliableMessagesTransmitNextFragment(&c->relmsg);
 		Net_TestingFunction(&c->relmsg);
 #endif
 		if ( svs.time < c->nextSnapshotTime ) {
-			snapClients[i] = 0;	
+			snapClients[i] = 0;
 			continue; // not time yet
 		}
-		
+
 		numclients++; // NERVE - SMF - net debugging
-		
+
 		// send additional message fragments if the last message
 		// was too large to send at once
 		if ( c->netchan.unsentFragments ) {
 			c->nextSnapshotTime = svs.time + SV_RateMsec( c, c->netchan.unsentLength - c->netchan.unsentFragmentStart );
 			SV_Netchan_TransmitNextFragment( c );
-			snapClients[i] = 0;	
+			snapClients[i] = 0;
 			continue;
 		}
-		
+
 		// generate a new message
 		snapClients[i] = 1;
-		
+
 		if ( c->state == CS_ACTIVE || c->state == CS_ZOMBIE )
             SV_BuildClientSnapshot( c );
-		
+
 	}
-	
+
 	SV_SetServerStaticHeader();
-	
+
 	for (i = 0, c = svs.clients; i < sv_maxclients->integer; i++, c++) {
-	
+
 		if(snapClients[i] == 0)
 			continue;
-		
+
 		SV_BeginClientSnapshot( c, &msg );
-		
+
 		if(c->state == CS_ACTIVE || c->state == CS_ZOMBIE)
 			SV_WriteSnapshotToClient( c, &msg );
-		
+
 		SV_EndClientSnapshot(c, &msg);
 		SV_SendClientVoiceData( c );
 	}
-	
+
 	// NERVE - SMF - net debugging
 	if ( sv_showAverageBPS->integer && numclients > 0 ) {
 		float ave = 0, uave = 0;
-		
+
 		for ( i = 0; i < MAX_BPS_WINDOW - 1; i++ ) {
 			sv.bpsWindow[i] = sv.bpsWindow[i + 1];
 			ave += sv.bpsWindow[i];
-			
+
 			sv.ubpsWindow[i] = sv.ubpsWindow[i + 1];
 			uave += sv.ubpsWindow[i];
 		}
-		
+
 		sv.bpsWindow[MAX_BPS_WINDOW - 1] = sv.bpsTotalBytes;
 		ave += sv.bpsTotalBytes;
-		
+
 		sv.ubpsWindow[MAX_BPS_WINDOW - 1] = sv.ubpsTotalBytes;
 		uave += sv.ubpsTotalBytes;
-		
+
 		if ( sv.bpsTotalBytes >= sv.bpsMaxBytes ) {
 			sv.bpsMaxBytes = sv.bpsTotalBytes;
 		}
-		
+
 		if ( sv.ubpsTotalBytes >= sv.ubpsMaxBytes ) {
 			sv.ubpsMaxBytes = sv.ubpsTotalBytes;
 		}
-		
+
 		sv.bpsWindowSteps++;
-		
+
 		if ( sv.bpsWindowSteps >= MAX_BPS_WINDOW ) {
 			float comp_ratio;
-			
+
 			sv.bpsWindowSteps = 0;
-			
+
 			ave = ( ave / (float)MAX_BPS_WINDOW );
 			uave = ( uave / (float)MAX_BPS_WINDOW );
-			
+
 			comp_ratio = ( 1 - ave / uave ) * 100.f;
 			sv.ucompAve += comp_ratio;
 			sv.ucompNum++;
-			
+
 			Com_DPrintf( "bpspc(%2.0f) bps(%2.0f) pk(%i) ubps(%2.0f) upk(%i) cr(%2.2f) acr(%2.2f)\n",
 						ave / (float)numclients, ave, sv.bpsMaxBytes, uave, sv.ubpsMaxBytes, comp_ratio, sv.ucompAve / sv.ucompNum );
 		}
 	}
 	// -NERVE - SMF
-	
+
 	if ( sv.state != SS_GAME )
 	{
 		SV_GetServerStaticHeader();
@@ -687,29 +687,29 @@ void SV_SendClientMessages( void ) {
 
 	MSG_Init(&msg, buf, sizeof(buf));
 	SV_ArchiveSnapshot(&msg);
-	
+
 	SV_GetServerStaticHeader();
-	
+
 	if ( msg.overflowed == qtrue )
 	{
 		Com_DPrintf("SV_ArchiveSnapshot: ignoring snapshot because it overflowed.\n");
 		return;
 	}
-		
+
 	svs.archiveSnaps[svs.nextArchivedSnapshotFrames % 1200].buffer = svs.nextArchivedSnapshotBuffer;
 	svs.archiveSnaps[svs.nextArchivedSnapshotFrames % 1200].msgsize = msg.cursize;
 
 	index = svs.nextArchivedSnapshotBuffer % 0x2000000;
 
 	svs.nextArchivedSnapshotBuffer += msg.cursize;
-	
+
 	if ( svs.nextArchivedSnapshotBuffer >= (signed int)0x7FFFFFFE )
 	{
 		Com_Error(0, "svs.nextArchivedSnapshotBuffer wrapped");
 		return;
 	}
 	freeBytes = 0x2000000 - index;
-	
+
 	if ( msg.cursize > freeBytes )
 	{
 		memcpy(&svs.archiveSnapBuffer[index], msg.data, freeBytes);
@@ -720,9 +720,9 @@ void SV_SendClientMessages( void ) {
 	{
 		memcpy(&svs.archiveSnapBuffer[index], msg.data, msg.cursize);
 	}
-	
+
 	svs.nextArchivedSnapshotFrames++;
-	
+
 	if (  svs.nextArchivedSnapshotFrames >= (signed int)0x7FFFFFFE  ){
 		Com_Error(0, "svs.nextArchivedSnapshotFrames wrapped");
 	}

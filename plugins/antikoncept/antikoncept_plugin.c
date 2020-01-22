@@ -14,12 +14,12 @@ PCL void OnMessageSent(char *message, int slot, qboolean *show, int mode){
 }
 PCL void OnInfoRequest(pluginInfo_t *info){	// Function used to obtain information about the plugin
     // Memory pointed by info is allocated by the server binary, just fill in the fields
-    
+
     // =====  MANDATORY FIELDS  =====
     info->handlerVersion.major = PLUGIN_HANDLER_VERSION_MAJOR;
     info->handlerVersion.minor = PLUGIN_HANDLER_VERSION_MINOR;	// Requested handler version
     // Requested handler version
-    
+
     // =====  OPTIONAL  FIELDS  =====
     info->pluginVersion.major = 1;
     info->pluginVersion.minor = 1;	// Plugin version

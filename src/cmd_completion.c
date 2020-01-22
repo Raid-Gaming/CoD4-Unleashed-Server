@@ -232,7 +232,7 @@ void Field_CompleteCommand( char *cmd, qboolean doCommands, qboolean doCvars )
 
 		matchCount = 0;
 		shortestMatch[ 0 ] = 0;
-		
+
 		if( strlen( completionString ) == 0 ){
 			Cmd_EndTokenizedString( );
 			return;
@@ -270,4 +270,3 @@ void Field_AutoComplete( field_t *field )
 
 	Field_CompleteCommand( completionField->buffer, qtrue, qtrue );
 }
-

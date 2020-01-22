@@ -8,14 +8,14 @@ SECTIONS
      lower than the target page size. */
   . = SIZEOF_HEADERS;
   . = ALIGN(__section_alignment__);
-  
-  .cod4bin  __image_base__ + ( __section_alignment__ < 0x1000 ? . : __section_alignment__ ) : 
+
+  .cod4bin  __image_base__ + ( __section_alignment__ < 0x1000 ? . : __section_alignment__ ) :
   {
     . = 0xc3b6c40;
     *(.cod4bin);
 
   }
-  
+
   .text BLOCK(__section_alignment__) :
   {
      *(.init)
@@ -240,7 +240,7 @@ SECTIONS
 {
   */
   /*. = 0x8040000; *//* Image base of cod4_lnxded-bin */
- /* .cod4 : 
+ /* .cod4 :
   {
     . = 0x800000;
     *(.cod4);

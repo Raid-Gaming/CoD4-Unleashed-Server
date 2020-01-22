@@ -93,7 +93,7 @@ int Scr_FS_ReadLine( void *buffer, int len, fileHandle_t f ) {
 	read = fgets (buf, len, scr_fsh[f -1].fh);
 	if (read == NULL) {	//Error
 
-		if(feof(scr_fsh[f -1].fh)) 
+		if(feof(scr_fsh[f -1].fh))
 			return 0;
 
 		Com_PrintScriptRuntimeWarning("Scr_FS_ReadLine: couldn't read line");
@@ -129,9 +129,9 @@ Scr_FS_FOpenFile
 ===========
 */
 qboolean Scr_FS_FOpenFile( const char *filename, fsMode_t mode, scr_fileHandle_t* f ) {
-	
+
 	char ospath[MAX_OSPATH];
-	
+
 	f->fh = NULL;
 
 	if ( !FS_Initialized() ) {
@@ -450,7 +450,3 @@ int Scr_FS_Seek( fileHandle_t f, long offset, int origin ) {
 	}
 	return fseek( file, offset, _origin );
 }
-
-
-
-

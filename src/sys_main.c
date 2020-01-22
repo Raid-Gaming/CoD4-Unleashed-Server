@@ -299,7 +299,7 @@ __cdecl void QDECL Sys_Error( const char *fmt, ... ) {
 	}
 
 	Sys_WaitForErrorConfirmation( msg );
-	
+
 	Sys_Exit( 1 ); // bk010104 - use single exit point.
 }
 
@@ -456,7 +456,7 @@ int Sys_Main(char* commandLine){
     CON_Init();
 
 /*    Sys_ImageFindConstant();   */
-    
+
     Com_Init( commandLine );
 
     while ( 1 )
@@ -471,7 +471,7 @@ void Sys_Restart(const char* reason)
 	char commandline[1024];
 
 	SV_Shutdown( reason );
-	
+
 	Com_sprintf(commandline, sizeof(commandline), "%s %s", Sys_ExeFile(), Sys_GetCommandline());
 	Com_Printf("Restart commandline is: %s\n", commandline);
 	Sys_SetExitCmdline(commandline);

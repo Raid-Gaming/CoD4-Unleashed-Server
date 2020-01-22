@@ -57,4 +57,3 @@ void Field_CompleteCommand( char *cmd, qboolean doCommands, qboolean doCvars );
 void Field_AutoComplete( field_t *field );
 
 #endif
-

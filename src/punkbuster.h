@@ -38,5 +38,3 @@ void PbServerCompleteCommand(char *string, int len);
 void DisablePbSv( );
 void EnablePbSv( );
 #endif
-
-

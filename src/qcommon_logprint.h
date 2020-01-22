@@ -34,4 +34,3 @@ void Com_PrintLogfile( const char *msg );
 void Com_CloseLogFiles(void);
 
 #endif
-

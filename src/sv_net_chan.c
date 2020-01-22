@@ -42,10 +42,10 @@ void SV_DumpCommands( client_t *client, byte *cmd, int size, qboolean cl_to_serv
 	MSG_Init(&msg, buffer, sizeof(buffer));
 
 	if(cl_to_servercmd){
-		Com_sprintf((char*)buffer, sizeof(buffer), "\nDir: Cl -> Sv, Cl: %i, T: %i, NA: %i, Len %i, Msg: ", 
+		Com_sprintf((char*)buffer, sizeof(buffer), "\nDir: Cl -> Sv, Cl: %i, T: %i, NA: %i, Len %i, Msg: ",
 			client - svs.clients, svs.time ,client->reliableSequence - client->reliableAcknowledge, size);
         }else{
-		Com_sprintf((char*)buffer, sizeof(buffer), "\nDir: Sv -> Cl, Cl: %i, T: %i, NA: %i, Len %i, Msg: ", 
+		Com_sprintf((char*)buffer, sizeof(buffer), "\nDir: Sv -> Cl, Cl: %i, T: %i, NA: %i, Len %i, Msg: ",
 			client - svs.clients, svs.time ,client->reliableSequence - client->reliableAcknowledge, size);
         }
 
@@ -104,7 +104,7 @@ void SV_Netchan_Decode( client_t *client, byte *data, int remaining ) {
 	int i, index;
 	byte key, *string;
 //	extclient_t *extcl = &svs.extclients[ client - svs.clients ];
-	
+
 //	string = (byte *)extcl->reliableCommands[ client->reliableAcknowledge & ( MAX_RELIABLE_COMMANDS - 1 ) ].command;
 	string = (byte *)client->reliableCommands[ client->reliableAcknowledge & ( MAX_RELIABLE_COMMANDS - 1 ) ].command;
 
@@ -212,7 +212,7 @@ __cdecl qboolean SV_Netchan_TransmitNextFragment( client_t *client ) {   //int l
 
 	if(client->netchan.unsentFragments)
 		return qtrue; //Return true if we have still unsent fragments
-	
+
 	i = client->netchan.outgoingSequence & 31;
 
 	Com_Memset(&client->frames[i], 0, sizeof(clientSnapshot_t));

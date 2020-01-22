@@ -60,21 +60,21 @@ const char* Auth_FindSessionID(const char* sessionid)
 {
 	int i;
 	authData_admin_t *user;
-	
+
 	if(strlen(sessionid) != 64)
 	{
 		return NULL;
 	}
-	
+
 	for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
-		
+
 		if(!Q_stricmp(user->sessionid, sessionid))
 		{
 			return user->username;
 		}
 	}
 	return NULL;
-	
+
 }
 
 const char* Auth_GetSessionId(const char* username, const char *password)
@@ -97,7 +97,7 @@ authData_admin_t* Auth_GetByUsername(const char* username)
 {
 	int i;
 	authData_admin_t *user;
-	
+
     for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
 		if(*user->username && !Q_stricmp(user->username, username))
 		{
@@ -139,7 +139,7 @@ int Auth_Authorize(const char *login, const char *password){
     const char *sha256;
     authData_admin_t *user;
     int id = -1;
-    
+
     for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
 		if(*user->username && !Q_stricmp(user->username,login))
 		{
@@ -151,7 +151,7 @@ int Auth_Authorize(const char *login, const char *password){
 	return id;
     }
     user = &auth_admins.admins[id];
-    
+
     Com_sprintf(hstring, sizeof(hstring), "%s.%s", password, user->salt);
 
     sha256 = Com_SHA256(hstring);
@@ -167,11 +167,11 @@ int Auth_GetUID(const char *name){
     int i;
     authData_admin_t *user;
     int uid = -1;
-    
+
 	if(name[0] == '@' && isInteger(&name[1], 0) && atoi(&name[1]) > 0)
 	{
 		uid = atoi(&name[1]);
-		
+
 		for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
 			if(user->uid == uid)
 			{
@@ -180,7 +180,7 @@ int Auth_GetUID(const char *name){
 		}
 		return -1;
 	}
-	
+
     for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
 		if(*user->username && !Q_stricmp(user->username,name))
 			uid = user->uid;
@@ -196,16 +196,16 @@ int Auth_GetUID(const char *name){
  */
 
 static void Auth_SetAdmin_f() {
-	
+
     int power, i;
     int uid = 0;
 	const char *name;
 	char stdname[32];
 	authData_admin_t* free = NULL;
 	authData_admin_t* user;
-	
+
     power = atoi(Cmd_Argv(2));
-	
+
     if ( Cmd_Argc() != 3 || power < 1 || power > 100) {
         Com_Printf( "Usage: AdminAddAdmin <user> <power>\n" );
         Com_Printf( "Where user is one of the following: online-playername | online-playerslot | uid\n" );
@@ -216,19 +216,19 @@ static void Auth_SetAdmin_f() {
 	Com_Printf("Don't create non admin accounts (VIP) with a level of 10 or more points\n");
 	return;
     }
-	
+
     uid = SV_GetPlayerUIDByHandle(Cmd_Argv(1));
     name = SV_GetPlayerNameByHandle(Cmd_Argv(1));
-	
+
 	if(uid < 1)
 	{
 		Com_Printf("No such player with a valid UID found. Please consider using \"AdminAddAdminWithPassword\" command unless this was a misstake\n");
 		return;
 	}
-	
+
 	NV_ProcessBegin();
 	for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++){
-		
+
 		if(user->uid == uid )
 		{
 			user->power = power;
@@ -243,18 +243,18 @@ static void Auth_SetAdmin_f() {
 			NV_ProcessEnd();
 			return;
 		}
-		
+
 		if(!free && !*user->username )
 		{
 			free = user;
 		}
 	}
-	
+
 	if(!free){
 		Com_Printf("Too many registered admins. Limit is: %d\n", MAX_AUTH_ADMINS);
 		return;
 	}
-	
+
 	if(name && strlen(name) > 2)
 	{
 		Q_strncpyz(free->username, name, sizeof(free->username));
@@ -262,7 +262,7 @@ static void Auth_SetAdmin_f() {
 		Com_sprintf(stdname, sizeof(stdname), "uid_%d", uid);
 		Q_strncpyz(free->username, stdname, sizeof(free->username));
 	}
-	
+
 	free->sha256[0] = '\0';
 	free->salt[0] = '\0';
 	free->power = power;
@@ -291,7 +291,7 @@ void Auth_SetAdminWithPassword_f( void ){
 	if(Cmd_Argc() != 4){
 		Com_Printf("Usage: AdminAddAdminWithPassword <username> <password> <power>\n", Cmd_Argv(0));
 		Com_Printf( "Where username is loginname for this user\n" );
-		Com_Printf( "Where password is the initial 6 characters long or longer password for this user which should get changed by the user on first login\n" );		
+		Com_Printf( "Where password is the initial 6 characters long or longer password for this user which should get changed by the user on first login\n" );
 		Com_Printf( "Where power is one of the following: Any number between 1 and 100\n" );
 		Com_Printf( "Note: Use the command \"AdminAddAdmin\" to change the power of an admin\n" );
 		Com_Printf("^1IMPORTANT: ^7This command is for the high privileged badmin only\n");
@@ -301,21 +301,21 @@ void Auth_SetAdminWithPassword_f( void ){
 	username = Cmd_Argv(1);
 	password = Cmd_Argv(2);
 	power = atoi(Cmd_Argv(3));
-	
+
 	if(!username || !*username || !password || strlen(password) < 6 || power < 1 || power > 100){
 		Com_Printf("Usage: AdminSetWithPassword <username> <password> <power>\n", Cmd_Argv(0));
 		Com_Printf( "Where username is loginname for this user\n" );
-		Com_Printf( "Where password is the initial 6 characters long or longer password for this user which should get changed by the user on first login\n" );		
+		Com_Printf( "Where password is the initial 6 characters long or longer password for this user which should get changed by the user on first login\n" );
 		Com_Printf( "Where power is one of the following: Any number between 1 and 100\n" );
 		Com_Printf("^1IMPORTANT: ^7This command is for the high privileged badmin only\n");
 		return;
 	}
 
 	NV_ProcessBegin();
-	
+
 	uid = ++auth_admins.maxUID;
-	    
-		
+
+
 	for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++)
 	{
 
@@ -329,7 +329,7 @@ void Auth_SetAdminWithPassword_f( void ){
 			free = user;
 		}
 	}
-	
+
 	if(!free)
 	{
 		Com_Printf("Too many registered admins. Limit is: %d\n", MAX_AUTH_ADMINS);
@@ -361,11 +361,11 @@ void Auth_UnsetAdmin_f( void ){
 		Com_Printf("Usage: AdminRemoveAdmin <user>\n");
 		Com_Printf("Where user is one of the following: name of admin | uid\n" );
 		Com_Printf("Name has to be the full known admin name. uid is a number > 0 and gets written with a leading \"@\" character\n" );
-		Com_Printf("Note: Use the command \"AdminListAdmins\" to get a list of known admins\n");		
+		Com_Printf("Note: Use the command \"AdminListAdmins\" to get a list of known admins\n");
 		Com_Printf("^1IMPORTANT: ^7This command is for the high privileged badmin only\n");
 		return;
 	}
-    
+
 	uid = Auth_GetUID(Cmd_Argv(1));
     if(uid < 0){
 		Com_Printf("Admin %s not found.\n", Cmd_Argv(1));
@@ -426,14 +426,14 @@ void Auth_ChangeAdminPassword( int uid, const char* password ){
 	//int uid = -1;
 	mvabuf;
 
-	
+
 	if(!password || strlen(password) < 6){
 		Com_Printf("Error: the new password must have at least 6 characters\n");
 		return;
 	}
 
 	NV_ProcessBegin();
-	
+
 	for(i = 0, user2 = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user2++){
 		if(*user2->username && user2->uid == uid){
 		    user = user2;
@@ -463,16 +463,16 @@ void Auth_ChangeAdminPassword( int uid, const char* password ){
 void Auth_ChangePasswordByMasterAdmin_f()
 {
     int uid;
-    
+
     if(Cmd_Argc()!= 3){
 		Com_Printf("Usage: AdminChangePassword <user> <newPassword>\n");
 		Com_Printf("Where user is one of the following: name of admin | uid\n" );
 		Com_Printf("Name has to be the full known admin name. uid is a number > 0 and gets written with a leading \"@\" character\n" );
-		Com_Printf("Note: Use the command \"AdminListAdmins\" to get a list of known admins\n");		
+		Com_Printf("Note: Use the command \"AdminListAdmins\" to get a list of known admins\n");
 		Com_Printf("^1IMPORTANT: ^7This command is for the high privileged badmin only\n");
 		return;
     }
-    
+
     uid = Auth_GetUID(Cmd_Argv(1));
     if(uid < 0){
 		Com_Printf("Admin %s not found.\n",Cmd_Argv(1));
@@ -482,12 +482,12 @@ void Auth_ChangePasswordByMasterAdmin_f()
 }
 
 void Auth_ChangeOwnPassword_f()
-{	
+{
 	const char* name;
 	const char* password;
 	int uid, id;
-	
-	
+
+
 	if(Cmd_Argc()!= 3){
 		Com_Printf("Usage: ChangePassword <oldPassword> <newPassword>\n");
 		Com_Printf("Use this command to change your current password to a new one\n");
@@ -495,20 +495,20 @@ void Auth_ChangeOwnPassword_f()
     }
 
 	uid = Cmd_GetInvokerUID();
-    
+
 	if(uid < 1)
     {
         Com_Printf("This command can not be used from this place\nYou have no account it seems\n");
 		return;
     }
-	
+
 	password = Cmd_Argv(1);
 	name = Auth_GetNameByUID(uid);
-	
+
 	if(name == NULL)
 	{
         Com_Printf("Error: No such name has been found. It seems like you aren't an admin.\n");
-		return;		
+		return;
 	}
 	id = Auth_Authorize(name, password);
 	if(id < 0 || id > MAX_AUTH_ADMINS)
@@ -543,21 +543,21 @@ qboolean Auth_AddAdminToList(const char* username, const char* password, const c
 			{
 				if(!user->username[0] || !Q_strncmp(user->username, "uid_", 4))
 				{
-					Q_strncpyz(user->username, username, sizeof(user->username));	
+					Q_strncpyz(user->username, username, sizeof(user->username));
 				}
 			}
-			
+
 			if(salt && salt[0] && password && password[0])
 			{
 				Q_strncpyz(user->sha256, password, sizeof(user->sha256));
-				Q_strncpyz(user->salt, salt, sizeof(user->salt));	
+				Q_strncpyz(user->salt, salt, sizeof(user->salt));
 			}
-			
+
 			if(power > 0 && power > user->power)
 			{
 				user->power = power;
 			}
-			
+
 			return qtrue;
 		}
 		if(!Q_stricmp(user->username, username)){
@@ -582,16 +582,16 @@ qboolean Auth_AddAdminToList(const char* username, const char* password, const c
 	}
 	if(uid > auth_admins.maxUID && uid < 400000000)
 	    auth_admins.maxUID = uid;
-	
+
 	return qtrue;
 }
 
 static void Auth_Login_f(){
-    
+
     client_t *invoker;
     int id,clientNum;
-    
-    
+
+
     if(Cmd_Argc() != 3){
 		Com_Printf("Usage: %s <loginname> <password>\n",Cmd_Argv(0));
 		return;
@@ -678,7 +678,7 @@ void Auth_Init()
 		return;
 	}
 	initialized = qtrue;
-	
+
 	Auth_ClearAdminList();
 
 	Cmd_AddPCommand("AdminRemoveAdmin", Auth_UnsetAdmin_f, 95);
@@ -699,7 +699,7 @@ void Auth_WriteAdminConfig(char* buffer, int size)
     authData_admin_t *admin;
 	mvabuf;
 
-	
+
     Q_strcat(buffer, size, "\n//Admins authorization data\n");
 
     for ( admin = auth_admins.admins, i = 0; i < MAX_AUTH_ADMINS ; admin++, i++ ){
@@ -746,25 +746,25 @@ qboolean SV_RemoteCmdInfoAddAdmin(const char* infostring)
 	char stdname[32];
 	int uid;
 	int power;
-	
+
 	uid = atoi(Info_ValueForKey(infostring, "uid"));
 	power = atoi(Info_ValueForKey(infostring, "power"));
-	
+
 	if(uid < 1)
 	{
 		Com_Printf("^1WARNING: Read invalid uid from admin config\n");
 		return qfalse;
 	}
 
-	
+
 	Com_sprintf(stdname, sizeof(stdname), "uid_%d", uid);
-	
+
 	if(!Auth_AddAdminToList(stdname, "", "", power,uid)){
 		Com_Printf("Error: duplicated username or bad power or too many admins\n");
 		return qfalse;
 	}
-	return qtrue;	
-	
+	return qtrue;
+
 }
 
 
@@ -813,12 +813,12 @@ int Auth_GetClPower(client_t* cl){
  */
 
 const char* Auth_GetNameByUID(int uid){
-	
+
 	int i;
 	authData_admin_t *user;
-	
+
 	if(uid < 1) return NULL;
-	
+
 	for(i = 0, user = auth_admins.admins; i < MAX_AUTH_ADMINS; i++, user++)
 	{
 		if(user->uid == uid)
@@ -828,39 +828,39 @@ const char* Auth_GetNameByUID(int uid){
 	}
 	return NULL;
 }
-	
-	
-	
+
+
+
 /*
 void Auth_ClearAdminList()
 {
 
     adminPower_t *admin, **this;
-	
+
     for ( this = &adminpower, admin = *this; admin ; admin = *this ){
         *this = admin->next;
         Z_Free(admin);
     }
-	
+
 }
 
 
 qboolean SV_RemoteCmdAddAdmin(int uid, char* guid, int power)
 {
 	adminPower_t *admin;
-	
+
 	if(uid < 1){
 		Com_Printf("Error: Invalid uid\n");
 		return qfalse;
 	}
-	
+
 	if(power < 1 || power > 100){
 		Com_Printf("Error: Invalid powerlevel(%i). Powerlevel can not be less than 1 or greater than 100.\n");
 		return qfalse;
 	}
-	
+
 	admin = Z_Malloc(sizeof(adminPower_t));
-	
+
 	if(admin)
 	{
 		admin->uid = uid;
@@ -868,11 +868,9 @@ qboolean SV_RemoteCmdAddAdmin(int uid, char* guid, int power)
 		admin->next = adminpower;
 		adminpower = admin;
 		return qtrue;
-		
+
 	}else{
 		return qfalse;
 	}
 }
 */
-
-

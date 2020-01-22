@@ -26,7 +26,7 @@ int SecCryptErr;
 
 char *Sec_CryptErrStr(int code){
     switch(code){
-    
+
     case CRYPT_OK: return "CRYPT_OK";
     case CRYPT_ERROR: return "CRYPT_ERROR";
     case CRYPT_NOP: return "CRYPT_NOP";
@@ -98,7 +98,7 @@ volatile const struct ltc_hash_descriptor sec_sha256_desc =
     /* OID */
    { 2, 16, 840, 1, 101, 3, 4, 2, 1,  },
    9,
-    
+
     &sha256_init,
     &sha256_process,
     &sha256_done,

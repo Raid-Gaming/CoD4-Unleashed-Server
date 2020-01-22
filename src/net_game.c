@@ -141,7 +141,7 @@ void NET_TCPPacketEvent(netadr_t* from, byte* bufData, int len, int connectionId
 
 		Com_DPrintf("Packet event from: %s\n", NET_AdrToString(from));
 
-	
+
         for(i = 0; i < MAX_TCPEVENTS; i++)
         {
             if(tcpevents[i].serviceId == serviceId)
@@ -204,4 +204,3 @@ void NET_TCPAddEventType(
     Com_Error(ERR_FATAL, "NET_TCPAddEventType: Out of redirect handles. Increase MAX_TCPEVENTS to add more redirect destinations");
 
 }
-

@@ -33,4 +33,3 @@ qboolean Com_AddStartupCommands( void );
 void Com_ParseCommandLine( char *commandLine );
 qboolean Com_SafeMode( void );
 #endif
-

@@ -240,4 +240,3 @@ void __cdecl FS_ReferencedIwds(char **outChkSums, char **outPathNames);
 void FS_AddIwdPureCheckReference(searchpath_t *search);
 void FS_StripTrailingSeperator( char *path );
 #endif
-

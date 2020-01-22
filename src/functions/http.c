@@ -136,7 +136,7 @@ char* asyncHttpRequest(char* host, int port, char* path, enum HttpMethod method,
 		strcpy(args->data, data);
 	}
 	sprintf(args->getResponse, "%d", getResponse);
-	
+
 	switch (method) {
 	case GET:
 		strcpy(args->method, "GET");
@@ -157,13 +157,13 @@ char* asyncHttpRequest(char* host, int port, char* path, enum HttpMethod method,
 	case DELETE:
 		strcpy(args->method, "DELETE");
 		break;
-	
+
 	default:
 		free(args);
 		Scr_Error("Invalid HTTP 1.1 method, use GET/POST/PUT/PATCH/DELETE\n");
 		return "";
 	}
-	
+
 	// Create a thread handling the HTTP request
 	pthread_create(&thread, NULL, processHttpRequest, args);
 

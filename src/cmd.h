@@ -95,5 +95,3 @@ void Cmd_SetCurrentInvokerInfo(int uid, int power, int client);
 void Cmd_ResetInvokerInfo();
 
 #endif
-
-

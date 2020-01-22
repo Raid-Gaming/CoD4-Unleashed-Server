@@ -22,7 +22,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
           return 1;
 
 
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -30,7 +30,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 		if (!n--) {
 			return 0;		// strings are equal until end point
 		}
-		
+
 		if (c1 != c2) {
 			if (c1 >= 'a' && c1 <= 'z') {
 				c1 -= ('a' - 'A');
@@ -43,13 +43,13 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 			}
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
 int Q_strncmp (const char *s1, const char *s2, int n) {
 	int		c1, c2;
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -57,12 +57,12 @@ int Q_strncmp (const char *s1, const char *s2, int n) {
 		if (!n--) {
 			return 0;		// strings are equal until end point
 		}
-		
+
 		if (c1 != c2) {
 			return c1 < c2 ? -1 : 1;
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
@@ -78,11 +78,11 @@ PCL int OnInit(){	// Funciton called on server initiation
 
 PCL void OnInfoRequest(pluginInfo_t *info){	// Function used to obtain information about the plugin
     // Memory pointed by info is allocated by the server binary, just fill in the fields
-    
+
     // =====  MANDATORY FIELDS  =====
     info->handlerVersion.major = PLUGIN_HANDLER_VERSION_MAJOR;
     info->handlerVersion.minor = PLUGIN_HANDLER_VERSION_MINOR;	// Requested handler version
-    
+
     // =====  OPTIONAL  FIELDS  =====
     info->pluginVersion.major = 1;
     info->pluginVersion.minor = 0;	// Plugin version
@@ -106,17 +106,17 @@ PCL void OnClientUserinfoChanged(client_t* client)
 
 	int clientnum = client - clientbase;
 	int curtime;
-	
+
 	if(client->state < CS_ACTIVE)
 	{
 		return;
 	}
-	
+
 	//Plugin_Printf("Client num: %d, Old name: %s, New name: %s\n", clientnum, players[clientnum].playername, client->shortname);
 	if( Q_stricmp(players[clientnum].playername, client->shortname) != 0) //New playername is not equal to old one
 	{
 		curtime = Plugin_Milliseconds();
-	
+
 		if( (players[clientnum].lasttimechanged + (antinamechange_mindelay->integer * 1000)) > curtime )
 		{
 			Plugin_DropClient( clientnum, "Name spoofing is forbidden!\n" );
@@ -131,5 +131,5 @@ PCL void OnPlayerDC(client_t* client, const char* reason)
 	int clientnum = client - clientbase;
 
 	memset(&players[clientnum], 0, sizeof(playerlist_t));
-	
+
 }

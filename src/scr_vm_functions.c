@@ -64,7 +64,7 @@ void PlayerCmd_GetUid(scr_entref_t arg){
     int uid;
 	mvabuf;
 
-	
+
     if(HIWORD(arg)){
 
         Scr_ObjectError("Not an entity");
@@ -327,7 +327,7 @@ void PlayerCmd_GetIp( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() > 1 ) {
         Scr_Error( "Usage: self getIp( <optional: (bool) add port> )\n" );
     }
@@ -425,10 +425,10 @@ void PlayerCmd_SetGravity(scr_entref_t arg){
 ============
 PlayerCmd_SetGroundReferenceEnt
 
-The ground entity's rotation will be added onto the player's view. 
-In particular, this will cause the player's yaw to rotate around the 
-entity's z-axis instead of the world z-axis. You only need to call 
-this function once. After that, any rotation that the reference entity 
+The ground entity's rotation will be added onto the player's view.
+In particular, this will cause the player's yaw to rotate around the
+entity's z-axis instead of the world z-axis. You only need to call
+this function once. After that, any rotation that the reference entity
 undergoes will affect the player. Setting it back to 0 (worldspawn)
 should disable all further effects.
 
@@ -2198,7 +2198,7 @@ void GScr_GetCvarFloat()
 void  GScr_GetCvarInt()
 {
   const char *stringval;
-  
+
   if(Scr_GetNumParam() != 1)
   {
 	Scr_Error("Usage: getcvarint <cvarname>");
@@ -2641,9 +2641,9 @@ void GScr_HttpPostRequest() {
 
 	int params;
 	int getResponse = 1;
-	
+
 	params = Scr_GetNumParam();
-    
+
 	if( params < 4 || params > 5 ) {
         Scr_Error( "Usage: httpPostRequest( <host>, <port>, <path>, <postData>, <optional: receive> )\n" );
         return;
@@ -2654,10 +2654,10 @@ void GScr_HttpPostRequest() {
     int port = Scr_GetInt( 1 );
     char* path = Scr_GetString( 2 );
     char* data = Scr_GetString( 3 );
-	
+
 	if( params == 5 )
 		getResponse = Scr_GetInt( 4 );
-	
+
 	Scr_AddString( asyncPostRequest( host, port, path, data, getResponse ) );
 }
 
@@ -2677,7 +2677,7 @@ void PlayerCmd_IsButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player\n", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() != 1 ) {
         Scr_Error( "Usage: self isButtonPressed( <key id> )\n" );
     }
@@ -2703,7 +2703,7 @@ void PlayerCmd_JumpButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() ) {
         Scr_Error( "Usage: self jumpButtonPressed()\n" );
     }
@@ -2730,7 +2730,7 @@ void PlayerCmd_SprintButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() ) {
         Scr_Error( "Usage: self sprintButtonPressed()\n" );
     }
@@ -2757,7 +2757,7 @@ void PlayerCmd_LeanLeftButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() ) {
         Scr_Error( "Usage: self sprintButtonPressed()\n" );
     }
@@ -2784,7 +2784,7 @@ void PlayerCmd_LeanRightButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() ) {
         Scr_Error( "Usage: self sprintButtonPressed()\n" );
     }
@@ -2811,7 +2811,7 @@ void PlayerCmd_ReloadButtonPressed( scr_entref_t arg ) {
             Scr_ObjectError( va( "Entity: %i is not a player", entityNum ) );
         }
     }
-    
+
     if( Scr_GetNumParam() ) {
         Scr_Error( "Usage: self sprintButtonPressed()\n" );
     }

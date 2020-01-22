@@ -119,9 +119,9 @@ __asm__ __volatile__(
 "	mov    %%ecx,(%%esp)\n"
 #ifdef __linux
 "	call   memcpy\n"
-#else					 
+#else
 "	call   _memcpy\n"
-#endif					 
+#endif
 "	mov    0x158(%%edi),%%eax\n"
 "	mov    %%eax,-0x120(%%ebp)\n"
 "	mov    0x3168(%%edi),%%ebx\n"
@@ -138,9 +138,9 @@ __asm__ __volatile__(
 "	mov    $0x804a42c, %%eax\n"
 #ifdef __linux
 "	call   memset\n"
-#else					 					 
+#else
 "	call   _memset\n"
-#endif					 
+#endif
 
 //Set gravity to g_gravity
 /*
@@ -379,7 +379,7 @@ __cdecl void ClientUserinfoChanged( int clientNum ) {
 	allowColoredNames = Cvar_RegisterBool( "allow_colored_names", qtrue, 0, "This enables colored player names." );
 
 	ClientCleanName( s, client->pers.netname, sizeof( client->pers.netname ) , allowColoredNames->boolean );
-	
+
 	/*
 	if(client->sess.sessionTeam == TEAM_RED || client->sess.sessionTeam == TEAM_BLUE)
 		ClientCleanName( s, client->pers.netname, sizeof( client->pers.netname ) , qfalse);
@@ -456,7 +456,7 @@ static void ClientCleanName( const char *in, char *out, int outSize, qboolean al
 					continue;
 				}
 			}else{
-				if ( ColorIndex( *in ) >= 0 && ColorIndex( *in ) <= 9) 
+				if ( ColorIndex( *in ) >= 0 && ColorIndex( *in ) <= 9)
 				{
 					in++;
 					continue;
@@ -498,4 +498,3 @@ static void ClientCleanName( const char *in, char *out, int outSize, qboolean al
 		Q_strncpyz( p, "UnnamedPlayer", outSize );
 	}
 }
-

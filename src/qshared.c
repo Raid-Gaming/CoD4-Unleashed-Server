@@ -149,7 +149,7 @@ void Com_Error(int err, char* fmt,...)
 /*
 =============
 Q_vsnprintf
- 
+
 Special wrapper function for Microsoft's broken _vsnprintf() function.
 MinGW comes with its own snprintf() which is not broken.
 =============
@@ -158,7 +158,7 @@ MinGW comes with its own snprintf() which is not broken.
 int Q_vsnprintf(char *str, size_t size, const char *format, va_list ap)
 {
 	int retval;
-	
+
 	retval = _vsnprintf(str, size, format, ap);
 
 	if(retval < 0 || retval == size)
@@ -169,11 +169,11 @@ int Q_vsnprintf(char *str, size_t size, const char *format, va_list ap)
 		//
 		// Obviously we cannot determine that value from Microsoft's
 		// implementation, so we have no choice but to return size.
-		
+
 		str[size - 1] = '\0';
 		return size;
 	}
-	
+
 	return retval;
 }
 #endif
@@ -181,7 +181,7 @@ int Q_vsnprintf(char *str, size_t size, const char *format, va_list ap)
 /*
 =============
 Q_strncpyz
- 
+
 Safe strncpy that ensures a trailing zero
 =============
 */
@@ -194,7 +194,7 @@ void Q_strncpyz( char *dest, const char *src, int destsize ) {
 		Com_Error( ERR_FATAL, "Q_strncpyz: NULL src" );
 	}
 	if ( destsize < 1 ) {
-		Com_Error(ERR_FATAL,"Q_strncpyz: destsize < 1" ); 
+		Com_Error(ERR_FATAL,"Q_strncpyz: destsize < 1" );
 	}
 
 	strncpy( dest, src, destsize-1 );
@@ -215,7 +215,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
           return 1;
 
 
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -223,7 +223,7 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 		if (!n--) {
 			return 0;		// strings are equal until end point
 		}
-		
+
 		if (c1 != c2) {
 			if (c1 >= 'a' && c1 <= 'z') {
 				c1 -= ('a' - 'A');
@@ -236,13 +236,13 @@ int Q_stricmpn (const char *s1, const char *s2, int n) {
 			}
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
 int Q_strncmp (const char *s1, const char *s2, int n) {
 	int		c1, c2;
-	
+
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
@@ -250,12 +250,12 @@ int Q_strncmp (const char *s1, const char *s2, int n) {
 		if (!n--) {
 			return 0;		// strings are equal until end point
 		}
-		
+
 		if (c1 != c2) {
 			return c1 < c2 ? -1 : 1;
 		}
 	} while (c1);
-	
+
 	return 0;		// strings are equal
 }
 
@@ -462,7 +462,7 @@ char *Q_CleanStr( char *string ) {
 	while ((c = *s) != 0 ) {
 		if ( Q_IsColorString( s ) ) {
 			s++;
-		}		
+		}
 		else if ( c >= 0x20 && c <= 0xFE ) {
 			*d++ = c;
 		}
@@ -494,13 +494,13 @@ char *Q_CleanStrColour( char *string ) {
 int Q_CountChar(const char *string, char tocount)
 {
 	int count;
-	
+
 	for(count = 0; *string; string++)
 	{
 		if(*string == tocount)
 			count++;
 	}
-	
+
 	return count;
 }
 
@@ -515,7 +515,7 @@ int QDECL Com_sprintf(char *dest, int size, const char *fmt, ...)
 
 	if(len >= size)
 		Com_Printf("Com_sprintf: Output length %d too short, require %d bytes.\n", size, len + 1);
-	
+
 	return len;
 }
 
@@ -525,7 +525,7 @@ int QDECL Com_sprintf(char *dest, int size, const char *fmt, ...)
 va
 
 does a varargs printf into a temp buffer, so I don't need to have
-varargs versions of all text functions. 
+varargs versions of all text functions.
  ============
 */
 
@@ -538,18 +538,18 @@ char* QDECL va_replacement(char *dest, int size, const char *fmt, ...)
 {
 	int		len;
 	va_list	argptr;
-	
+
 	va_start (argptr,fmt);
 	len = Q_vsnprintf(dest, size, fmt, argptr);
 	va_end (argptr);
-	
+
 	if(len >= size)
 		Com_Printf("Com_sprintf: Output length %d too short, require %d bytes.\n", size, len + 1);
-	
+
 	return dest;
 }
 
- 
+
 /*
 ============
 Com_TruncateLongString
@@ -730,7 +730,7 @@ char *Info_ValueForKey( const char *s, const char *key ) {
 						// work without stomping on each other
 	static	int	valueindex = 0;
 	char	*o;
-	
+
 	if ( !s || !key ) {
 		return "";
 	}
@@ -949,7 +949,7 @@ static void Info_Encode(const char* inurl, int encodelen, char* outencodedurl, i
 	int i, y;
 	unsigned char* url = (unsigned char*)inurl;
 	unsigned char* encodedurl = (unsigned char*)outencodedurl;
-	
+
 	for(i = 0, y = 0; y < len -4 && i < encodelen; i++)
 	{
 		switch(url[i])
@@ -960,7 +960,7 @@ static void Info_Encode(const char* inurl, int encodelen, char* outencodedurl, i
 				Info_EncodeChar(url[i], &encodedurl[y]);
 				y += 3;
 				break;
-			
+
 			default:
 				if(url[i] < 0x20)
 				{
@@ -1000,7 +1000,7 @@ int Info_Decode(const char* inurl, char* outdecodedurl, int buflen)
 
 	unsigned char* url = (unsigned char*)inurl;
 	unsigned char* decodedurl = (unsigned char*)outdecodedurl;
-	
+
 	for(i = 0, y = 0; url[y] && i < buflen; i++)
 	{
 		if(url[y] == '%')
@@ -1197,9 +1197,9 @@ qboolean isNumeric(const char* string, int size){
 
 /*
  =====================================================================
- 
+
  Functions to operate onto a stack in lifo mode
- 
+
  =====================================================================
  */
 
@@ -1209,19 +1209,19 @@ void stack_init(void *array[], size_t size){
 
 qboolean stack_push(void *array[], int size, void* pointer){
 	void** base;
-	
+
 	if(array[0] == &array[1]) return qfalse;	//Stackoverflow
 	array[0] -= sizeof(void*);
-	
+
 	base = *array;
 	*base = pointer;
 	return qtrue;
 }
 
 void* stack_pop(void *array[], int size){
-	
+
     void** base;
-	
+
     if(array[0] < (void*)((size_t)array+size )){
         base = *array;
         array[0] += sizeof(void*);
@@ -1233,9 +1233,9 @@ void* stack_pop(void *array[], int size){
 
 /*
  =====================================================================
- 
+
  Writing XML STRINGS
- 
+
  =====================================================================
  */
 
@@ -1244,7 +1244,7 @@ void* stack_pop(void *array[], int size){
 void XML_AppendToBuffer( xml_t *base, const char* s )
 {
     int len = strlen(s);
-	
+
     if(len + base->bufposition + 1 >= base->buffersize )
     {
         Com_Printf(  "Error: XML_AppendToBuffer: Overflow!\n" );
@@ -1259,16 +1259,16 @@ void XML_AppendToBuffer( xml_t *base, const char* s )
 /*
  ==================
  XML_Init
- 
+
  Changes or adds a key/value pair
  ==================
  */
 
 void XML_Init( xml_t *base, char *s, int size, char* encoding) {
-	
+
 	Com_Memset(base,0,sizeof(xml_t));
 	char version[1024];
-	
+
 	base->buffer = s;
 	base->bufposition = 0;
 	base->buffersize = size;
@@ -1290,11 +1290,11 @@ void XML_Init( xml_t *base, char *s, int size, char* encoding) {
  */
 void XML_Escape( char* buffer, size_t size, const char* string){
 	int i;
-	
+
 	for(i = 7; i < size && *string != 0; i++, string++){
-		
+
 	    switch(*string){
-				
+
 			case '<':
 				strcpy(buffer, "&lt;");
 				buffer += 4;
@@ -1330,30 +1330,30 @@ void XML_Escape( char* buffer, size_t size, const char* string){
 /*
  ==================
  XML_OpenTag
- 
+
  Changes or adds a key/value pair
  ==================
  */
 qboolean QDECL XML_OpenTag( xml_t *base, char* root, int count,... ) {
-	
+
 	char* key;
 	char* value;
 	char buffer[1024];
 	char smallbuff[128];
 	int i;
-	
+
 	buffer[0] = 0;
 	Com_Memset(&smallbuff[1],' ',base->parents*6);
 	smallbuff[0] = '\n';
 	smallbuff[base->parents*6] = 0;
 	XML_AppendToBuffer( base, smallbuff );
 	Com_sprintf(buffer,sizeof(buffer),"<%s",root);
-	
+
 	if(!stack_push(base->stack,sizeof(base->stack), base->buffer + base->bufposition + 1)){
 		Com_Printf("^3Warning: XML_OpenTag called without prior initialization\n");
 		return qfalse;
 	}
-	
+
 	XML_AppendToBuffer( base, buffer );
 	va_list argptr;
 	va_start(argptr, count);
@@ -1361,9 +1361,9 @@ qboolean QDECL XML_OpenTag( xml_t *base, char* root, int count,... ) {
 	    key = va_arg(argptr, char*);
 	    value = va_arg(argptr, char*);
 	    XML_Escape(smallbuff,sizeof(smallbuff),value);
-		
+
 		Com_sprintf(buffer,sizeof(buffer)," %s=\"%s\"",key,smallbuff);
-		
+
 	    XML_AppendToBuffer( base, buffer );
 	}
 	va_end(argptr);
@@ -1376,12 +1376,12 @@ qboolean QDECL XML_OpenTag( xml_t *base, char* root, int count,... ) {
 /*
  ==================
  XML_CloseTag
- 
+
  Changes or adds a key/value pair
  ==================
  */
 void XML_CloseTag(xml_t *base) {
-	
+
 	char buffer[256];
 	char outbuffer[256];
 	char preoffset[128];
@@ -1406,9 +1406,9 @@ void XML_CloseTag(xml_t *base) {
 	Com_Memset(&preoffset[1],' ',base->parents*6);
 	preoffset[base->parents*6] = 0;
 	preoffset[(base->parents*6)+1] = 0;
-	
+
 	buffer[0] = '\0';
-	
+
 	root = stack_pop(base->stack,sizeof(base->stack));
 	for(i=0 ;*root != ' ' && *root != 0 && *root != '>' && i < sizeof(buffer); stringptr++, root++, i++) *stringptr = *root;
 	*stringptr = 0;
@@ -1417,7 +1417,7 @@ void XML_CloseTag(xml_t *base) {
 	}else{
 		Com_sprintf(outbuffer,sizeof(outbuffer),"\n%s</%s>",&preoffset[1],buffer);
 	}
-	
+
 	XML_AppendToBuffer( base, outbuffer );
 	base->last = qfalse;
 }
@@ -1554,7 +1554,7 @@ qboolean I_IsEqualUnitWSpace(char *cmp1, char *cmp2)
 
 		if ( *cmp1 != *cmp2 )
 			return qfalse;
-				
+
 		cmp1++;
 		cmp2++;
 	}
@@ -1644,7 +1644,7 @@ qboolean isInteger(const char* string, int size)
         {
             if(whitespaceended == qfalse)
                 continue;
-            else 
+            else
                 return qtrue;
         }
         whitespaceended = qtrue;
@@ -1732,5 +1732,3 @@ qboolean strToVect(const char* string, float *vect, int dim)
 
     return qtrue;
 }
-
-

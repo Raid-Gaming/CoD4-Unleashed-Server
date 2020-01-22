@@ -19,14 +19,14 @@ qboolean Sec_VerifyHash(const char *sig, size_t sigSize, const rsa_key *key, con
 
 
 qboolean Sec_MakeCertificate(rsa_key *key, const char *commonName, const char *companyName, int expires, const char *signature, int sigSize, sec_certificate_t *issuer,rsa_key *sigKey,sec_certificate_t *out){
-    
+
     hash_state md;
     char hash[257];
     size_t len;
-    
+
     const struct ltc_hash_descriptor *desc = &sha256_desc;
-    
-    
+
+
     memset(out,0,sizeof(sec_certificate_t));
     out->certificate.version = SEC_SIGN_VER;
     strcpy(out->certificate.commonName,commonName);
@@ -40,7 +40,7 @@ qboolean Sec_MakeCertificate(rsa_key *key, const char *commonName, const char *c
     out->certificate.pubKey.type = PK_PUBLIC;
     mp_copy(out->certificate.pubKey.N,key->N);
     mp_copy(out->certificate.pubKey.e,key->e);
-    
+
     len = sizeof(out->signature);
     if(issuer != NULL){
 	if(!Sec_SignHash(hash,sizeof(hash),sigKey,out->signature,&len)){
@@ -66,17 +66,17 @@ qboolean Sec_WriteCertificateToFile(sec_certificate_t *certificate, char *filena
     fputs("IceOps Signature File. Visit us at www.iceops.in!",fp);
     fputc(0,fp);
     cert = certificate;
-    do{    
+    do{
         len = 16 + strlen(cert->certificate.commonName) + strlen(cert->certificate.companyName) + cert->sigSize;
-        
+
         keysize = sizeof(buf);
-        
+
         if(rsa_export((unsigned char *)buf,&keysize,PK_PUBLIC,&(cert->certificate.pubKey)) != CRYPT_OK){
-		fclose(fp);	
+		fclose(fp);
 		return qfalse;
         }
         len += keysize;
-        
+
         fprintf(fp,"%d\n",len);
         fwrite(&cert->certificate,12,1,fp);
         fputc(0,fp);
@@ -86,11 +86,11 @@ qboolean Sec_WriteCertificateToFile(sec_certificate_t *certificate, char *filena
         fwrite(buf,keysize,1,fp);
         fprintf(fp,"%d\n",cert->sigSize);
         fwrite(cert->signature,cert->sigSize,1,fp);
-        
-    
+
+
         fputc(0,fp);
         fputc(0,fp);
-        
+
         fflush(fp);
         cert = cert->issuer;
     }while(cert != NULL);
@@ -99,6 +99,6 @@ qboolean Sec_WriteCertificateToFile(sec_certificate_t *certificate, char *filena
 }
 
 qboolean Sec_ReadCertificateFromFile(sec_certificate_t *cert, char *filename){
-    
+
     return qtrue;
 }

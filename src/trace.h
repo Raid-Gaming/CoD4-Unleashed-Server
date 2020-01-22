@@ -54,4 +54,3 @@ void __cdecl CM_TransformedBoxTrace(trace_t* trace, const float* start, const fl
 			clipHandle_t cliphandle, int contentmask, const float* origin, const float* angle);
 
 #endif
-

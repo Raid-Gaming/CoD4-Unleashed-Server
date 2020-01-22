@@ -700,7 +700,7 @@ void Com_InitGamefunctions()
     SV_Cmd_Init();
     SV_AddOperatorCommands();
 	SV_RemoteCmdInit();
-	
+
     cvar_t **msg_dumpEnts = (cvar_t**)(0x8930c1c);
     cvar_t **msg_printEntityNums = (cvar_t**)(0x8930c18);
     *msg_dumpEnts = Cvar_RegisterBool( "msg_dumpEnts", qfalse, CVAR_TEMP, "Print snapshot entity info");
@@ -943,7 +943,7 @@ unsigned int Com_ModifyUsec( unsigned int usec ) {
 	} else if ( com_timescale->value ) {
 		usec *= com_timescale->value;
 	}
-	
+
 	// don't let it scale below 1 usec
 	if ( usec < 1 && com_timescale->value) {
 		usec = 1;
@@ -1006,7 +1006,7 @@ __optimize3 void Com_Frame( void ) {
 		Sys_EnterCriticalSection(CRIT_ERRORCHECK);
 		if(Com_InError() == qtrue)
 		{
-			Com_Error(0, "Error Cleanup");		
+			Com_Error(0, "Error Cleanup");
 		}
 		Sys_LeaveCriticalSection(CRIT_ERRORCHECK);
 	}
@@ -1039,13 +1039,13 @@ __optimize3 void Com_Frame( void ) {
 			minMsec = 1000 / com_maxfps->integer;
 		else
 			minMsec = 1;
-		
+
 		timeVal = com_frameTime - lastTime;
 		bias += timeVal - minMsec;
-		
+
 		if(bias > minMsec)
 			bias = minMsec;
-		
+
 		// Adjust minMsec if previous frame took too long to render so
 		// that framerate is stable at the requested value.
 		minMsec -= bias;
@@ -1077,10 +1077,10 @@ __optimize3 void Com_Frame( void ) {
 	//
 	// server side
 	//
-	
+
 	Com_EventLoop();
 
-	
+
 #ifdef TIMEDEBUG
 	if ( com_speeds->integer ) {
 		timeBeforeServer = Sys_Milliseconds ();
@@ -1121,16 +1121,16 @@ __optimize3 void Com_Frame( void ) {
 		sv -= time_game;
 		cl -= time_frontend + time_backend;
 
-		Com_Printf ("frame:%i all:%3i sv:%3i ev:%3i cl:%3i gm:%3i rf:%3i bk:%3i\n", 
+		Com_Printf ("frame:%i all:%3i sv:%3i ev:%3i cl:%3i gm:%3i rf:%3i bk:%3i\n",
 					 com_frameNumber, all, sv, ev, cl, time_game, time_frontend, time_backend );
-	}	
+	}
 #endif
 	//
 	// trace optimization tracking
 	//
 #ifdef TRACEDEBUG
 	if ( com_showtrace->integer ) {
-	
+
 		extern	int c_traces, c_brush_traces, c_patch_traces;
 		extern	int	c_pointcontents;
 
@@ -1145,12 +1145,12 @@ __optimize3 void Com_Frame( void ) {
 	com_frameNumber++;
 	Com_WriteConfiguration( );
 	Com_UpdateRealtime();
-	
+
 	/* Invokes Com_Error if needed */
 	Sys_EnterCriticalSection(CRIT_ERRORCHECK);
 	if(Com_InError() == qtrue)
 	{
-		Com_Error(0, "Error Cleanup");		
+		Com_Error(0, "Error Cleanup");
 	}
 	Sys_LeaveCriticalSection(CRIT_ERRORCHECK);
 }
@@ -1342,13 +1342,13 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 
 	if(com_developer && com_developer->integer > 1)
 		__builtin_trap ( );
-		
+
 	Sys_EnterCriticalSection(CRIT_ERROR);
-	
+
 	if(Sys_IsMainThread() == qfalse)
 	{
 		com_errorEntered = qtrue;
-		
+
 		va_start (argptr,fmt);
 		Q_vsnprintf (com_errorMessage, sizeof(com_errorMessage),fmt,argptr);
 		va_end (argptr);
@@ -1368,22 +1368,22 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 		return;
 	}
 	mainThreadInError = qtrue;
-	
+
 	if(com_errorEntered == qfalse)
 	{
 		com_errorEntered = qtrue;
-		
+
 		va_start (argptr,fmt);
 		Q_vsnprintf (com_errorMessage, sizeof(com_errorMessage),fmt,argptr);
 		va_end (argptr);
 		lastErrorCode = code;
-	
+
 	}
-	
+
 	code = lastErrorCode;
-	
+
 	Cvar_RegisterInt("com_errorCode", code, code, code, CVAR_ROM, "The last calling error code");
-	
+
 	// if we are getting a solid stream of ERR_DROP, do an ERR_FATAL
 	currentTime = Sys_Milliseconds();
 	if ( currentTime - lastErrorTime < 400 ) {
@@ -1421,7 +1421,7 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 	NET_Shutdown();
 	Com_CloseLogFiles( );
 	Sys_Error ("%s", com_errorMessage);
-	
+
 }
 
 
@@ -1489,4 +1489,3 @@ void Com_WriteConfig_f( void ) {
 	Com_Printf( "Writing %s.\n", filename );
 	Com_WriteConfigToFile( filename );
 }
-

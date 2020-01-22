@@ -20,14 +20,14 @@
 
 %macro pexport 1
 
-	SECTION .text	
+	SECTION .text
 		%ifdef Win32
 			EXPORT Plugin_%1
 		%endif
 		global Plugin_%1
 		Plugin_%1: jmp dword [p%1]
 
-	SECTION .rodata	
+	SECTION .rodata
 		extern %1
 		p%1 dd %1
 
@@ -35,17 +35,17 @@
 
 %macro ralias 2
 
-	SECTION .text		
+	SECTION .text
 		%ifdef Win32
 			EXPORT %1
 		%endif
 		global %1
 		%1: jmp dword [p%2]
-		
-	SECTION .rodata	
+
+	SECTION .rodata
 		extern %2
 		p%2 dd %2
-	
+
 %endmacro
 
 

@@ -88,11 +88,3 @@ float Q_fabs( float f );
 #endif
 
 #endif
-
-
-
-
-
-
-
-

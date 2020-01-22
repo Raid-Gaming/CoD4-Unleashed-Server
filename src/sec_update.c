@@ -50,7 +50,7 @@ char *Sec_StrTok(char *str,char *tokens,int id){
 	if(mem[id]==NULL){
 	    return NULL;
 	}
-	
+
 	for(ptr=mem[id];*ptr != 0;++ptr){
 	    //printf("---%c\n",*ptr);
 	    for(ptr2=tokens;*ptr2!=0;++ptr2){
@@ -86,7 +86,7 @@ char *Sec_StrTok(char *str,char *tokens,int id){
 	}
 	if(mem[id] == NULL) return NULL;
 	return Sec_StrTok(NULL,tokens,id); // BECAUSE I CAN.
-    }	
+    }
 }
 
 void Sec_FreeFileStruct(sec_file_t *file){
@@ -111,11 +111,11 @@ void Sec_Update( qboolean getbasefiles ){
 	int transret;
 	mvabuf;
 
-	
+
     if(!Sec_Initialized()){
 	return;
     }
-    
+
 #ifdef CAN_UPDATE
     Com_Printf("\n-----------------------------\n");
     Com_Printf(" CoD4X Auto Update\n");
@@ -146,7 +146,7 @@ void Sec_Update( qboolean getbasefiles ){
         return;
     }
 #endif
-	
+
 	filetransferobj = FileDownloadRequest( buff );
 
     if(filetransferobj == NULL){
@@ -201,7 +201,7 @@ void Sec_Update( qboolean getbasefiles ){
     ptr = Sec_StrTok(NULL,"\n",42); // Yes, 42 again.
 
 	while(ptr != NULL){
-		
+
 		currFile->next = Sec_GMalloc(sec_file_t,1);
 		currFile = currFile->next;
 		Com_Memset(currFile,0,sizeof(sec_file_t));
@@ -232,12 +232,12 @@ void Sec_Update( qboolean getbasefiles ){
 		//printf("DEBUG: File to download: link: \"%s\", name: \"%s\", size: %d, hash: \"%s\"\n\n",file.path,file.name,file.size,file.hash);
 
 		Com_sprintf(buff, sizeof(buff), SEC_UPDATE_DOWNLOAD(baseurl, currFile->path));
-		
+
 		curfileobj = FileDownloadRequest(buff);
 		if(curfileobj == NULL)
 		{
 			FileDownloadFreeRequest(filetransferobj);
-			return;	
+			return;
 		}
 
 		Com_Printf("Downloading file: \"%s\"\n\n",currFile->name);
@@ -247,7 +247,7 @@ void Sec_Update( qboolean getbasefiles ){
 			Com_Printf("%s", FileDownloadGenerateProgress( curfileobj ));
 			usleep(20000);
 		} while (transret == 0);
-		
+
 		Com_Printf("\n");
 
 		if(transret < 0)
@@ -283,7 +283,7 @@ void Sec_Update( qboolean getbasefiles ){
 		ptr = Sec_StrTok(NULL,"\n",42); // Yes, 42 again.
 
 		size = sizeof(hash);
-		
+
 		if(!Sec_HashMemory(SEC_HASH_SHA256, curfileobj->recvmsg.data + curfileobj->headerLength, curfileobj->contentLength, hash, &size,qfalse)){
 			Com_PrintError("Hashing the file \"%s\". Error code: %s.\nUpdate aborted.\n",currFile->name,Sec_CryptErrStr(SecCryptErr));
 			FileDownloadFreeRequest(filetransferobj);
@@ -292,7 +292,7 @@ void Sec_Update( qboolean getbasefiles ){
 		}
 
 		FileDownloadFreeRequest(curfileobj);
-		
+
 		if(!Q_strncmp(hash, currFile->hash, size)){
 			Com_Printf("Successfully downloaded file \"%s\".\n", currFile->name);
 		}
@@ -302,7 +302,7 @@ void Sec_Update( qboolean getbasefiles ){
 			FileDownloadFreeRequest(filetransferobj);
 			return;
 		}
-		
+
 	}
 
 	FileDownloadFreeRequest(filetransferobj);

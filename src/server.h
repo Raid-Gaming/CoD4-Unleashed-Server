@@ -166,7 +166,7 @@ typedef struct client_s {//90b4f8c
 	byte			dummy767[110];
 #else
 	netreliablemsg_t relmsg;
-#endif	
+#endif
 	byte			free[518];
 
 	char			name[64];
@@ -228,7 +228,7 @@ typedef struct client_s {//90b4f8c
 	char			pbguid[33]; //0xa0d00
 	byte			pad;
 	short			clscriptid; //0xa0d22
-	int			canNotReliable; 
+	int			canNotReliable;
 	int			serverId; //0xa0d28
 	voices_t		voicedata[40];
 	int			unsentVoiceData;//(0xa35f4)
@@ -377,7 +377,7 @@ typedef struct {//0x8c51780
 
 	entityUnknownStr_t entUnknown1[512];
 	archivedEntity_t archivedEntities[16384];
-	
+
 	qboolean	initialized;				//0x90b4f80 sv_init has completed
 
 	int		time;					// will be strictly increasing across level changes
@@ -392,12 +392,12 @@ typedef struct {//0x8c51780
 	int		numSnapshotClients;
 	int		nextSnapshotEntities;		//0xba0de94 next snapshotEntities to use
 	int		nextSnapshotClients;
-	
+
 	entityState_t snapshotEntities[0x2A000];
 	clientState_ts snapshotClients[0x20000];
 
 	int nextArchivedSnapshotFrames; //0xee95e9c
-	
+
 	svArchiveBuf_t archiveSnaps[1200];
 	byte archiveSnapBuffer[0x2000000];
 	int nextArchivedSnapshotBuffer;
@@ -405,26 +405,26 @@ typedef struct {//0x8c51780
 	int nextCachedSnapshotClients;
 	int nextCachedSnapshotFrames;
 	entityUnknownStr2_t entUnknown2[4096];
-	
+
 	int nextHeartbeatTime;
-	
+
 	int field_4;
-	
+
 	challenge2_t challenges[MAX_CHALLENGES];
-	
+
 	int redirectAddress[5];
 	int authorizeAddress[5];
-	
+
 	char netProfilingBuf[1504];
-	
+
 	banlist_t banlist[16];
-	
+
 	int field_14850;
-	
+
 	vec3_t mapCenter;
-	
+
 	char field_14860[112];
-	
+
 }serverStatic_t; //Size: 0xb227580
 
 
@@ -464,7 +464,7 @@ typedef enum {
 
 typedef struct svEntity_s {//Everything is not validated except size
 	struct svEntity_s *nextEntityInWorldSector;
-	
+
 	entityState_t		baseline;		// 0x04  for delta compression of initial sighting
 	int			numClusters;		// if -1, use headnode instead
 	int			clusternums[MAX_ENT_CLUSTERS];
@@ -487,7 +487,7 @@ typedef struct {//0x13e78d00
 	int			checksumFeed;		// 0x14 the feed key that we use to compute the pure checksum strings
 	// https://zerowing.idsoftware.com/bugzilla/show_bug.cgi?id=475
 	// the serverId associated with the current checksumFeed (always <= serverId)
-/*	int			checksumFeedServerId;	
+/*	int			checksumFeedServerId;
 	int			snapshotCounter;	// incremented for each snapshot built
 
 	int			nextFrameTime;		// when time > nextFrameTime, process world
@@ -510,7 +510,7 @@ typedef struct {//0x13e78d00
 /*
 	int				restartTime;
 	int				time;*/
-	
+
 	int			field_5FB44;
 	int			field_5FB48;
 	int			bpsWindow[MAX_BPS_WINDOW];
@@ -545,7 +545,7 @@ typedef struct{//13F18F80
 	entityState_t		*snapshotEntities;	//0x13f18f9c
 	clientState_ts		*snapshotClients;	//0x13f18fa0
 	svEntity_t		*svEntities;		//0x13f18fa4
-	
+
 	vec3_t mapCenter;
 	archivedEntity_t *archivedEntities;
 	entityUnknownStr2_t *entUnknown2;
@@ -564,8 +564,8 @@ typedef struct{//13F18F80
 	clientSession_t *gclientstate;
 	gclient_t *gplayerstate;
 	int gclientSize;
-	
-	
+
+
 	/*
 	int			unkBig[7];
 	int			var_01;			//0x13f18fc4

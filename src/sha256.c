@@ -29,8 +29,8 @@ const char* Com_SHA256( const char* string )
     if(!Sec_HashMemory(SEC_HASH_SHA256,(void *)string,strlen(string),finalsha,&size,qfalse))
 	Com_Printf("Warning: Com_SHA256, error while hashing! Error:%s\n",Sec_CryptErrStr(SecCryptErr));
     /*hash_state md;
-    
-    
+
+
     sha256_desc.init(&md);
     sha256_desc.process(&md, (const unsigned char *)string, strlen(string));
     sha256_desc.done(&md,(unsigned char *)finalsha);

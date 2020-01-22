@@ -157,7 +157,7 @@ tcpclientstate_t HL2Rcon_SourceRconAuth(netadr_t *from, msg_t *msg, int *connect
 	if(SV_PlayerBannedByip(from, buf, sizeof(buf))){
 		return TCP_AUTHBAD;
 	}
-	
+
 	MSG_Init(&sendmsg, msgbuf, sizeof(msgbuf));
 	MSG_WriteLong(&sendmsg, 10);
 	MSG_WriteLong(&sendmsg, 0);
@@ -279,7 +279,7 @@ void HL2Rcon_SourceRconSendDataToEachClient( const byte* data, int msglen, int t
 		if(!user->streamevents && type == SERVERDATA_EVENT)
 			continue;
 
-		
+
 		if(!msgbuild){
 			MSG_Init(&msg, sourcemsgbuf, sizeof(sourcemsgbuf));
 			MSG_WriteLong(&msg, 0); //writing 0 for now
@@ -419,8 +419,8 @@ void HL2Rcon_ExecuteConsoleCommand(const char* command, int uid)
 	char buffer[960];
 	char cmd[48];
 	int power, powercmd, oldpower, oldinvokeruid, oldinvokerclnum, i;
-	
-	
+
+
 	if((power = Auth_GetClPowerByUID(uid)) < 100)
 	{
 		i = 0;
@@ -429,16 +429,16 @@ void HL2Rcon_ExecuteConsoleCommand(const char* command, int uid)
 			i++;
 		}
 		if(i > 29 || i < 3) return;
-		
+
 		Q_strncpyz(cmd,command,i+1);
-		
+
 		//Prevent buffer overflow as well as prevent the execution of priveleged commands by using seperator characters
 		Q_strncpyz(buffer, command, sizeof(buffer));
 		Q_strchrrepl(buffer,';','\0');
 		Q_strchrrepl(buffer,'\n','\0');
 		Q_strchrrepl(buffer,'\r','\0');
 		// start redirecting all print outputs to the packet
-		
+
 		powercmd = Cmd_GetPower(cmd);
 		if(powercmd > power)
 		{
@@ -447,17 +447,17 @@ void HL2Rcon_ExecuteConsoleCommand(const char* command, int uid)
 			Com_EndRedirect();
 			return;
 		}
-		
+
 		oldpower = Cmd_GetInvokerPower();
 		oldinvokeruid = Cmd_GetInvokerUID();
 		oldinvokerclnum = Cmd_GetInvokerClnum();
 		Cmd_SetCurrentInvokerInfo(uid, power, -1);
-		
+
 		Com_BeginRedirect (sv_outputbuf, SV_OUTPUTBUF_LENGTH, HL2Rcon_SourceRconFlushRedirect);
 		Cmd_ExecuteSingleCommand(0,0, buffer);
-		
+
 		Cmd_SetCurrentInvokerInfo(oldinvokeruid, oldpower, oldinvokerclnum);
-		
+
 	}else{
 		Com_BeginRedirect (sv_outputbuf, SV_OUTPUTBUF_LENGTH, HL2Rcon_SourceRconFlushRedirect);
 		Cmd_ExecuteSingleCommand(0,0, command);
@@ -490,7 +490,7 @@ qboolean HL2Rcon_SourceRconEvent(netadr_t *from, msg_t *msg, int connectionId){
 
     while(msg->readcount < msg->cursize)
     {
-	//packetlen = 
+	//packetlen =
 	MSG_ReadLong(msg);
 
 	if(connectionId < 0 || connectionId >= MAX_RCONUSERS)
@@ -502,7 +502,7 @@ qboolean HL2Rcon_SourceRconEvent(netadr_t *from, msg_t *msg, int connectionId){
 	user->lastpacketid = MSG_ReadLong(msg);
 
 	packettype = MSG_ReadLong(msg);
-	
+
 	switch(packettype)
 	{
 		case SERVERDATA_GETSTATUS:

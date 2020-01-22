@@ -128,5 +128,3 @@ void G_HudDestroy(game_hudelem_t* element);
 
 
 #endif
-
-

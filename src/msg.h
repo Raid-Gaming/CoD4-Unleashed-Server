@@ -102,4 +102,3 @@ void MSG_WriteBase64(msg_t* msg, byte* inbuf, int len);
 void MSG_ReadBase64(msg_t* msg, byte* outbuf, int len);
 
 #endif
-

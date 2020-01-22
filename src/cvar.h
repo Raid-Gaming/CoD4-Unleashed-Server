@@ -232,5 +232,3 @@ void Cvar_Init(void);
 #define	CVAR_USER_CREATED	16384	// created by a set command
 
 #endif
-
-

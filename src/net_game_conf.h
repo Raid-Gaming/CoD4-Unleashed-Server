@@ -84,4 +84,3 @@ enum clc_ops_e {
 };
 
 #endif
-

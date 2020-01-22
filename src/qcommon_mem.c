@@ -101,4 +101,3 @@ void* Z_Malloc(int size)
 	memset(allocmem, 0, size);
 	return allocmem;
 }
-

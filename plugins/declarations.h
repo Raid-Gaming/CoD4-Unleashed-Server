@@ -97,7 +97,7 @@ typedef struct {
 	int			qport;				// qport value to write when transmitting (0x24)
 	// incoming fragment assembly buffer
 	int			fragmentSequence;
-	int			fragmentLength;	
+	int			fragmentLength;
 	byte		*fragmentBuffer; // Old: (0x30)
 	int			fragmentBufferSize;
 
@@ -379,7 +379,7 @@ typedef struct playerState_s {
 	int		otherFlags;  // 20
 	int		pm_time;  // 24
 	vec3_t		origin;  // 28
-	
+
 	// http://zeroy.com/script/player/getvelocity.htm
 	vec3_t		velocity;  // 40
 
@@ -397,9 +397,9 @@ typedef struct playerState_s {
 	int		leanf;  // 92
 	int		speed;  // 96
 	vec3_t		delta_angles;  // 100
-	
-	/*The ground entity's rotation will be added onto the player's view.  In particular, this will 
-	* cause the player's yaw to rotate around the entity's z-axis instead of the world z-axis. 
+
+	/*The ground entity's rotation will be added onto the player's view.  In particular, this will
+	* cause the player's yaw to rotate around the entity's z-axis instead of the world z-axis.
 	* Any rotation that the reference entity undergoes will affect the player.
 	* http://zeroy.com/script/player/playersetgroundreferenceent.htm */
 	int		groundEntityNum;  // 112
@@ -407,7 +407,7 @@ typedef struct playerState_s {
 	vec3_t		vLadderVec;  // 116
 	int		jumpTime;  // 128
 	float		jumpOriginZ;  // 132
-	
+
 	// Animations as in mp/playeranim.script and animtrees/multiplayer.atr, it also depends on mp/playeranimtypes.txt (the currently used weapon)
 	int		legsTimer;  // 136
 	int		legsAnim;  // 140
@@ -437,12 +437,12 @@ typedef struct playerState_s {
 	int		weaponShotCount;  // 240
 	int		fWeaponPosFrac;  // 244
 	int		adsDelayTime;  // 248
-	
+
 	// http://zeroy.com/script/player/resetspreadoverride.htm
 	// http://zeroy.com/script/player/setspreadoverride.htm
 	int		spreadOverride;  // 252
 	int		spreadOverrideState;  // 256
-	
+
 	int		viewmodelIndex;  // 260
 
 	vec3_t		viewangles;  // 264
@@ -482,18 +482,18 @@ typedef struct playerState_s {
 
 	int		locationSelectionInfo;  // 1460
 	sprintState_t	sprintState;  // 1464
-	
+
 	// used for leaning?
 	int		fTorsoPitch;  // 1484
 	int		fWaistPitch;  // 1488
 
 	int		holdBreathScale;  // 1492
 	int		holdBreathTimer;  // 1496
-	
+
 	// Scales player movement speed by this amount, ???it's actually a float???
 	// http://zeroy.com/script/player/setmovespeedscale.htm
 	int		moveSpeedScaleMultiplier;  // 1500
-	
+
 	mantleState_t	mantleState;  // 1504
 	int		meleeChargeYaw;  // 1520
 	int		meleeChargeDist;  // 1524
@@ -507,7 +507,7 @@ typedef struct playerState_s {
 
 	int		weapAnim;  // 1572
 	int		aimSpreadScale;  // 1576
-	
+
 	// http://zeroy.com/script/player/shellshock.htm
 	int		shellshockIndex;  // 1580
 	int		shellshockTime;  // 1584
@@ -682,7 +682,7 @@ typedef struct client_s {//90b4f8c
 	char			pbguid[33]; //0xa0d00
 	byte			pad;
 	short			clscriptid; //0xa0d22
-	int			canNotReliable; 
+	int			canNotReliable;
 	int			serverId; //0xa0d28
 	voices_t		voicedata[40];
 	int			unsentVoiceData;//(0xa35f4)

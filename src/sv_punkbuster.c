@@ -248,7 +248,7 @@ void PbSvBuildHomePath(char* ospath)
 	{
 		return;
 	}
-	
+
 	Q_strncpyz(ospath, "fs_homepath", MAX_OSPATH);
 	pbsv.PbSvGameQuery(103, ospath);
 
@@ -256,7 +256,7 @@ void PbSvBuildHomePath(char* ospath)
 	{
 		Q_strncpyz(ospath, Sys_DefaultInstallPath( ), MAX_OSPATH - 5 );
 	}
-	
+
 	if ( ospath[0] )
     {
 		if ( ospath[strlen(ospath) -1] != PATH_SEP )
@@ -283,7 +283,7 @@ void PbSvBuildBasePath(char* ospath)
 	}
 	Q_strncpyz(ospath, "fs_basepath", MAX_OSPATH);
 	pbsv.PbSvGameQuery(103, ospath);
-    
+
 	if ( ospath[0] )
     {
 		if ( ospath[strlen(ospath) -1] != PATH_SEP )
@@ -302,12 +302,12 @@ void PbSvMakeHomepathCopy(const char *modulename, char *basepath)
 {
 	char dstpath[512];
 	char srcpath[512];
-	
+
 	Q_strncpyz(dstpath, pbsv.pbPath, sizeof( dstpath ) );
 	Q_strcat( dstpath, sizeof(dstpath), modulename );
 
 	Q_strncpyz(srcpath, basepath, sizeof( srcpath ) );
-	Q_strcat( srcpath, sizeof(srcpath), modulename );	
+	Q_strcat( srcpath, sizeof(srcpath), modulename );
 
 	/* File exists ? */
 	if ( FS_FileExistsOSPath( dstpath ) == qtrue )
@@ -366,7 +366,7 @@ int PbSVLoadModule()
 	{
 		return 0;
 	}
-	
+
 	PbSvUnload();
 
 	if ( FS_FileExistsOSPath( PbSv6makefn(modname, "pbsvnew" DLL_EXT) ) == qtrue )
@@ -474,13 +474,13 @@ int PbSVLoadModule()
 
 	pbsv.sa = Sys_GetProcedure( "sa" );
     pbsv.sb = Sys_GetProcedure( "sb" );
-	
+
     if ( pbsv.sa && pbsv.sb ){
-    
+
 		pbsv.wantdisable = 0;
 		return 0;
     }else{
-	
+
         PbSvUnload();
 	return 1;
 	}
@@ -488,31 +488,31 @@ int PbSVLoadModule()
 }
 
 void PbSv10AddPbEvent(pbsv_object_t *this, int eventType, int clnum, int maxstringsize, char *string, int a6)
-{	
+{
 	if ( !pbsv.PbSvGameCommand || PbInitFailure )
 		return;
-	
+
 	if ( !pbsv.wantdisable )
 	{
-	  
+
 		if ( pbsv.hLibModule )
 		{
 			pbsv.sb(this, eventType, clnum, maxstringsize, string, a6);
 			return;
 		}
-		
+
 	}else{
-	
+
 		if ( pbsv.hLibModule )
 		{
 			PbSvUnload();
 			return;
 		}
 	}
-		
+
 	if ( PbSVLoadModule() )
 		return;
-		
+
 	pbsv.sb(this, eventType, clnum, maxstringsize, string, a6);
 }
 
@@ -523,7 +523,7 @@ void PbServerProcessEvents(int type)
 	{
 		return;
 	}
-	
+
     if ( pbsv.hLibModule )
     {
 		if ( pbsv.wantdisable )
@@ -531,16 +531,16 @@ void PbServerProcessEvents(int type)
 			PbSvUnload();
 			return;
 		}
-		
+
 		pbsv.sa(&pbsv, type);
 		return;
     }
-    
+
     if ( pbsv.wantdisable )
 	{
 		PbSv10AddPbEvent(&pbsv, 16, -1, 0, "", 0);
 	}
-	
+
 }
 
 void PbServerForceProcess()
@@ -562,7 +562,7 @@ int __cdecl PbSvGameCommand(const char *cmd, char *arg)
 	{
 		Cvar_SetBoolByName("sv_punkbuster", 0);
 	}else{
-		Cvar_SetBoolByName("sv_punkbuster", 1);		
+		Cvar_SetBoolByName("sv_punkbuster", 1);
 	}
     return 0;
   }
@@ -572,13 +572,13 @@ int __cdecl PbSvGameCommand(const char *cmd, char *arg)
     g_ConsoleCaptureBufLen = (int)arg;
     return 0;
   }
-  
+
   if ( !Q_stricmp(cmd, "ConCapBuf") )
   {
     g_ConsoleCaptureBuf = (char*)arg;
     return 0;
   }
-  
+
   if ( !Q_stricmp(cmd, "Cmd_Exec") )
   {
     Cmd_ExecuteSingleCommand(0, 0, arg);
@@ -588,9 +588,9 @@ int __cdecl PbSvGameCommand(const char *cmd, char *arg)
     }
 	return 0;
   }
-  
+
   strptr = arg;
-  
+
   while( strptr[0] == ' ')
 		++strptr;
 
@@ -601,13 +601,13 @@ int __cdecl PbSvGameCommand(const char *cmd, char *arg)
 
   while( strptr[0] == ' ')
 	++strptr;
-  
+
   if ( !Q_stricmp(cmd, "DropClient") )
   {
       PB_DropClient(atoi(arg), strptr);
       return 0;
   }
-  
+
   if ( !Q_stricmp(cmd, "Cvar_Set") || !Q_stricmp(cmd, "Dvar_Set") )
   {
       oldchar = *split;
@@ -632,7 +632,7 @@ void PbCaptureConsoleOutput(const char *msg, int buflen)
 
   //PbClientTrapConsole(msg, buflen);
   PbServerTrapConsole(msg, buflen);
-  
+
   if ( g_ConsoleCaptureBuf )
   {
     len = strlen(g_ConsoleCaptureBuf);
@@ -709,7 +709,7 @@ qboolean PbServerInitialize()
 	pbsv.PbSvSendToAddrPort = PbSvSendToAddrPort;
 
 	PbSv10AddPbEvent(&pbsv, 16, -1, 0, "", 0);
-	
+
 	if ( !pbsv.sb )
 	{
 		Cvar_SetBoolByName("sv_punkbuster", 0);
@@ -760,5 +760,3 @@ void PbSvConstructor()
 }
 
 #endif
-
-

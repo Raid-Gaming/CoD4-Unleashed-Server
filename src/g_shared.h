@@ -100,7 +100,7 @@ typedef struct { //0x8370440
 	int unknown;
 	int clientNameMode;			//0x218 Manual Change mode
 	int numPlayingClients;              // connected, non-spectators
-	int sortedClients[MAX_CLIENTS];		//sorted by rank or score ? 0x220 
+	int sortedClients[MAX_CLIENTS];		//sorted by rank or score ? 0x220
 
 
 
@@ -502,4 +502,3 @@ void __cdecl G_SetModel(gentity_t *ent, const char* modelname);
 #define g_maxclients getcvaradr(0x84bcfe8)
 
 #endif /*G_SHARED_H*/
-

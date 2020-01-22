@@ -509,4 +509,3 @@ void GScr_AddScriptCommand();
 void RuntimeError(char *a3, int arg4, char *message, char *a4);
 
 #endif
-

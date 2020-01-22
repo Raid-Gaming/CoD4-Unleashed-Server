@@ -28,12 +28,12 @@ char* asyncPostRequest( char* host, int port, char* path, char* data, int getRes
 
 void* processAsyncPostRequest( void* args ) {
 	asyncPostRequestArgs *argStruct = args;
-	
+
 	struct hostent *server;
 	struct sockaddr_in serv_addr;
 	int sockfd, bytes, sent, received, total;
 	char *msg, message[4096], response[4096];
-	
+
 	// Fill in HTTP header
     sprintf( message, "%s /%s HTTP/1.0\r\n",
         "POST",
@@ -44,7 +44,7 @@ void* processAsyncPostRequest( void* args ) {
     sprintf( message + strlen( message ), "Content-Length: %d\r\n", strlen( argStruct->data ) );
     strcat( message, "\r\n" );
     strcat( message, argStruct->data );
-	
+
 	// Create the socket
 	sockfd = socket( AF_INET, SOCK_STREAM, 0 );
 	if( sockfd < 0 ) {
@@ -60,13 +60,13 @@ void* processAsyncPostRequest( void* args ) {
 		close( sockfd );
 		pthread_exit( NULL );
 	}
-    
+
     // Fill in the structure
     memset( &serv_addr, 0, sizeof( serv_addr ) );
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons( atoi( argStruct->port ) );
     memcpy( &serv_addr.sin_addr.s_addr, server->h_addr, server->h_length );
-    
+
     // Connect to socket
     if( connect( sockfd, (struct sockaddr*)&serv_addr, sizeof( serv_addr ) ) < 0 ) {
         Com_PrintError( "^1ERROR connecting to socket" );
@@ -75,7 +75,7 @@ void* processAsyncPostRequest( void* args ) {
     }
 
     msg = message;
-    
+
     // Send the request
     total = strlen( msg );
     sent = 0;
@@ -117,48 +117,48 @@ void* processAsyncPostRequest( void* args ) {
 	        close( sockfd );
 	        return NULL;
 	    }
-		
+
 		// Strip the header from the response
 		char* const endof = strstr( response, "\r\n\r\n" );
 		*endof = '\0';
-		
+
 		strcpy( argStruct->response, endof + 4 );
 	}
-	
+
 	close( sockfd );
-	
+
 	pthread_exit( NULL );
 }
 
 char* asyncPostRequest( char* host, int port, char* path, char* data, int getResponse ) {
 	pthread_t thread;
 	char* response;
-	
+
 	// Allocate needed memory to hold the data
 	asyncPostRequestArgs *args = malloc( sizeof( asyncPostRequestArgs ) );
-	
+
 	// Fill in the struct
 	strcpy( args->host, host );
 	sprintf( args->port, "%d", port );
 	strcpy( args->path, path );
 	strcpy( args->data, data );
 	sprintf( args->getResponse, "%d", getResponse );
-	
+
 	// Create a thread handling the POST request
 	pthread_create( &thread, NULL, processAsyncPostRequest, args );
-	
+
 	// Wait for the thread to end
 	pthread_join( thread, NULL );
-	
+
 	// Copy response from struct into response variable
 	if( getResponse == 1 )
 		response = args->response;
 	else
 		response = "";
-	
+
 	// Free allocated memory after it's no longer needed
 	free( args );
-	
+
 	// Return server response
 	return response;
 }

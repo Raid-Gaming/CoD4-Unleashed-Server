@@ -240,14 +240,14 @@ static void SV_GetPlayerByHandleInternal( const char* s, clanduid_t* cl) {
             if(i == sv_maxclients->integer)
                 cl->cl = NULL;
         }
-	
+
 }
 
 
 /*
  ==================
  SV_Cmd_GetPlayerByHandle
- 
+
  Returns the player with player id or name from Cmd_Argv(1)
  ==================
  */
@@ -256,23 +256,23 @@ static void SV_GetPlayerByHandleInternal( const char* s, clanduid_t* cl) {
 static clanduid_t SV_Cmd_GetPlayerByHandle( void ) {
 	clanduid_t	cl;
 	char		*s;
-	
+
 	cl.uid = 0;
 	cl.cl = NULL;
-	
+
 	// make sure server is running
 	if ( !com_sv_running->boolean ) {
 		Com_Printf("Server is not running\n");
 		return cl;
 	}
-	
+
 	if ( Cmd_Argc() < 2 ) {
 		Com_Printf( "No player specified.\n" );
 		return cl;
 	}
-	
+
 	s = Cmd_Argv(1);
-	
+
 	SV_GetPlayerByHandleInternal(s, &cl);
 	return cl;
 }
@@ -280,7 +280,7 @@ static clanduid_t SV_Cmd_GetPlayerByHandle( void ) {
 /*
  ==================
  SV_Cmd_GetPlayerByHandle
- 
+
  Returns the player with player id or name from Cmd_Argv(1)
  ==================
  */
@@ -297,7 +297,7 @@ int SV_GetPlayerUIDByHandle( const char* handle)
 client_t* SV_GetPlayerClByHandle( const char* handle)
 {
 	clanduid_t	cl;
-	
+
 	SV_GetPlayerByHandleInternal(handle, &cl);
 	return cl.cl;
 }
@@ -305,7 +305,7 @@ client_t* SV_GetPlayerClByHandle( const char* handle)
 const char* SV_GetPlayerNameByHandle( const char* handle)
 {
 	clanduid_t	cl;
-	
+
 	SV_GetPlayerByHandleInternal(handle, &cl);
 	if(cl.cl)
 	{
@@ -709,7 +709,7 @@ static void Cmd_BanPlayer_f() {
 			Com_Printf( "guid is an hex decimal string with length of 8 characters\n" );
             return;
         }
-	
+
 	}else{
 	    if ( Cmd_Argc() < 3) {
             Com_Printf( "Usage: permban <user> <Reason for this ban (max 126 chars)>\n" );
@@ -724,21 +724,21 @@ static void Cmd_BanPlayer_f() {
 	if(guid){
 		goto gothandle;
 	}
-	
-	cl = SV_Cmd_GetPlayerByHandle();	
+
+	cl = SV_Cmd_GetPlayerByHandle();
 	if(cl.cl){
 		goto gothandle;
 	}
-	
+
 	if( cl.uid ){
 		goto gothandle;
 	}
-	
+
 	Com_Printf("Error: This player can not be banned, no such player\n");
 	return;
-		
+
 gothandle:
-		
+
 	if(cl.cl && strlen(cl.cl->pbguid) == 32)
 	{
 		guid = &cl.cl->pbguid[24];
@@ -750,8 +750,8 @@ gothandle:
 		SV_PlayerAddBanByip(&cl.cl->netchan.remoteAddress, "INVALID USER", 0, "INVALID", 0, -1);
 		return;
 	}
-	
-	
+
+
     banreason[0] = 0;
     if ( Cmd_Argc() > 2) {
         for(i = 2; Cmd_Argc() > i ;i++){
@@ -768,12 +768,12 @@ gothandle:
     }
 
 	if(cl.cl){
-		
+
 		if(cl.cl->power > Cmd_GetInvokerPower() && Cmd_GetInvokerPower() > 1){
 			Com_Printf("Error: You cannot ban an admin with higher power!\n");
 			return;
 		}
-		
+
 		//Banning
 		SV_AddBan(cl.uid, Cmd_GetInvokerUID(), guid, cl.cl->name, (time_t)-1, banreason);
 		//Messages and kick
@@ -786,8 +786,8 @@ gothandle:
 			Com_Printf( "Banrecord added for player: %s guid: %s\n", cl.cl->name, cl.cl->pbguid);
 			SV_PrintAdministrativeLog( "banned player: %s guid: %s IP: %s with the following reason: %s", cl.cl->name, cl.cl->pbguid, NET_AdrToString ( &cl.cl->netchan.remoteAddress ), banreason);
 			Com_sprintf(dropmsg, sizeof(dropmsg), "You have been permanently banned on this server\nYour GUID is: %s    Banning admin UID is: %i\nReason for this ban:\n%s",
-				cl.cl->pbguid, Cmd_GetInvokerUID(), banreason);			
-			
+				cl.cl->pbguid, Cmd_GetInvokerUID(), banreason);
+
 			if(cl.cl->authentication < 1)
 				SV_PlayerAddBanByip(&cl.cl->netchan.remoteAddress, banreason, 0, cl.cl->pbguid, 0, -1);
 		}
@@ -835,10 +835,10 @@ static void Cmd_TempBanPlayer_f() {
 		Com_Printf( "Usage: tempban <user> <time> <Reason for this ban (max. 126 chars)>\n" );
 		Com_Printf( "Where user is one of the following: online-playername | online-playerslot | guid | @uid\n" );
 		Com_Printf( "Where time is one of the following: ^2XX^7m | ^2XX^7h | ^2XX^7d\n" );
-		Com_Printf( "Where reason for this ban is contains a description without the letters: \" ; %% / \\ \n" );		
+		Com_Printf( "Where reason for this ban is contains a description without the letters: \" ; %% / \\ \n" );
 		Com_Printf( "online-playername can be a fraction of the playername. uid is a number > 0 and gets written with a leading \"@\" character\n" );
 		Com_Printf( "guid is a hexadecimal string with length of 8 characters\n" );
-		Com_Printf( "XX is an integer representing the time of ban in minutes, hours or days\n" );		
+		Com_Printf( "XX is an integer representing the time of ban in minutes, hours or days\n" );
 		return;
     }
 	/* Get the handle for this player */
@@ -846,21 +846,21 @@ static void Cmd_TempBanPlayer_f() {
 	if(guid){
 		goto gothandle;
 	}
-	
-	cl = SV_Cmd_GetPlayerByHandle();	
+
+	cl = SV_Cmd_GetPlayerByHandle();
 	if(cl.cl){
 		goto gothandle;
 	}
-	
+
 	if( cl.uid ){
 		goto gothandle;
 	}
-	
+
 	Com_Printf("Error: This player can not be banned, no such player\n");
 	return;
-	
+
 gothandle:
-	
+
 	/* Get the time this ban should last */
     length = strlen(Cmd_Argv(2));
     if(length > 7){
@@ -898,9 +898,9 @@ gothandle:
 	temp = ctime(&expire);
 	temp[strlen(temp)-1] = 0;
 	Q_strncpyz(endtime, temp, sizeof(endtime));
-	
+
 	/* Verify the players ID and drop/ipban if needed */
-	
+
 	if(cl.cl && strlen(cl.cl->pbguid) == 32)
 	{
 		guid = &cl.cl->pbguid[24];
@@ -912,7 +912,7 @@ gothandle:
 		SV_PlayerAddBanByip(&cl.cl->netchan.remoteAddress, "INVALID USER", 0, "INVALID", 0, expire);
 		return;
 	}
-	
+
 	/* Get a valid banreason */
     banreason[0] = 0;
     for(i = 3; Cmd_Argc() > i ;i++){
@@ -923,15 +923,15 @@ gothandle:
         Com_Printf("Error: You have exceeded the maximum allowed length of 126 for the reason\n");
         return;
     }
-	
+
 
 	if(cl.cl){
-		
+
 		if(cl.cl->power > Cmd_GetInvokerPower() && Cmd_GetInvokerPower() > 1){
 			Com_Printf("Error: You cannot tempban an admin with higher power!\n");
 			return;
 		}
-		
+
 		SV_AddBan(cl.uid, Cmd_GetInvokerUID(), guid, cl.cl->name, expire, banreason);
 
 		if( cl.uid > 0 ){
@@ -988,16 +988,16 @@ static void Cmd_KickPlayer_f() {
     char dropmsg[MAX_STRING_CHARS];
 
     if ( Cmd_Argc() < 2) {
-		
+
 		Com_Printf( "Usage: kick <user> <Reason for this ban (max. 126 chars)>\n" );
 		Com_Printf( "Where user is one of the following: online-playername | online-playerslot\n" );
-		Com_Printf( "Where reason for this ban is contains a description without the letters: \" ; %% / \\ \n" );		
-		Com_Printf( "online-playername can be a fraction of the playername.\n" );		
+		Com_Printf( "Where reason for this ban is contains a description without the letters: \" ; %% / \\ \n" );
+		Com_Printf( "online-playername can be a fraction of the playername.\n" );
 		return;
     }
 
     cl = SV_Cmd_GetPlayerByHandle();
-	
+
     if(!cl.cl)
 	{
             Com_Printf("Error: This player is not online and can not be kicked\n");
@@ -1017,12 +1017,12 @@ static void Cmd_KickPlayer_f() {
         Com_Printf("Error: You have exceeded the maximum allowed length of 126 for the reason\n");
         return;
     }
-	
+
 	if(cl.cl->power > Cmd_GetInvokerPower() && Cmd_GetInvokerPower() > 1){
 		Com_Printf("Error: You cannot kick an admin with higher power!\n");
 		return;
 	}
-	
+
 	if(cl.uid > 0){
 		Com_Printf( "Player kicked: %s ^7uid: %i\nReason: %s\n", cl.cl->name, cl.uid, kickreason);
 		SV_PrintAdministrativeLog( "kicked player: %s^7 uid: %i with the following reason: %s", cl.cl->name, cl.uid, kickreason);
@@ -1030,7 +1030,7 @@ static void Cmd_KickPlayer_f() {
         Com_Printf( "Player kicked: %s ^7guid: %s\nReason: %s\n", cl.cl->name, cl.cl->pbguid, kickreason);
         SV_PrintAdministrativeLog( "kicked player: %s^7 guid: %s with the following reason: %s", cl.cl->name, cl.cl->pbguid, kickreason);
 	}
-	
+
 	if(Cmd_GetInvokerUID() > 0){
 		Com_sprintf(dropmsg, sizeof(dropmsg), "Player kicked:\nAdmin UID is: %i\nReason for this kick:\n%s", Cmd_GetInvokerUID(), kickreason);
 	}else{
@@ -1099,7 +1099,7 @@ static void SV_MiniStatus_f( void ) {
 			Com_Printf ("%4i ", ping);
 		}
 
-		
+
 		if(cl->uid > 0){
 			Com_Printf ("@%9i ", cl->uid );
 
@@ -1226,7 +1226,7 @@ static void Cmd_ExecuteTranslatedCommand_f(){
                     cmdstring += 4;
                     if(*cmdstring == ':') // Skip default arg (if any)
                         while(*cmdstring != ' ' && *cmdstring != ';' && *cmdstring) ++cmdstring;
-                	
+
                     if(strchr(Cmd_Argv(i), ';') || strchr(Cmd_Argv(i), '\n')){
                         return;
                     }
@@ -1370,7 +1370,7 @@ static void SV_Record_f( void ) {
 					Com_sprintf(name, sizeof(name), "demo_%i_", cl.cl->uid);
 
 				}else{
-				
+
 					Com_sprintf(name, sizeof(name), "demo_%s_", cl.cl->pbguid);
 				}
 				SV_RecordClient(cl.cl, name);
@@ -1386,10 +1386,10 @@ static void SV_Record_f( void ) {
 	}
 
 	if(s){
-		
+
 		SV_RecordClient(cl.cl, s);
 	}else{
-		
+
 		if(cl.cl->uid > 0)
 			Com_sprintf(name, sizeof(name), "demo_%i_", cl.cl->uid);
 		else
@@ -1777,34 +1777,34 @@ qboolean SV_RunDownload(const char* url, const char* filename)
 	if(curfileobj == NULL)
 	{
 		Com_Printf("Couldn't connect to download-server for downloading. Failed to download %s\n", filename);
-		return qfalse;	
+		return qfalse;
 	}
-		
+
 	do
 	{
 		transret = FileDownloadSendReceive( curfileobj );
 		usleep(20000);
-		
+
 	} while (transret == 0);
-		
+
 	if(transret < 0)
 	{
 		Com_Printf("Downloading of file: \"%s\" has failed\n", filename );
 		FileDownloadFreeRequest(curfileobj);
 		return qfalse;
 	}
-	
+
 	if(curfileobj->code != 200)
 	{
 		Com_Printf("Downloading of file: \"%s\" has failed with the following message: %d %s\n", filename, curfileobj->code, curfileobj->status);
 		FileDownloadFreeRequest(curfileobj);
 		return qfalse;
-		
+
 	}
-	
+
 	len = FS_SV_BaseWriteFile(filename, curfileobj->recvmsg.data + curfileobj->headerLength, curfileobj->contentLength);
 	if(len != curfileobj->contentLength){
-		
+
 		len = FS_SV_HomeWriteFile(filename, curfileobj->recvmsg.data + curfileobj->headerLength, curfileobj->contentLength);
 		if(len != curfileobj->contentLength)
 		{
@@ -1834,36 +1834,36 @@ void SV_DemoCompletedExec(const char* mapname)
 void SV_DownloadMapThread(char *inurl)
 {
 	int len;
-	
+
 	char url[MAX_STRING_CHARS];
 	char dlurl[MAX_STRING_CHARS];
 	char *mapname;
 	char filename[MAX_OSPATH];
 	static qboolean downloadActive = 0;
 
-	
+
 	Q_strncpyz(url, inurl, sizeof(url));
 	Z_Free(inurl);
-	
-	
+
+
 	Sys_EnterCriticalSection(CRIT_MISC);
 
 	if(downloadActive)
 	{
 		Com_Printf("There is already a map download running. Won't download this.\n");
-		Sys_LeaveCriticalSection(CRIT_MISC);		
+		Sys_LeaveCriticalSection(CRIT_MISC);
 		return;
 	}
 	downloadActive = qtrue;
-	
+
 	Sys_LeaveCriticalSection(CRIT_MISC);
 
-	
+
 	len = strlen(url);
-	
+
 	if(url[len -1] == '/')
 		url[len -1] = '\0';
-	
+
 	mapname = strrchr(url, '/');
 
 	if(mapname == NULL)
@@ -1872,15 +1872,15 @@ void SV_DownloadMapThread(char *inurl)
 		downloadActive = qfalse;
 		return;
 	}
-	
+
 	mapname++;
-		
-	
+
+
 	Com_sprintf(filename, sizeof(filename), "usermaps/%s/%s%s", mapname ,mapname, ".ff" );
 	Com_sprintf(dlurl, sizeof(dlurl), "%s/%s%s", url, mapname, ".ff");
-	
+
 	Com_Printf("Begin downloading of file: \"%s\"\n", filename );
-	
+
 	if(SV_RunDownload(dlurl, filename) == qfalse)
 	{
 		Com_Printf("Aborted map download\n");
@@ -1888,15 +1888,15 @@ void SV_DownloadMapThread(char *inurl)
 		return;
 	}
 	Com_Printf("Received file: %s\n", filename );
-	
-	
-	
-	
+
+
+
+
 	Com_sprintf(filename, sizeof(filename), "usermaps/%s/%s%s", mapname ,mapname, "_load.ff" );
 	Com_sprintf(dlurl, sizeof(dlurl), "%s/%s%s", url, mapname, "_load.ff");
-	
+
 	Com_Printf("Begin downloading of file: \"%s\"\n", filename );
-	
+
 	if(SV_RunDownload(dlurl, filename) == qfalse)
 	{
 		Com_Printf("Aborted map download\n");
@@ -1904,14 +1904,14 @@ void SV_DownloadMapThread(char *inurl)
 		return;
 	}
 	Com_Printf("Received file: %s\n", filename );
-	
-	
-	
+
+
+
 	Com_sprintf(filename, sizeof(filename), "usermaps/%s/%s%s", mapname ,mapname, ".iwd" );
 	Com_sprintf(dlurl, sizeof(dlurl), "%s/%s%s", url, mapname, ".iwd");
-	
+
 	Com_Printf("Begin downloading of file: \"%s\"\n", filename );
-	
+
 	if(SV_RunDownload(dlurl, filename) == qfalse)
 	{
 		Com_Printf("File %s was not downloaded. This map has maybe no .iwd file\n", filename);
@@ -1930,30 +1930,30 @@ void SV_DownloadMap_f()
 	char *url;
 	int len;
 	char buf[128];
-	
+
 	if ( Cmd_Argc() != 2 )
 	{
 		Com_Printf( "Usage: downloadmap <\"url\">\nFor example: downloadmap \"http://somehost/cod4/usermaps/mapname\"\n" );
 		return;
     }
-	
+
 	len = strlen(Cmd_Argv(1));
-	
+
 	Cmd_Args(buf, sizeof(buf));
-	
+
 	if(len < 3 || len > MAX_STRING_CHARS)
 	{
 		Com_Printf( "Usage: downloadmap <\"url\">\n" );
 		return;
 	}
-	
+
 	url = Z_Malloc(len +1);
 	if(url == NULL)
 	{
 		Com_PrintError("SV_DownloadMap_f(): Out of memory\n");
 		return;
 	}
-	
+
 	Q_strncpyz(url, Cmd_Argv(1), len +1);
 
 	if(Sys_CreateCallbackThread(SV_DownloadMapThread, url) == qfalse)
@@ -1996,9 +1996,9 @@ void SV_ChangeGametype_f()
 
 
 void SV_AddOperatorCommands(){
-	
+
 	static qboolean	initialized;
-	
+
 	if ( initialized ) {
 		return;
 	}
@@ -2031,16 +2031,16 @@ void SV_AddOperatorCommands(){
 	Cmd_AddCommand ("dumpuser", SV_DumpUser_f);
 	Cmd_AddCommand ("stringUsage", SV_StringUsage_f);
 	Cmd_AddCommand ("scriptUsage", SV_ScriptUsage_f);
-	
+
 	Cmd_AddPCommand("stoprecord", SV_StopRecord_f, 70);
 	Cmd_AddPCommand("record", SV_Record_f, 50);
-	
+
 	if(Com_IsDeveloper()){
 		Cmd_AddCommand ("showconfigstring", SV_ShowConfigstring_f);
 		Cmd_AddCommand ("devmap", SV_Map_f);
-		
+
 	}
-	
+
 }
 
 void SV_AddSafeCommands(){
@@ -2135,4 +2135,3 @@ they can't have pointers returned to them
 void	SV_Cmd_ArgvBuffer( int arg, char *buffer, int bufferLength ) {
 	Q_strncpyz( buffer, SV_Cmd_Argv(arg), bufferLength );
 }
-

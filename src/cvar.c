@@ -143,7 +143,7 @@ cvar_t *Cvar_FindVar( const char *var_name ) {
 	long hash;
 
 	hash = generateHashValue(var_name);
-	
+
 	for (var=hashTable[hash] ; var ; var=var->hashNext) {
 		if (!Q_stricmp(var_name, var->name)) {
 			return var;
@@ -160,7 +160,7 @@ Cvar_VariableValue
 */
 float Cvar_VariableValue( const char *var_name ) {
 	cvar_t	*var;
-	
+
 	var = Cvar_FindVar (var_name);
 	if (!var)
 		return 0.0;
@@ -180,7 +180,7 @@ Cvar_VariableIntegerValue
 */
 int Cvar_VariableIntegerValue( const char *var_name ) {
 	cvar_t	*var;
-	
+
 	var = Cvar_FindVar (var_name);
 	if (!var)
 		return 0;
@@ -201,7 +201,7 @@ Cvar_VariableBooleanValue
 */
 qboolean Cvar_VariableBooleanValue( const char *var_name ) {
 	cvar_t	*var;
-	
+
 	var = Cvar_FindVar (var_name);
 	if (!var)
 		return 0;
@@ -234,7 +234,7 @@ Cvar_VariableString
 */
 char *Cvar_VariableString( const char *var_name ) {
 	cvar_t *var;
-	
+
 	var = Cvar_FindVar (var_name);
 	if (!var)
 		return "";
@@ -250,7 +250,7 @@ Cvar_VariableStringBuffer
 */
 void Cvar_VariableStringBuffer( const char *var_name, char *buffer, int bufsize ) {
 	cvar_t *var;
-	
+
 	var = Cvar_FindVar (var_name);
 	if (!var) {
 		*buffer = 0;
@@ -265,7 +265,7 @@ void Cvar_VariableStringBuffer( const char *var_name, char *buffer, int bufsize 
 	switch(value)
 	{
 		case CVAR_BOOL:
-			
+
 		case CVAR_FLOAT:
 
 		case CVAR_VEC2:
@@ -290,7 +290,7 @@ Cvar_CommandCompletion
 */
 void	Cvar_CommandCompletion( void(*callback)(const char *s) ) {
 	cvar_t		*cvar;
-	
+
 	for ( cvar = cvar_vars ; cvar ; cvar = cvar->next ) {
 		callback( cvar->name );
 	}
@@ -323,7 +323,7 @@ static qboolean Cvar_ValidateNewVar(const char* var_name, cvarType_t type, CvarV
 				(*value).boolean = 0;
 				return qfalse;
 			}
-			return retval; 
+			return retval;
 		case CVAR_FLOAT:
 			if(isnan((*limits).fmax) || isnan((*limits).fmin) || isnan((*value).floatval))
 			{
@@ -337,7 +337,7 @@ static qboolean Cvar_ValidateNewVar(const char* var_name, cvarType_t type, CvarV
 				(*limits).fmax = (*limits).fmin;
 				retval = qfalse;
 			}
-			if((*value).floatval < (*limits).fmin) 
+			if((*value).floatval < (*limits).fmin)
 			{
 				(*value).floatval = (*limits).fmin;
 				return qfalse;
@@ -431,7 +431,7 @@ static qboolean Cvar_ValidateNewVar(const char* var_name, cvarType_t type, CvarV
 				(*limits).imax = (*limits).imin;
 				retval = qfalse;
 			}
-			if((*value).integer < (*limits).imin) 
+			if((*value).integer < (*limits).imin)
 			{
 				(*value).integer = (*limits).imin;
 				return qfalse;
@@ -1371,7 +1371,7 @@ void Cvar_SetCheatState( void ) {
 	// set all default vars to the safe value
     for ( var = cvar_vars ; var ; var = var->next ) {
 	if ( var->flags & CVAR_CHEAT ) {
-		// the CVAR_LATCHED|CVAR_CHEAT vars might escape the reset here 
+		// the CVAR_LATCHED|CVAR_CHEAT vars might escape the reset here
 		// because of a different var->latchedString
 		switch(var->type)
 		{
@@ -2080,12 +2080,12 @@ cvar_t* Cvar_RegisterString(const char* name, const char* string, unsigned short
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.imin = 0;
-	limits.imax = 0;	
-	
+	limits.imax = 0;
+
 	value.string = string;
-	
+
 	cvar = Cvar_Register(name, CVAR_STRING, flags, value, limits, description);
 	return cvar;
 }
@@ -2095,12 +2095,12 @@ cvar_t* Cvar_RegisterBool(const char* name, qboolean boolean, unsigned short fla
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.imin = 0;
-	limits.imax = 0;	
-	
+	limits.imax = 0;
+
 	value.boolean = boolean;
-	
+
 	cvar = Cvar_Register(name, CVAR_BOOL, flags, value, limits, description);
 	return cvar;
 }
@@ -2110,12 +2110,12 @@ cvar_t* Cvar_RegisterInt(const char* name, int integer, int min, int max, unsign
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.imin = min;
-	limits.imax = max;	
-	
+	limits.imax = max;
+
 	value.integer = integer;
-	
+
 	cvar = Cvar_Register(name, CVAR_INT, flags, value, limits, description);
 	return cvar;
 }
@@ -2126,12 +2126,12 @@ cvar_t* Cvar_RegisterFloat(const char* name, float val, float min, float max, un
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = min;
-	limits.fmax = max;	
-	
+	limits.fmax = max;
+
 	value.floatval = val;
-	
+
 	cvar = Cvar_Register(name, CVAR_FLOAT, flags, value, limits, description);
 
 	return cvar;
@@ -2143,10 +2143,10 @@ cvar_t* Cvar_RegisterVec2(const char* name, float x, float y, float min, float m
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = min;
 	limits.fmax = max;
-	
+
 	value.vec2[0] = x;
 	value.vec2[1] = y;
 
@@ -2161,10 +2161,10 @@ cvar_t* Cvar_RegisterVec3(const char* name, float x, float y, float z, float min
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = min;
 	limits.fmax = max;
-	
+
 	value.vec3[0] = x;
 	value.vec3[1] = y;
 	value.vec3[2] = z;
@@ -2180,10 +2180,10 @@ cvar_t* Cvar_RegisterVec4(const char* name, float x, float y, float z, float ima
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = min;
 	limits.fmax = max;
-	
+
 	value.vec4[0] = x;
 	value.vec4[1] = y;
 	value.vec4[2] = z;
@@ -2200,10 +2200,10 @@ cvar_t* Cvar_RegisterColor(const char* name, float r, float g, float b, float al
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = 0.0;
 	limits.fmax = 0.0;
-	
+
 	value.color.red = (byte)(0xff * r);
 	value.color.green = (byte)(0xff * g);
 	value.color.blue = (byte)(0xff * b);
@@ -2221,10 +2221,10 @@ cvar_t* Cvar_RegisterEnum(const char* name, const char** strings, int integer, u
 	cvar_t* cvar;
 	CvarLimits limits;
 	CvarValue value;
-	
+
 	limits.fmin = 0;
 	limits.fmax = 0;
-	
+
 	value.enumval.strings = strings;
 	value.enumval.integer = integer;
 
@@ -2410,6 +2410,3 @@ void Cvar_PatchModifiedFlags()
 	*(int**)0x81775CA = (int*)(((char*)&cvar_modifiedFlags) +1);
 
 }
-
-
-

@@ -29,7 +29,7 @@
 #include "sys_thread.h"
 #include "qcommon.h"
 #include "qcommon_io.h"
-#ifdef THREAD_DEBUG	
+#ifdef THREAD_DEBUG
 #include "sys_main.h"
 #endif
 #include <string.h>
@@ -48,10 +48,10 @@ qboolean __cdecl Sys_IsDatabaseThread( void )
 const void* sys_valuestoreage[MAX_KEYS];
 
 const void* __cdecl Sys_GetValue(int key)
-{	
+{
 	if(key < 1 || key > MAX_KEYS)
 		Com_Error(ERR_FATAL, "Sys_GetValue: Invalid value");
-	
+
     return sys_valuestoreage[key -1];
 }
 
@@ -59,7 +59,7 @@ void __cdecl Sys_SetValue(int key, const void* value)
 {
 	if(key < 1 || key > MAX_KEYS)
 		Com_Error(ERR_FATAL, "Sys_GetValue: Invalid value");
-	
+
     sys_valuestoreage[key -1] = value;
 }
 
@@ -71,33 +71,33 @@ void Sys_EnterCriticalSection(int section)
 {
 #ifdef THREAD_DEBUG
 	mvabuf;
-	
+
 	if( section > CRIT_ERRORCHECK)
 		Sys_Print(va("^6Sys_EnterCriticalSection for Thread: %d Section: %d Depth: %d\n", Sys_GetCurrentThreadId(), section, mutex_depth[section]) );
 	mutex_depth[section] ++;
-#endif	
+#endif
 /*	if(Com_InError() && section != CRIT_ERROR && Sys_IsMainThread() == qtrue)
 	{
-		Com_Error(0, "Error Cleanup");		
+		Com_Error(0, "Error Cleanup");
 	}
-*/	
+*/
 	Sys_EnterCriticalSectionInternal(section);
-	
+
 #ifdef THREAD_DEBUG
 	if( section > CRIT_ERRORCHECK)
 		Sys_Print(va("^6Section %d Locked for: %d\n", section, Sys_GetCurrentThreadId()) );
-#endif	
-	
+#endif
+
 }
 
 void Sys_LeaveCriticalSection(int section)
 {
-#ifdef THREAD_DEBUG	
+#ifdef THREAD_DEBUG
 	mutex_depth[section] --;
 	mvabuf;
 	if( section > CRIT_ERRORCHECK )
 		Sys_Print(va("^6Sys_LeaveCriticalSection for Thread: %d Section: %d\n", Sys_GetCurrentThreadId(), section ));
-#endif	
+#endif
 	Sys_LeaveCriticalSectionInternal(section);
 }
 
@@ -120,19 +120,19 @@ void Sys_RunThreadCallbacks()
 {
 	int i;
 	thread_callback_t* tcb;
-	
+
 	for ( tcb = thread_callbacks, i = 0; i < MAX_CALLBACKS ; i++) {
-		
+
 		if(tcb->lock == qfalse || tcb->isActive == qfalse){
 			continue;
 		}
-		
+
 		if(thread_callbacks[i].callbackMain != NULL)
 			thread_callbacks[i].callbackMain(tcb->callback_args[0], tcb->callback_args[1], tcb->callback_args[2], tcb->callback_args[3],
 											 tcb->callback_args[4], tcb->callback_args[5], tcb->callback_args[6], tcb->callback_args[7]);
-		
+
 		Com_Memset(&thread_callbacks[i], 0, sizeof(thread_callback_t));
-		
+
 	}
 }
 
@@ -140,11 +140,11 @@ void Sys_RunThreadCallbacks()
 
 void* Sys_CbThreadStub(void* arg)
 {
-#ifdef THREAD_DEBUG	
+#ifdef THREAD_DEBUG
 	mvabuf;
 	Sys_Print( va("^6Created new Thread: %d\n", Sys_GetCurrentThreadId()) );
-#endif	
-	
+#endif
+
 	thread_callback_t *tcb = arg;
 
 	tcb->threadMain(tcb->thread_args[0], tcb->thread_args[1], tcb->thread_args[2], tcb->thread_args[3],
@@ -158,13 +158,13 @@ qboolean Sys_SetupThreadCallback(void* callbackMain,...)
 	thread_callback_t* tcb;
 	int i;
 	va_list		argptr;
-		
+
 	if(Sys_IsMainThread() == qtrue)
 	{
 		Com_Error(ERR_FATAL, "Sys_SetupThreadCallback: Can not call this function from the main-thread!\n");
 		return qfalse;
 	}
-	
+
 	for ( tcb = thread_callbacks, i = 0; i < MAX_CALLBACKS ; i++) {
 		if(Sys_ThreadisSame(tcb->tid))
 		{
@@ -176,17 +176,17 @@ qboolean Sys_SetupThreadCallback(void* callbackMain,...)
 		Com_PrintError("Couldn't find this thread\n");
 		return qfalse;
 	}
-	
+
 	va_start(argptr, callbackMain);
-	
+
 	for(i = 0; i < MAX_CALLBACKARGS; i++)
 		tcb->callback_args[i] = va_arg(argptr, void*);
-	
+
 	va_end(argptr);
-	
+
 	tcb->callbackMain = callbackMain;
 	return qtrue;
-	
+
 }
 
 qboolean Sys_CreateCallbackThread(void* threadMain,...)
@@ -196,13 +196,13 @@ qboolean Sys_CreateCallbackThread(void* threadMain,...)
 	int i;
 	va_list		argptr;
 	qboolean	success;
-	
+
 	if(Sys_IsMainThread() == qfalse)
 	{
 		Com_Error(ERR_FATAL, "Sys_CreateCallbackThread: Can only call this function from the main-thread!\n");
 		return qfalse;
 	}
-	
+
 	for ( tcb = thread_callbacks, i = 0; i < MAX_CALLBACKS ; i++, tcb++) {
 		if(tcb->threadMain == NULL)
 		{
@@ -214,14 +214,14 @@ qboolean Sys_CreateCallbackThread(void* threadMain,...)
 		Com_PrintError("Couldn't create a callback-thread. Max handles exceeded\n");
 		return qfalse;
 	}
-	
+
 	va_start(argptr, threadMain);
-	
+
 	for(i = 0; i < MAX_CALLBACKARGS; i++)
 		tcb->thread_args[i] = va_arg(argptr, void*);
-	
+
 	va_end(argptr);
-	
+
 	tcb->lock = qtrue;
 	tcb->isActive = qfalse;
 	tcb->threadMain = threadMain;

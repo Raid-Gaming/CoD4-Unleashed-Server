@@ -180,7 +180,7 @@ __cdecl __optimize3 qboolean Jump_GetStepHeight(playerState_t* ps, const vec3_t 
 }
 
 __cdecl __optimize3 float Jump_CalcHeight( playerState_t* ps ) {
-	
+
 	float val;
 	float newdiv;
 	float jumpHeight = Jump_GetHeight(ps);

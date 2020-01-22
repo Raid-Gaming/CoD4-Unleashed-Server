@@ -382,7 +382,7 @@ FS_FOpenDemoFileWrite
 ===========
 */
 qboolean FS_FOpenDemoFileWrite( const char *filename, fileHandleData_t *fh ) {
-	
+
 	char ospath[MAX_OSPATH];
 
 	if ( !FS_Initialized() ) {
@@ -525,4 +525,3 @@ void FS_DemoForceFlush(fileHandleData_t *fh){
 	setvbuf( fh->handleFiles.file.o, NULL, _IONBF, 0 );
 
 }
-

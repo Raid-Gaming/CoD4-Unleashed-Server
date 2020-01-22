@@ -84,7 +84,7 @@ void Cbuf_AddText( const char *text ) {
 	len = strlen (text) +1;
 
 	Sys_EnterCriticalSection(CRIT_CBUF);
-	
+
 	if ( len + cmd_text.cursize > cmd_text.maxsize ) {
 
 		if(cmd_text.data == cmd_text_buf)
@@ -112,7 +112,7 @@ void Cbuf_AddText( const char *text ) {
 	cmd_text.cursize += len -1;
 
 	Sys_LeaveCriticalSection(CRIT_CBUF);
-	
+
 }
 
 /*
@@ -132,7 +132,7 @@ void Cbuf_InsertText( const char *text ) {
 
 	Sys_EnterCriticalSection(CRIT_CBUF);
 
-	
+
 	if ( len + cmd_text.cursize > cmd_text.maxsize ) {
 
 		if(cmd_text.data == cmd_text_buf)
@@ -149,7 +149,7 @@ void Cbuf_InsertText( const char *text ) {
 		if(new_buf == NULL)
 		{
 			Com_PrintError( "Cbuf_InsertText overflowed ; realloc failed\n" );
-			
+
 			Sys_LeaveCriticalSection(CRIT_CBUF);
 			return;
 		}
@@ -169,7 +169,7 @@ void Cbuf_InsertText( const char *text ) {
 	cmd_text.data[ len - 1 ] = '\n';
 
 	cmd_text.cursize += len;
-	
+
 	Sys_LeaveCriticalSection(CRIT_CBUF);
 }
 
@@ -183,9 +183,9 @@ void Cbuf_ExecuteText (int exec_when, const char *text)
 	switch (exec_when)
 	{
 	case EXEC_NOW:
-		
+
 		Sys_EnterCriticalSection(CRIT_CBUF);
-		
+
 		if (text && strlen(text) > 0) {
 			Com_DPrintf(S_COLOR_YELLOW "EXEC_NOW %s\n", text);
 			Cmd_ExecuteString (text);
@@ -193,9 +193,9 @@ void Cbuf_ExecuteText (int exec_when, const char *text)
 			Cbuf_Execute();
 			Com_DPrintf(S_COLOR_YELLOW "EXEC_NOW %s\n", cmd_text.data);
 		}
-		
+
 		Sys_LeaveCriticalSection(CRIT_CBUF);
-			
+
 		break;
 	case EXEC_INSERT:
 		Cbuf_InsertText (text);
@@ -272,10 +272,10 @@ void Cbuf_Execute (void)
 		if( i >= (MAX_CMD_LINE - 1)) {
 			i = MAX_CMD_LINE - 1;
 		}
-				
+
 		Com_Memcpy (line, text, i);
 		line[i] = 0;
-		
+
 // delete the text from the command buffer and move remaining commands down
 // this is necessary because commands (exec) can insert data at the
 // beginning of the text buffer
@@ -291,7 +291,7 @@ void Cbuf_Execute (void)
 
 // execute the command line
 
-		Cmd_ExecuteString (line);		
+		Cmd_ExecuteString (line);
 	}
 
 	if( cmd_text.cursize == 0 && cmd_text.data != cmd_text_buf)
@@ -441,7 +441,7 @@ Inserts the current value of a variable as command text
 void Cmd_Vstr_f( void ) {
 	char	*v;
 	char	buf[MAX_STRING_CHARS];
-	
+
 	if (Cmd_Argc () != 2) {
 		Com_Printf ("vstr <variablename> : execute a variable command\n");
 		return;
@@ -796,7 +796,7 @@ static void Cmd_TokenizeStringInternal( const char *text_in, qboolean ignoreQuot
 			return;		// all tokens parsed
 		}
 	}
-	
+
 }
 
 
@@ -1034,19 +1034,19 @@ void	Cmd_ExecuteString( const char *text )
 	{
 		if(gamebinary_initialized == qtrue)
 			PbSvAddEvent(14, -1, strlen(text), (char*)text);
-		
+
 		return;
 	}
 #endif
 	// execute the command line
-	Cmd_TokenizeString( text );		
+	Cmd_TokenizeString( text );
 	if ( !Cmd_Argc() ) {
 		Cmd_EndTokenizedString( );
 		return;		// no tokens
 	}
 
 	Q_strncpyz(arg0, Cmd_Argv(0), sizeof(arg0));
-	
+
 	//Legacy fallback
 	if(!Q_stricmpn(arg0, "dvar", 4))
 	{
@@ -1085,7 +1085,7 @@ void	Cmd_ExecuteString( const char *text )
 		Q_strncpyz(arg0, "AdminChangeCommandPower", sizeof(arg0));
 		Com_PrintWarning("\"setCmdMinPower\" is deprecated and will be removed soon. Use \"AdminChangeCommandPower\" instead\n");
 	}
-	// check registered command functions	
+	// check registered command functions
 	for ( prev = &cmd_functions ; *prev ; prev = &cmd->next ) {
 		cmd = *prev;
 		if ( !Q_stricmp( arg0, cmd->name ) ) {
@@ -1106,7 +1106,7 @@ void	Cmd_ExecuteString( const char *text )
 			return;
 		}
 	}
-	
+
 	// check cvars
 	if ( Cvar_Command() ) {
 		Cmd_EndTokenizedString( );
@@ -1156,7 +1156,7 @@ static void Cmd_List_f( void ) {
 
 	i = 0;
 	for ( cmd = cmd_functions ; cmd ; cmd = cmd->next ) {
-		if ( (match && !Com_Filter( match, (char*)cmd->name, qfalse )) 
+		if ( (match && !Com_Filter( match, (char*)cmd->name, qfalse ))
 			|| Cmd_GetInvokerPower() < cmd->minPower
 			|| ((cmd->minPower == 0) && Cmd_GetInvokerPower() != 100))
 		{

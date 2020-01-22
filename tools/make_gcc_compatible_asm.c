@@ -49,7 +49,7 @@ while(posin <= endinoff){
 		posin++;
 	}
 	if(*posin == 0x0A)
-		posin++;	
+		posin++;
 
 	if(!*posin)
 		break;

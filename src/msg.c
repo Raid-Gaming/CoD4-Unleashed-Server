@@ -100,13 +100,13 @@ void MSG_InitReadOnlySplit( msg_t *buf, byte *data, int length, byte* arg4, int 
 
 
 void MSG_Clear( msg_t *buf ) {
-	
+
 	if(buf->readonly == qtrue || buf->splitdata != NULL)
 	{
 		Com_Error(ERR_FATAL, "MSG_Clear: Can not clear a read only msg");
 		return;
 	}
-	
+
 	buf->cursize = 0;
 	buf->overflowed = qfalse;
 	buf->bit = 0;			//<- in bits
@@ -389,7 +389,7 @@ int MSG_ReadShort( msg_t *msg ) {
 	if ( msg->readcount+sizeof(short) > msg->cursize ) {
 		//msg->readcount += sizeof(short); /* Hmm what a bad bug is this ? O_o*/
 		return -1;
-	}	
+	}
 	c = (short*)&msg->data[msg->readcount];
 
 	msg->readcount += sizeof(short);
@@ -402,7 +402,7 @@ int MSG_ReadLong( msg_t *msg ) {
 	if ( msg->readcount+sizeof(int32_t) > msg->cursize ) {
 		//msg->readcount += sizeof(int32_t); /* Hmm what a bad bug is this ? O_o*/
 		return -1;
-	}	
+	}
 	c = (int32_t*)&msg->data[msg->readcount];
 
 	msg->readcount += sizeof(int32_t);
@@ -467,22 +467,22 @@ char *MSG_ReadStringLine( msg_t *msg, char* bigstring, int len ) {
 		bigstring[l] = c;
 		l++;
 	} while (l < len -1);
-	
+
 	bigstring[l] = 0;
-	
+
 	return bigstring;
 }
 
 float MSG_ReadFloat( msg_t *msg ) {
-	
+
 	float		*c;
-	
+
 	if ( msg->readcount+sizeof(int32_t) > msg->cursize ) {
 		//msg->readcount += sizeof(int32_t); /* Hmm what a bad bug is this ? O_o*/
 		return -1;
-	}	
+	}
 	c = (float*)&msg->data[msg->readcount];
-	
+
 	msg->readcount += sizeof(float);
 	return *c;
 }
@@ -1560,7 +1560,7 @@ void MSG_WriteDeltaEntity(snapshotInfo_t* snap, msg_t* msg, int time, entityStat
 		return;
 	}
 
-	
+
 
 	if( to->number < 64){
 		if(g_entities[snap->clnum].client->sess.sessionTeam == TEAM_FREE){
@@ -1861,7 +1861,3 @@ void MSG_WriteReliableCommandToBuffer(const char *source, char *destination, int
 	}
   }
 }
-
-
-
-

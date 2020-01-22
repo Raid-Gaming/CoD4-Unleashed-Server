@@ -931,13 +931,13 @@ static void Huff_BuildFromData(huff_t* huff, const int* msg_hData)
   huff->loc[254] = &huff->nodeList[255];
   huff->nodeList[472].left = &huff->nodeList[256];
   huff->loc[255] = &huff->nodeList[256];
-  
-  
+
+
   huff->nodeList[257].left = huff->nodeList;
-  
+
   huff->loc[256] = huff->nodeList;
-  
-  
+
+
   huff->nodeList[258].left = &huff->nodeList[257];
   huff->nodeList[0].parent = &huff->nodeList[257];
   huff->nodeList[0].symbol = 256;

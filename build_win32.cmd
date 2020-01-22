@@ -41,4 +41,3 @@ rename _____________________________________________cod4u_win32.exe cod4u_win32.
 echo Done!
 pause
 REM ./version_make_progress.sh
-

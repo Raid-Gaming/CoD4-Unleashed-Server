@@ -589,11 +589,11 @@ void Scr_InitFunctions()
     {
         Scr_AddStockFunctions();
         Scr_AddStockMethods();
-        
+
         // Custom functions and methods
         Scr_AddCustomFunctions();
         Scr_AddCustomMethods();
-        
+
         initialized = qtrue;
     }
 }
@@ -646,7 +646,7 @@ typedef struct{
     int playerlaststand; //0x8583bc8
     int unkbig[1057];
     int delete; //0x8584c50
-    int initstruct; 
+    int initstruct;
     int createstruct;
 }g_scr_data_t;
 
@@ -910,7 +910,7 @@ __cdecl unsigned int Scr_LoadScript(const char* scriptname, PrecacheEntry *preca
 		while it is still possible to fall back to default script if our extended functionality is not available.
 		*/
 
-		Com_sprintf(filepath, sizeof(filepath), "%s.gsx", SL_ConvertToString(handle)); 
+		Com_sprintf(filepath, sizeof(filepath), "%s.gsx", SL_ConvertToString(handle));
 		scr_buffer_handle = Scr_AddSourceBuffer(SL_ConvertToString(handle), filepath, TempMalloc(0), 1);
 		if(!scr_buffer_handle)
 		{
@@ -939,11 +939,11 @@ __cdecl unsigned int Scr_LoadScript(const char* scriptname, PrecacheEntry *preca
 		object = GetObjectA( GetVariable(scrStruct.var_04, handle) );
 
 		ScriptCompile(result, object, variable, precache, iarg_02);
-		
+
 		scrStruct.script_filepath = old_script_filepath;
 		scrStruct.var_12 = old_var12;
 		scrStruct.var_08 = old_var08;
-		
+
 		--callScriptStackPtr;
 
 		return object;
@@ -1372,5 +1372,3 @@ void RuntimeError(char *a3, int arg4, char *message, char *a4)
 	    Com_Error(errtype, "script runtime error\n(see console for details)\n%s", message);
 	}
 }
-
-

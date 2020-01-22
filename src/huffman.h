@@ -63,4 +63,3 @@ int MSG_WriteBitsCompress( char dummy, const byte *datasrc, byte *buffdest, int 
 void Huffman_InitMain();
 
 #endif
-

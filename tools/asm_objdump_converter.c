@@ -24,7 +24,7 @@ void AddNewAddress(char* string){
 	unsigned int Address;
 	lables_t *label;
 	int i;
-	
+
 	if(strlen(string) > 8){
 		return;
 	}
@@ -45,7 +45,7 @@ int IsAddressThereAndSet(char* string){
 	unsigned int Address;
 	lables_t *label;
 	int i;
-	
+
 	if(strlen(string) > 8){
 		return 0;
 	}
@@ -98,7 +98,7 @@ while(posin <= endinoff && *posin != 0x0a){
 	if(!strncmp( (char*)posin, "subroutine ", 11)){
 		posin += 11;
 		i = 0;
-		
+
 		while(posin <= endinoff && *posin != 0x0a && *posin != 0x0d && *posin && *posin != ' '){
 			subfuncname[i] = *posin;
 			i++;
@@ -126,7 +126,7 @@ while(posin <= endinoff){
 		if(*posin == 'j'){
 			while(*posin != 0x0a && *posin && posin <= endinoff && *posin != ' ')
 				posin++;
-			
+
 			while(*posin != 0x0a && *posin && posin <= endinoff && instruction){
 				if(*posin == '*'){
 					printf("Warning: Indirect jump instruction. Will ignore it\n");
@@ -155,7 +155,7 @@ while(posin <= endinoff){
 					}
 				}else{
 					posin++;
-				
+
 				}
 			}
 		}
@@ -197,7 +197,7 @@ while(posin <= endinoff){
 	if(posin[0] == 0x3a && posin[1] == 0x09){
 		posin += 2;
 		while(*posin != 0x09 && *posin != 0x0a && *posin && posin <= endinoff){
-			posin ++;	
+			posin ++;
 		}
 		if(*posin == 0x09){
 			instruction = 1;
@@ -257,8 +257,8 @@ while(posin <= endinoff){
 					break;
 				}
 				i++;
-			}		
-		
+			}
+
 			if(instStr[i] == '*'){
 					printf("Warning: Indirect call instruction. Will ignore it\n");
 					instruction = 0;
@@ -278,7 +278,7 @@ while(posin <= endinoff){
 				instruction = 0;
 				sprintf(buffer, "\tmov    $0x%s, %%eax\n", temp);
 				fwrite(buffer, strlen(buffer), 1 ,fdout);
-				sprintf(instStr, "call   *%%eax");				
+				sprintf(instStr, "call   *%%eax");
 			}
 		}
 		sprintf(buffer, "\t%s\n", instStr);
@@ -296,7 +296,7 @@ fputc(0x0A,fdout);
 for(i = 0; i < MAX_LABLES; i++){
 	if(lables[i].Address && !lables[i].destinationdeclared){
 		sprintf(buffer, "Out of range destination: %x, %s_loc%i\n", lables[i].Address, subfuncname, i+1);
-		fwrite(buffer, strlen(buffer), 1 ,fdout);		
+		fwrite(buffer, strlen(buffer), 1 ,fdout);
 	}
 	if(!lables[i].Address){
 		break;

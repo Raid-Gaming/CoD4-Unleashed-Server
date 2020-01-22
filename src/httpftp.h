@@ -33,7 +33,7 @@ typedef struct
 	int transfertotalreceivedbytes;
 	msg_t *extrecvmsg;
 	msg_t *extsendmsg;
-	msg_t sendmsg;	
+	msg_t sendmsg;
 	msg_t recvmsg;
 	msg_t transfermsg;
 	qboolean complete;

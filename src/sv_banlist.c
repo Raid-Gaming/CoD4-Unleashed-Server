@@ -434,7 +434,7 @@ char* SV_PlayerIsBanned(int uid, char* pbguid, netadr_t *addr, char* message, in
   int i;
   char appealmsg[512];
 
-	
+
   this = banlist;
   if(!this)
         return NULL;
@@ -754,4 +754,3 @@ void SV_DumpBanlist(){
     }
     Com_Printf("%i Active bans\n", k);
 }
-

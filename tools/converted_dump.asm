@@ -41,7 +41,7 @@ Scr_GetFunction_loc1:
 	pop    %esi
 	pop    %edi
 	pop    %ebp
-	ret    
+	ret
 
 Scr_GetFunction_loc2:
 	xor    %eax,%eax
@@ -51,6 +51,3 @@ Scr_GetFunction_loc2:
 	pop    %edi
 	pop    %ebp
 	ret
-
-
-
