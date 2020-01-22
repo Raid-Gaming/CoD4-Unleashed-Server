@@ -42,8 +42,6 @@ void* processHttpRequest(void* args) {
 		strcat(message, "\r\n");
 	}
 
-	Com_Printf("%s\r\n", message);
-
 	// Create the socket
 	sockfd = socket(AF_INET, SOCK_STREAM, 0);
 	if (sockfd < 0) {
