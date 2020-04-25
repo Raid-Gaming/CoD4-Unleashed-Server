@@ -12,6 +12,7 @@ To compile CoD4U-Server you'll need the following installed:
 
 - gcc (Linux) or mingw32 (Windows)
 - nasm
+- libcurl
 
 Debian/Ubuntu 32-bit:
 
