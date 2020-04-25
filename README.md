@@ -16,7 +16,7 @@ To compile CoD4U-Server you'll need the following installed:
 Debian/Ubuntu 32-bit:
 
 ```bash
-sudo apt-get install nasm build-essential
+sudo apt-get install nasm build-essential libcurl4-openssl-dev
 ```
 
 Debian/Ubuntu 64-bit:
@@ -24,22 +24,22 @@ Debian/Ubuntu 64-bit:
 ```bash
 sudo dpkg --add-architecture i386
 sudo apt-get update
-sudo apt-get install nasm:i386 build-essential gcc-multilib g++-multilib
-```
-
-openSUSE 32-bit:
-
-```bash
-sudo zypper install nasm gcc-32bit
+sudo apt-get install nasm:i386 build-essential gcc-multilib g++-multilib libcurl4-openssl-dev:i386
 ```
 
 Arch Linux 32-bit:
 
 ```bash
-sudo pacman -S base-devel nasm
+sudo pacman -S base-devel nasm curl
 ```
 
 Compiling is as simple as running the appropriate build script. E.g. for Linux: `./build_elf.sh`.
+
+## Dependencies
+
+To run this software on Windows, you'll need to install the following dependencies separately:
+
+- OpenSSL 32-bit: https://slproweb.com/products/Win32OpenSSL.html (Win32 OpenSSL v1.1.1g or later)
 
 ## Documentation
 
