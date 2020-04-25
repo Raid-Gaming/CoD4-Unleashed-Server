@@ -35,6 +35,7 @@
 #include "sys_thread.h"
 #include "punkbuster.h"
 #include "server.h"
+#include "functions/http.h"
 #include "sec_main.h"
 #include "cmd.h"
 #include <libgen.h>
@@ -164,6 +165,7 @@ Single exit point (regular exit or in case of error)
 =================
 */
 static __attribute__ ((noreturn)) void Sys_Exit( int exitCode ) {
+	unloadHttpModule();
 
 	CON_Shutdown();
 	// we may be exiting to spawn another process

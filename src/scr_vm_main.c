@@ -528,7 +528,8 @@ void Scr_AddStockMethods(){
 
 void Scr_AddCustomFunctions() {
     // HTTP requests
-	Scr_AddFunction( "httppostrequest",        GScr_HttpPostRequest, 0 ); // DEPRECATED
+	initHttpModule();
+	Scr_AddFunction( "httppostrequest", GScr_HttpPostRequest, 0 ); // DEPRECATED
 	Scr_AddFunction("httpget", GScr_HttpGet, 0);
 	Scr_AddFunction("httppost", GScr_HttpPost, 0);
 	Scr_AddFunction("httpput", GScr_HttpPut, 0);
