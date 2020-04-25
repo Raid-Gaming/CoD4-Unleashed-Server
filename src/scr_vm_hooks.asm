@@ -192,8 +192,8 @@ global ScriptParse
 ScriptParse:
 	jmp dword [oScriptParse]
 
-global GetObjectA
-GetObjectA:
+global U_GetObjectA
+U_GetObjectA:
 	jmp dword [oGetObjectA]
 
 global GetVariable
