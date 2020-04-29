@@ -43,12 +43,35 @@ getOpt(key) {
 }
 
 /*
+If called on an HTTP request object:
+Sets a header on an HTTP request object.
+
+Usage:
+request unleashed\http::setHeader("Content-type", "application/json");
+
+
+Otherwise:
 Sets a header for use with all HTTP requests.
 
 Usage:
 unleashed\http::setHeader("Content-type", "application/json");
 */
 setHeader(key, value) {
+	if (isDefined(self)) {
+		self _setObjectHeader(key, value);
+	} else {
+		_setGlobalHeader(key, value);
+	}
+}
+
+_setObjectHeader(key, value) {
+	if (!isDefined(self.headers)) {
+		self.headers = [];
+	}
+	self.headers[self.headers.size] = "" + key + ": " + value;
+}
+
+_setGlobalHeader(key, value) {
 	key = toLower(key);
 	if (!isDefined(level._unleashed)) {
 		level._unleashed = [];
@@ -204,5 +227,66 @@ _performRequest(method, url, body, header1, header2, header3, header4, header5, 
 		header8,
 		header9,
 		header10
+	);
+}
+
+/*
+Create an HTTP request object.
+
+Usage:
+request = unleashed\http::http();
+*/
+http() {
+	return spawnStruct();
+}
+
+/*
+Sets the method of an HTTP request object.
+
+Usage:
+request unleashed\http::setMethod("POST");
+*/
+setMethod(method) {
+	self.method = method;
+}
+
+/*
+Sets the url of an HTTP request object.
+
+Usage:
+request unleashed\http::setUrl("/users");
+*/
+setUrl(url) {
+	self.url = url;
+}
+
+/*
+Sets the body of an HTTP request object.
+
+Usage:
+request unleashed\http::setBody(user);
+*/
+setBody(body) {
+	self.body = body;
+}
+
+/*
+Send an HTTP request using an HTTP request object.
+
+Usage:
+request unleashed\http::send();
+*/
+send() {
+	assertEx(isDefined(self), "trying to send request with uninitialised request object");
+	assertEx(isDefined(self.url), "request URL not defined");
+	assertEx(isDefined(self.method), "request method not defined");
+	assertEx(!isDefined(self.body) || isString(self.body), "request body must be a string");
+	assertEx(!isDefined(self.headers) || isArray(self.headers), "request headers must be an array");
+
+	return request(
+		self.method,
+		self.url,
+		self.body,
+		self.headers
 	);
 }
