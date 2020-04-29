@@ -36,7 +36,7 @@ opt = unleashed\http::getOpt("http_headers");
 */
 getOpt(key) {
 	key = toLower(key);
-	is (!isDefined(level._unleashed)) {
+	if (!isDefined(level._unleashed)) {
 		level._unleashed = [];
 	}
 	return level._unleashed[key];
