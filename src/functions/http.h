@@ -18,7 +18,7 @@ void unloadHttpModule();
 
 size_t curlWriteCallback(void*, size_t, size_t, void*);
 
-void curlRequest(char*, char*, char*, char*);
+void curlRequest(char*, char*, char*, unsigned int);
 
 void GScr_HttpGet();
 void GScr_HttpPost();
