@@ -102,6 +102,12 @@ void GScr_HttpPostRequest(); /* DEPRECATED */
 void GScr_GetEpochTime();
 void GScr_EpochTimeToString();
 
+void GScr_GetClientVersion(scr_entref_t arg);
+void GScr_getType();
+void GScr_isInt();
+void GScr_isFloat();
+void GScr_isBool();
+void GScr_isObject();
 
 __cdecl void ClientScr_SetSessionTeam(gclient_t* gcl, client_fields_t* gfl);
 

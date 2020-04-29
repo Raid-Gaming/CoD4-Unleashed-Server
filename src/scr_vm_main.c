@@ -546,6 +546,14 @@ void Scr_AddCustomFunctions() {
 
 	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
 	Scr_AddFunction("epochtimetostring", GScr_EpochTimeToString, 0);
+	Scr_AddFunction("getClientVersion", GScr_GetClientVersion, 0);
+
+	// Type getters / checkers
+	Scr_AddFunction("getType", GScr_getType, 0);
+	Scr_AddFunction("isInt", GScr_isInt, 0);
+	Scr_AddFunction("isFloat", GScr_isFloat, 0);
+	Scr_AddFunction("isBool", GScr_isBool, 0);
+	Scr_AddFunction("isObject", GScr_isObject, 0);
 }
 
 void Scr_AddCustomMethods() {
