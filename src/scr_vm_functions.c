@@ -2996,7 +2996,7 @@ void PlayerCmd_SetSpectatedClient(scr_entref_t arg) {
 	gentity->client->sess.spectatorClient = Scr_GetInt(0);
 }
 
-void GScr_GetClientVersion(scr_entref_t arg) {
+void PlayerCmd_GetClientVersion(scr_entref_t arg) {
 	gentity_t* gentity;
 	int entityNum = 0;
 	mvabuf;

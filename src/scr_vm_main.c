@@ -546,7 +546,6 @@ void Scr_AddCustomFunctions() {
 
 	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
 	Scr_AddFunction("epochtimetostring", GScr_EpochTimeToString, 0);
-	Scr_AddFunction("getClientVersion", GScr_GetClientVersion, 0);
 
 	// Type getters / checkers
 	Scr_AddFunction("getType", GScr_getType, 0);
@@ -575,6 +574,7 @@ void Scr_AddCustomMethods() {
     Scr_AddMethod( "setspectatedclient",       PlayerCmd_SetSpectatedClient, 0 );
 	Scr_AddMethod( "getip",                    PlayerCmd_GetIp, 0 );
 	Scr_AddMethod( "getfps",                   PlayerCmd_GetFps, 0 );
+	Scr_AddMethod( "getClientVersion",         PlayerCmd_GetClientVersion, 0 );
 }
 
 
