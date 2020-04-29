@@ -59,7 +59,7 @@ setHeader(key, value) {
 
 	index = level._unleashed["http_headers"].size;
 	for (i = 0; i < level._unleashed["http_headers"].size; i++) {
-		if (level._unleashed["http_headers"][i] == key) {
+		if (strTok(level._unleashed["http_headers"][i], ": ") == key) {
 			index = i;
 			break;
 		}
@@ -81,7 +81,13 @@ getHeader(key) {
 	if (!isDefined(level._unleashed["http_headers"])) {
 		level._unleashed["http_headers"] = [];
 	}
-	return level._unleashed["http_headers"][key];
+	for (i = 0; i < level._unleashed["http_headers"].size; i++) {
+		header = strTok(level._unleashed["http_headers"][i], ": ");
+		if (header[0] == key) {
+			return header[1];
+		}
+	}
+	return undefined;
 }
 
 /*
