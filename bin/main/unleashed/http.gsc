@@ -15,16 +15,73 @@ Set an option to use for all HTTP requests.
 
 Currently supported options:
 - http_base_path
-- http_content_type
+- http_headers
 
 Usage:
 unleashed\http::setOpt("http_base_path", "http://localhost");
 */
 setOpt(key, value) {
+	key = toLower(key);
 	if (!isDefined(level._unleashed)) {
 		level._unleashed = [];
 	}
 	level._unleashed[key] = value;
+}
+
+/*
+Get the value of a global HTTP request option.
+
+Usage:
+opt = unleashed\http::getOpt("http_headers");
+*/
+getOpt(key) {
+	key = toLower(key);
+	is (!isDefined(level._unleashed)) {
+		level._unleashed = [];
+	}
+	return level._unleashed[key];
+}
+
+/*
+Sets a header for use with all HTTP requests.
+
+Usage:
+unleashed\http::setHeader("Content-type", "application/json");
+*/
+setHeader(key, value) {
+	key = toLower(key);
+	if (!isDefined(level._unleashed)) {
+		level._unleashed = [];
+	}
+	if (!isDefined(level._unleashed["http_headers"])) {
+		level._unleashed["http_headers"] = [];
+	}
+
+	index = level._unleashed["http_headers"].size;
+	for (i = 0; i < level._unleashed["http_headers"].size; i++) {
+		if (level._unleashed["http_headers"][i] == key) {
+			index = i;
+			break;
+		}
+	}
+	level._unleashed[index] = "" + key + ": " + value;
+}
+
+/*
+Get the value of a global HTTP request header.
+
+Usage:
+header = unleashed\http::getHeader("Content-type");
+*/
+getHeader(key) {
+	key = toLower(key);
+	if (!isDefined(level._unleashed)) {
+		level._unleashed = [];
+	}
+	if (!isDefined(level._unleashed["http_headers"])) {
+		level._unleashed["http_headers"] = [];
+	}
+	return level._unleashed["http_headers"][key];
 }
 
 /*
@@ -41,32 +98,13 @@ path(url) {
 }
 
 /*
-Return the http_content_type option or the default content-type (application/json)
-if no argument is provided.
-
-Mainly intended for internal use within the provided http wrapper functions.
-
-Usage:
-contentType = unleashed\http::getContentType();
-*/
-getContentType(contentType) {
-	if (isDefined(contentType)) {
-		return contentType;
-	}
-	if (isDefined(level._unleashed["http_content_type"])) {
-		return level._unleashed["http_content_type"];
-	}
-	return "application/json";
-}
-
-/*
 Performs an HTTP GET request and returns the response.
 
 Usage:
 response = unleashed\http::get("/users");
 */
-get(url) {
-	return httpGet(path(url));
+get(url, headers) {
+	return request("GET", url, undefined, headers);
 }
 
 /*
@@ -75,12 +113,8 @@ Performs an HTTP POST request and returns the response.
 Usage:
 response = unleashed\http::post("/users", user);
 */
-post(url, body, contentType) {
-	return httpPost(
-		path(url),
-		body,
-		getContentType(contentType)
-	);
+post(url, body, headers) {
+	return request("POST", url, body, headers);
 }
 
 /*
@@ -89,12 +123,8 @@ Performs an HTTP PUT request and returns the response.
 Usage:
 response = unleashed\http::put("/users/" + id, user);
 */
-put(url, body, contentType) {
-	return httpPut(
-		path(url),
-		body,
-		getContentType(contentType)
-	);
+put(url, body, headers) {
+	return request("PUT", url, body, headers);
 }
 
 /*
@@ -103,12 +133,8 @@ Performs an HTTP PATCH request and returns the response.
 Usage:
 response = unleashed\http::patch("/users/" + id, user);
 */
-patch(url, body, contentType) {
-	return httpPatch(
-		path(url),
-		body,
-		getContentType(contentType)
-	);
+patch(url, body, headers) {
+	return request("PATCH", url, body, headers);
 }
 
 /*
@@ -117,15 +143,8 @@ Performs an HTTP DELETE request and returns the response.
 Usage:
 response = unleashed\http::_delete("/users/" + id);
 */
-_delete(url, body, contentType) {
-	if (!isDefined(body)) {
-		return httpDelete(path(url));
-	}
-	return httpDelete(
-		path(url),
-		body,
-		getContentType(contentType)
-	);
+_delete(url, body, headers) {
+	return request("DELETE", url, body, headers);
 }
 
 /*
@@ -134,17 +153,50 @@ Performs an HTTP request and returns the response.
 Usage:
 response = unleashed\http::request("GET", "/users");
 */
-request(method, url, body, contentType) {
-	if (!isDefined(body)) {
-		return httpRequest(
-			method,
-			path(url)
-		);
+request(method, url, body, headers) {
+	requestHeaders = [];
+	if (isDefined(level._unleashed["http_headers"])) {
+		for (i = 0; i < level._unleashed["http_headers"].size; i++) {
+			requestHeaders[requestHeaders.size] = level._unleashed["http_headers"][i];
+		}
 	}
+	if (isDefined(headers)) {
+		for (i = 0; i < headers.size; i++) {
+			requestHeaders[requestHeaders.size] = headers[i];
+		}
+	}
+
+	return _performRequest(
+		method,
+		url,
+		body,
+		requestHeaders[0],
+		requestHeaders[1],
+		requestHeaders[2],
+		requestHeaders[3],
+		requestHeaders[4],
+		requestHeaders[5],
+		requestHeaders[6],
+		requestHeaders[7],
+		requestHeaders[8],
+		requestHeaders[9]
+	);
+}
+
+_performRequest(method, url, body, header1, header2, header3, header4, header5, header6, header7, header8, header9, header10) {
 	return httpRequest(
 		method,
 		path(url),
 		body,
-		getContentType(contentType)
+		header1,
+		header2,
+		header3,
+		header4,
+		header5,
+		header6,
+		header7,
+		header8,
+		header9,
+		header10
 	);
 }
