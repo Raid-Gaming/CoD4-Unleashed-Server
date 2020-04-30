@@ -21,9 +21,6 @@ Thumbs.db
 *.dll
 *.lib
 *.sbr
-*.a
-*.o
-*.exe
 
 bin/cod4u_lnx
 bin/cod4u_mach
