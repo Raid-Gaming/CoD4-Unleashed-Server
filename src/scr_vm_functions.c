@@ -3014,59 +3014,7 @@ void PlayerCmd_GetClientVersion(scr_entref_t arg) {
 
     client_t *cl = &svs.clients[entityNum];
 	if (strlen(cl->xversion) < 2)
-		Scr_AddBool(0);
+		Scr_AddUndefined();
 	else
 		Scr_AddString(cl->xversion);
-}
-
-void GScr_getType() {
-    if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( "Usage: getType( <var> )" );
-        return;
-    }
-
-    Scr_AddInt(Scr_GetType( 0 ));
-}
-
-void GScr_isInt() {
-    if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( "Usage: isInt( <var> )" );
-        return;
-    }
-
-    Scr_AddBool(Scr_GetType( 0 ) == 6);
-}
-
-void GScr_isFloat() {
-    if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( "Usage: isFloat( <var> )" );
-        return;
-    }
-
-    Scr_AddBool(Scr_GetType( 0 ) == 5);
-}
-
-void GScr_isBool() {
-    if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( "Usage: isBool( <var> )" );
-        return;
-    }
-
-    if( Scr_GetType( 0 ) != 6 ) {
-        Scr_AddBool( qfalse );
-        return;
-    }
-
-    int value = Scr_GetInt( 0 );
-    Scr_AddBool(value != 0 || value != 1);
-}
-
-// Objects are fucking weird
-void GScr_isObject() {
-    if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( "Usage: isObject( <var> )" );
-        return;
-    }
-
-    Scr_AddBool(Scr_GetType( 0 ) == 1);
 }
