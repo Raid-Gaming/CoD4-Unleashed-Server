@@ -3013,8 +3013,9 @@ void PlayerCmd_GetClientVersion(scr_entref_t arg) {
 	}
 
     client_t *cl = &svs.clients[entityNum];
-	if (strlen(cl->xversion) < 2)
-		Scr_AddUndefined();
-	else
+	if (strlen(cl->xversion) > 0) {
 		Scr_AddString(cl->xversion);
+	} else {
+		Scr_AddUndefined();
+	}
 }
