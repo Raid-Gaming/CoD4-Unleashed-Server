@@ -67,7 +67,7 @@ void curlRequest(char* method, char* host, char* data, unsigned int startOfConte
 
 	struct curl_slist* headers = NULL;
 	unsigned int startOfHeaders = startOfContentArgs + 2;
-	if (params > startOfHeaders) {
+	if (params > startOfHeaders && Scr_GetType(startOfHeaders) == 2) {
 		int i;
 		for (i = startOfHeaders; i < params; ++i) {
 			if (Scr_GetType(i) == 2) {
