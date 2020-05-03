@@ -156,6 +156,6 @@ void GScr_HttpRequest() {
 		return;
 	}
 
-	char* body = params > 2 ? Scr_GetString(2) : NULL;
+	char* body = params > 2 && Scr_GetType(2) == 2 ? Scr_GetString(2) : NULL;
 	curlRequest(Scr_GetString(0), Scr_GetString(1), body, 1);
 }
