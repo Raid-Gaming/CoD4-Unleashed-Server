@@ -543,10 +543,20 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction( "tofloat",                GScr_ToFloat, 0 );
 	Scr_AddFunction( "system",                 GScr_System, 0 );
 	Scr_AddFunction( "vectorscale",            GScr_VectorScale, 0 );
-	Scr_AddFunction("isarray", GScr_IsArray, 0);
+	Scr_AddFunction( "isarray", 			   GScr_IsArray, 0);
 
 	Scr_AddFunction("getepochtime", GScr_GetEpochTime, 0);
 	Scr_AddFunction("epochtimetostring", GScr_EpochTimeToString, 0);
+
+	// Type getters / checkers
+	Scr_AddFunction("getType", GScr_getType, 0);
+	Scr_AddFunction("getTypeIndex", GScr_getTypeIndex, 0);
+	Scr_AddFunction("isFunction", GScr_isFunction, 0);
+	Scr_AddFunction("isLocalizedString", GScr_isLocalizedString, 0);
+	Scr_AddFunction("isInt", GScr_isInt, 0);
+	Scr_AddFunction("isFloat", GScr_isFloat, 0);
+	Scr_AddFunction("isBool", GScr_isBool, 0);
+	Scr_AddFunction("isObject", GScr_isObject, 0);
 }
 
 void Scr_AddCustomMethods() {
@@ -568,6 +578,7 @@ void Scr_AddCustomMethods() {
     Scr_AddMethod( "setspectatedclient",       PlayerCmd_SetSpectatedClient, 0 );
 	Scr_AddMethod( "getip",                    PlayerCmd_GetIp, 0 );
 	Scr_AddMethod( "getfps",                   PlayerCmd_GetFps, 0 );
+	Scr_AddMethod( "getClientVersion",         PlayerCmd_GetClientVersion, 0 );
 }
 
 
