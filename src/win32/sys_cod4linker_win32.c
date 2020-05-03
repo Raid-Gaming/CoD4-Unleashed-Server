@@ -44,6 +44,7 @@
 #include <inttypes.h>
 #include <direct.h>
 #include <windows.h>
+#include "../win32/win32_usleep.h"
 
 struct lnx_stat
 {
@@ -392,7 +393,7 @@ qboolean Sys_CoD4Linker()
     Sys_CoD4LinkObject(LD_read , _read );
     Sys_CoD4LinkObject(LD_asinf , asinf );
     Sys_CoD4LinkObject(LD___cxa_pure_virtual , _isdead_dbg );
-    Sys_CoD4LinkObject(LD_usleep , usleep );
+    Sys_CoD4LinkObject(LD_usleep , _usleep );
     Sys_CoD4LinkObject(LD_readdir , _isdead_dbg );
     Sys_CoD4LinkObject(LD_gettimeofday , _isdead_dbg );
     Sys_CoD4LinkObject(LD_free , free );
