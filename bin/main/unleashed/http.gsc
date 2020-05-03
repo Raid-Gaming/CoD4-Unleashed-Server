@@ -190,10 +190,14 @@ request(method, url, body, headers) {
 		}
 	}
 	if (isDefined(headers)) {
-		for (i = 0; i < headers.size; i++) {
-			requestHeaders[requestHeaders.size] = headers[i];
+		keys = getArrayKeys(headers);
+		for (i = 0; i < keys.size; i++) {
+			requestHeaders[requestHeaders.size] = keys[i] + ": " + headers[keys[i]];
 		}
 	}
+
+	iPrintLnBold("body: " + body);
+	iPrintLnBold("header: " + requestHeaders[0]);
 
 	return _performRequest(
 		method,
