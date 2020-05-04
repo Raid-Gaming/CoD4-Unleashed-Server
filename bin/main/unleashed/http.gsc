@@ -87,7 +87,7 @@ _setGlobalHeader(key, value) {
 			break;
 		}
 	}
-	level._unleashed[index] = "" + key + ": " + value;
+	level._unleashed["http_headers"][index] = "" + key + ": " + value;
 }
 
 /*
