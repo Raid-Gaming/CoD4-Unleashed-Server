@@ -82,7 +82,7 @@ _setGlobalHeader(key, value) {
 
 	index = level._unleashed["http_headers"].size;
 	for (i = 0; i < level._unleashed["http_headers"].size; i++) {
-		if (strTok(level._unleashed["http_headers"][i], ": ") == key) {
+		if (strTok(level._unleashed["http_headers"][i], ": ")[0] == key) {
 			index = i;
 			break;
 		}
