@@ -7,6 +7,7 @@
 
 void GScr_getTypeIndex();
 void GScr_getType();
+void isCheck(int condition, char* funcName);
 void GScr_isFunction();
 void GScr_isLocalizedString();
 void GScr_isInt();

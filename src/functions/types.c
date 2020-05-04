@@ -51,7 +51,9 @@ void GScr_getType() {
 
 void isCheck(int condition, char* funcName) {
     if( Scr_GetNumParam() != 1 ) {
-        Scr_Error( sprintf("Usage: %s( <var> )", funcName) );
+        char* error = "";
+        sprintf(error, "Usage: %s( <var> )", funcName);
+        Scr_Error( error );
         return;
     }
 
