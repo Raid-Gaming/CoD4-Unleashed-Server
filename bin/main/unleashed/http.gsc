@@ -196,9 +196,9 @@ request(method, url, body, headers) {
 		}
 	}
 
-	return _performRequest(
+	return httpRequest(
 		method,
-		url,
+		path(url),
 		body,
 		requestHeaders[0],
 		requestHeaders[1],
@@ -210,24 +210,6 @@ request(method, url, body, headers) {
 		requestHeaders[7],
 		requestHeaders[8],
 		requestHeaders[9]
-	);
-}
-
-_performRequest(method, url, body, header1, header2, header3, header4, header5, header6, header7, header8, header9, header10) {
-	return httpRequest(
-		method,
-		path(url),
-		body,
-		header1,
-		header2,
-		header3,
-		header4,
-		header5,
-		header6,
-		header7,
-		header8,
-		header9,
-		header10
 	);
 }
 
