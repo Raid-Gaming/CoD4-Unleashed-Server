@@ -67,14 +67,15 @@ void curlRequest(char* method, char* host, char* data, unsigned int startOfConte
 
 	struct curl_slist* headers = NULL;
 	unsigned int startOfHeaders = startOfContentArgs + 2;
-	if (params > startOfHeaders && Scr_GetType(startOfHeaders) == 2) {
+	if (params > startOfHeaders) {
 		int i;
 		for (i = startOfHeaders; i < params; ++i) {
 			if (Scr_GetType(i) == 2) {
 				headers = curl_slist_append(headers, Scr_GetString(i));
 			}
 		}
-	} else {
+	}
+	if (headers == NULL) {
 		headers = curl_slist_append(headers, "Content-Type: application/json");
 	}
 	curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
