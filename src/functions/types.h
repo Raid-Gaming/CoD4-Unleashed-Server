@@ -12,3 +12,4 @@ void GScr_isInt();
 void GScr_isFloat();
 void GScr_isBool();
 void GScr_isObject();
+void GScr_isVector();

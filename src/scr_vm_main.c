@@ -556,6 +556,7 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction("isFloat", GScr_isFloat, 0);
 	Scr_AddFunction("isBool", GScr_isBool, 0);
 	Scr_AddFunction("isObject", GScr_isObject, 0);
+	Scr_AddFunction("isVector", GScr_isVector, 0);
 }
 
 void Scr_AddCustomMethods() {

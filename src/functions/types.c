@@ -26,6 +26,9 @@ void GScr_getType() {
         case 3:
             Scr_AddString("localized_string");
             break;
+        case 4: 
+            Scr_AddString("vector");
+            break;
         case 5:
             Scr_AddString("float");
             break;
@@ -53,6 +56,15 @@ void GScr_isFunction() {
     }
 
     Scr_AddBool(Scr_GetType( 0 ) == 9);
+}
+
+void GScr_isVector() {
+    if( Scr_GetNumParam() != 1 ) {
+        Scr_Error( "Usage: isVector( <var> )" );
+        return;
+    }
+
+    Scr_AddBool(Scr_GetType( 0 ) == 4);
 }
 
 void GScr_isLocalizedString() {
