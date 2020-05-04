@@ -196,9 +196,6 @@ request(method, url, body, headers) {
 		}
 	}
 
-	iPrintLnBold("body: " + body);
-	iPrintLnBold("header: " + requestHeaders[0]);
-
 	return _performRequest(
 		method,
 		url,
