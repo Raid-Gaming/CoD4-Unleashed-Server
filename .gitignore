@@ -31,3 +31,4 @@ build_elf_official.sh
 build_win32_official.cmd
 
 assets/
+.vscode/*
