@@ -49,6 +49,7 @@
 #include <unistd.h>
 
 cvar_t	*sv_protocol;
+cvar_t	*sv_protocol2;
 cvar_t	*sv_privateClients;		// number of clients reserved for password
 cvar_t	*sv_hostname;
 #ifdef PUNKBUSTER
@@ -820,8 +821,10 @@ __optimize3 __regparm1 void SVC_Info( netadr_t *from ) {
 	//Info_SetValueForKey( infostring, "gamename", com_gamename->string );
 #ifdef COD4U
 	Info_SetValueForKey(infostring, "protocol", va("%d", sv_protocol->integer));
+	Info_SetValueForKey(infostring, "protocol2", va("%d", sv_protocol2->integer));
 #else
 	Info_SetValueForKey(infostring, "protocol", "6");
+	Info_SetValueForKey(infostring, "protocol2", "7");
 #endif
 	Info_SetValueForKey( infostring, "hostname", sv_hostname->string );
 
@@ -2533,6 +2536,7 @@ void SV_InitCvarsOnce(void){
 	sv_paused = Cvar_RegisterBool("sv_paused", qfalse, CVAR_ROM, "True if the server is paused");
 	sv_killserver = Cvar_RegisterBool("sv_killserver", qfalse, CVAR_ROM, "True if the server getting killed");
 	sv_protocol = Cvar_RegisterInt("protocol", PROTOCOL_VERSION, PROTOCOL_VERSION, PROTOCOL_VERSION, 0x44, "Protocol version");
+	sv_protocol2 = Cvar_RegisterInt("protocol2", PROTOCOL2_VERSION, PROTOCOL2_VERSION, PROTOCOL2_VERSION, 0x44, "Secondary protocol version");
 	sv_privateClients = Cvar_RegisterInt("sv_privateClients", 0, 0, 64, 4, "Maximum number of private clients allowed onto this server");
 	sv_hostname = Cvar_RegisterString("sv_hostname", "^5CoD4Host", 5, "Host name of the server");
 #ifdef PUNKBUSTER
