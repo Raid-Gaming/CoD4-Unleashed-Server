@@ -44,7 +44,7 @@
 #include <inttypes.h>
 #include <direct.h>
 #include <windows.h>
-#include "../win32/win32_usleep.h"
+#include "win32_usleep.h"
 
 struct lnx_stat
 {
