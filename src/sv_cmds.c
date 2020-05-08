@@ -45,6 +45,10 @@ These commands can only be entered from stdin or by a remote operator datagram
 #include "sys_thread.h"
 #include "sys_main.h"
 
+#if defined(_WIN32) || defined(_MSC_VER)
+#include "win32/win32_usleep.c"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -1783,7 +1787,11 @@ qboolean SV_RunDownload(const char* url, const char* filename)
 	do
 	{
 		transret = FileDownloadSendReceive( curfileobj );
-		usleep(20000);
+#if defined(_WIN32) || defined(_MSC_VER)
+			_usleep(20000);
+#else
+			usleep(20000);
+#endif
 
 	} while (transret == 0);
 

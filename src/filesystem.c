@@ -1276,10 +1276,9 @@ long FS_FOpenFileReadDir(const char *filename, searchpath_t *search, fileHandle_
 						fsh[*file].handleFiles.file.z = unzOpen(pak->pakFilename);
 
 						if(fsh[*file].handleFiles.file.z == NULL)
-
 							Sys_LeaveCriticalSection(CRIT_FILESYSTEM);
 
-							Com_Error(ERR_FATAL, "Couldn't open %s", pak->pakFilename);
+						Com_Error(ERR_FATAL, "Couldn't open %s", pak->pakFilename);
 					}
 					else
 						fsh[*file].handleFiles.file.z = pak->handle;
