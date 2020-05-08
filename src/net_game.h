@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -21,27 +21,27 @@
 ===========================================================================
 */
 
-
-
 #ifndef __NET_GAME_H__
 #define __NET_GAME_H__
 
+#include "msg.h"
 #include "q_shared.h"
 #include "sys_net.h"
-#include "msg.h"
 
 void NET_UDPPacketEvent(netadr_t* from, void* data, int len, int buflen);
 unsigned int NET_TimeGetTime();
 
 void NET_TCPConnectionClosed(netadr_t* adr, int connectionId, int serviceId);
-tcpclientstate_t NET_TCPAuthPacketEvent(netadr_t* remote, byte* bufData, int cursize, int* connectionId, int *serviceId);
-void NET_TCPPacketEvent(netadr_t* remote, byte* bufData, int cursize, int connectionId, int serviceId);
+tcpclientstate_t NET_TCPAuthPacketEvent(netadr_t* remote, byte* bufData,
+                                        int cursize, int* connectionId,
+                                        int* serviceId);
+void NET_TCPPacketEvent(netadr_t* remote, byte* bufData, int cursize,
+                        int connectionId, int serviceId);
 
 void NET_TCPAddEventType(
-        qboolean (*tcpevent)(netadr_t* from, msg_t* msg, int connectionId),
-        tcpclientstate_t (*tcpauthevent)(netadr_t* from, msg_t* msg, int *connectionId),
-        void (*tcpconncloseevent)(netadr_t* from, int connectionId),
-        int serviceId
-);
+    qboolean (*tcpevent)(netadr_t* from, msg_t* msg, int connectionId),
+    tcpclientstate_t (*tcpauthevent)(netadr_t* from, msg_t* msg,
+                                     int* connectionId),
+    void (*tcpconncloseevent)(netadr_t* from, int connectionId), int serviceId);
 
 #endif

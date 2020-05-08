@@ -1,5 +1,5 @@
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "../scr_vm.h"
 #include "../server.h"
