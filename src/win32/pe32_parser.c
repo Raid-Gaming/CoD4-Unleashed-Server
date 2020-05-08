@@ -231,7 +231,7 @@ char** PE32_GetStrTable(void *buff, int len, sharedlib_data_t *text)
 					FuncName = &FuncName[2];
 					if(nstrings < MAX_IMPORT_STRINGS -1)
 						strings[nstrings] = FuncName;
-						nstrings ++;
+					nstrings ++;
 //					Com_Printf("%d: FuncName: %s\n", i, FuncName);
 				}
 				Thunk++;

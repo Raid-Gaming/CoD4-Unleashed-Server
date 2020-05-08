@@ -557,6 +557,7 @@ void Scr_AddCustomFunctions() {
 	Scr_AddFunction("isFloat", GScr_isFloat, 0);
 	Scr_AddFunction("isBool", GScr_isBool, 0);
 	Scr_AddFunction("isObject", GScr_isObject, 0);
+	Scr_AddFunction("isVector", GScr_isVector, 0);
 }
 
 void Scr_AddCustomMethods() {
@@ -579,6 +580,8 @@ void Scr_AddCustomMethods() {
 	Scr_AddMethod( "getip",                    PlayerCmd_GetIp, 0 );
 	Scr_AddMethod( "getfps",                   PlayerCmd_GetFps, 0 );
 	Scr_AddMethod( "getClientVersion",         PlayerCmd_GetClientVersion, 0 );
+
+	Scr_AddMethod("getProtocolVersion", PlayerCmd_GetProtocolVersion, 0);
 }
 
 

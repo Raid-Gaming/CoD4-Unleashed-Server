@@ -1429,8 +1429,8 @@ extern int unzClose (unzFile file)
 		return UNZ_PARAMERROR;
 	s=(unz_s*)file;
 
-    if (s->pfile_in_zip_read!=NULL)
-        unzCloseCurrentFile(file);
+  if (s->pfile_in_zip_read!=NULL)
+    unzCloseCurrentFile(file);
 
 	fclose(s->file);
 	TRYFREE(s);
@@ -1754,8 +1754,8 @@ extern int unzLocateFile (unzFile file, const char *szFileName, int iCaseSensiti
 	if (file==NULL)
 		return UNZ_PARAMERROR;
 
-    if (strlen(szFileName)>=UNZ_MAXFILENAMEINZIP)
-        return UNZ_PARAMERROR;
+  if (strlen(szFileName)>=UNZ_MAXFILENAMEINZIP)
+    return UNZ_PARAMERROR;
 
 	s=(unz_s*)file;
 	if (!s->current_file_ok)
@@ -1880,9 +1880,9 @@ static int unzlocal_CheckCurrentFileCoherencyHeader (unz_s* s, uInt* piSizeVar,
 	else if ((err==UNZ_OK) && (uData!=s->cur_file_info.compression_method))
 		err=UNZ_BADZIPFILE;
 
-    if ((err==UNZ_OK) && (s->cur_file_info.compression_method!=0) &&
-                         (s->cur_file_info.compression_method!=Z_DEFLATED))
-        err=UNZ_BADZIPFILE;
+  if ((err==UNZ_OK) && (s->cur_file_info.compression_method!=0) &&
+                        (s->cur_file_info.compression_method!=Z_DEFLATED))
+    err=UNZ_BADZIPFILE;
 
 	if (unzlocal_getLong(s->file,&uData) != UNZ_OK) /* date/time */
 		err=UNZ_ERRNO;
@@ -1946,8 +1946,8 @@ extern int unzOpenCurrentFile (unzFile file)
 	if (!s->current_file_ok)
 		return UNZ_PARAMERROR;
 
-    if (s->pfile_in_zip_read != NULL)
-        unzCloseCurrentFile(file);
+  if (s->pfile_in_zip_read != NULL)
+    unzCloseCurrentFile(file);
 
 	if (unzlocal_CheckCurrentFileCoherencyHeader(s,&iSizeVar,
 				&offset_local_extrafield,&size_local_extrafield)!=UNZ_OK)
@@ -3022,9 +3022,6 @@ int inflate_flush(inflate_blocks_statef *s, z_streamp z, int r)
  * Copyright (C) 1995-1998 Mark Adler
  * For conditions of distribution and use, see copyright notice in zlib.h
  */
-
-static const char inflate_copyright[] =
-   " inflate 1.1.3 Copyright 1995-1998 Mark Adler ";
 /*
   If you use the zlib library in a product, an acknowledgment is welcome
   in the documentation of your product. If for some reason you cannot

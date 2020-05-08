@@ -722,6 +722,7 @@ __cdecl qboolean SV_GameCommand(void);
 void SV_GetConfigstring( int index, char *buffer, int bufferSize );
 
 extern cvar_t* sv_protocol;
+extern cvar_t* sv_protocol2;
 extern cvar_t* sv_padPackets;
 extern cvar_t* sv_demoCompletedCmd;
 extern cvar_t* sv_mapDownloadCompletedCmd;

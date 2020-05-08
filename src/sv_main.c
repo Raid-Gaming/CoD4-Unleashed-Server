@@ -48,7 +48,12 @@
 #include <stdarg.h>
 #include <unistd.h>
 
+#if defined(_WIN32) || defined(_MSC_VER)
+#include "win32/win32_usleep.h"
+#endif
+
 cvar_t	*sv_protocol;
+cvar_t	*sv_protocol2;
 cvar_t	*sv_privateClients;		// number of clients reserved for password
 cvar_t	*sv_hostname;
 #ifdef PUNKBUSTER
@@ -820,8 +825,10 @@ __optimize3 __regparm1 void SVC_Info( netadr_t *from ) {
 	//Info_SetValueForKey( infostring, "gamename", com_gamename->string );
 #ifdef COD4U
 	Info_SetValueForKey(infostring, "protocol", va("%d", sv_protocol->integer));
+	Info_SetValueForKey(infostring, "protocol2", va("%d", sv_protocol2->integer));
 #else
 	Info_SetValueForKey(infostring, "protocol", "6");
+	Info_SetValueForKey(infostring, "protocol2", "7");
 #endif
 	Info_SetValueForKey( infostring, "hostname", sv_hostname->string );
 
@@ -839,28 +846,28 @@ __optimize3 __regparm1 void SVC_Info( netadr_t *from ) {
 	Info_SetValueForKey( infostring, "build", va("%i", BUILD_NUMBER));
 	Info_SetValueForKey( infostring, "shortversion", Q3_VERSION );
 
-        if(*sv_password->string)
+	if(*sv_password->string)
 	    Info_SetValueForKey( infostring, "pswrd", "1");
 	else
 	    Info_SetValueForKey( infostring, "pswrd", "0");
 
 
-	    Info_SetValueForKey( infostring, "ff", va("%d", Cvar_VariableIntegerValue("scr_team_fftype")));
+	Info_SetValueForKey( infostring, "ff", va("%d", Cvar_VariableIntegerValue("scr_team_fftype")));
 
-        if(Cvar_GetVariantString("scr_game_allowkillcam")){
+	if(Cvar_GetVariantString("scr_game_allowkillcam")){
 	    Info_SetValueForKey( infostring, "ki", "1");
 	}
 
-        if(Cvar_GetVariantString("scr_hardcore")){
+	if(Cvar_GetVariantString("scr_hardcore")){
 	    Info_SetValueForKey( infostring, "hc", "1");
 	}
 
-        if(Cvar_GetVariantString("scr_oldschool")){
+	if(Cvar_GetVariantString("scr_oldschool")){
 	    Info_SetValueForKey( infostring, "od", "1");
 	}
 	Info_SetValueForKey( infostring, "hw", "1");
 
-        if(fs_gameDirVar->string[0] == '\0' || sv_showasranked->boolean){
+	if(fs_gameDirVar->string[0] == '\0' || sv_showasranked->boolean){
 	    Info_SetValueForKey( infostring, "mod", "0");
 	}else{
 	    Info_SetValueForKey( infostring, "mod", "1");
@@ -2533,6 +2540,7 @@ void SV_InitCvarsOnce(void){
 	sv_paused = Cvar_RegisterBool("sv_paused", qfalse, CVAR_ROM, "True if the server is paused");
 	sv_killserver = Cvar_RegisterBool("sv_killserver", qfalse, CVAR_ROM, "True if the server getting killed");
 	sv_protocol = Cvar_RegisterInt("protocol", PROTOCOL_VERSION, PROTOCOL_VERSION, PROTOCOL_VERSION, 0x44, "Protocol version");
+	sv_protocol2 = Cvar_RegisterInt("protocol2", PROTOCOL2_VERSION, PROTOCOL2_VERSION, PROTOCOL2_VERSION, 0x44, "Secondary protocol version");
 	sv_privateClients = Cvar_RegisterInt("sv_privateClients", 0, 0, 64, 4, "Maximum number of private clients allowed onto this server");
 	sv_hostname = Cvar_RegisterString("sv_hostname", "^5CoD4Host", 5, "Host name of the server");
 #ifdef PUNKBUSTER
@@ -3463,7 +3471,11 @@ __optimize3 __regparm1 qboolean SV_Frame( unsigned int usec ) {
 
 
 	if ( !com_sv_running->boolean ) {
+#if defined(_WIN32) || defined(_MSC_VER)
+		_usleep(20000);		
+#else
 		usleep(20000);
+#endif
 		return qtrue;
 	}
 

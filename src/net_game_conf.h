@@ -51,6 +51,7 @@
 #else
     #define	PROTOCOL_VERSION	6
 #endif
+#define	PROTOCOL2_VERSION	7
 
 #define MAX_MSGLEN 0x20000
 

@@ -508,7 +508,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 
 #ifdef COD4U
 	version = atoi( Info_ValueForKey( userinfo, "protocol" ));
-	if ( version != sv_protocol->integer ) {
+	if ( version != sv_protocol->integer && version != sv_protocol2->integer ) {
 		if( sv_protocol->integer == 6 && version < 6)
 		{
 			NET_OutOfBandPrint( NS_SERVER, from, "error\nServer uses a different protocol version: %i\n You have to install the update to Call of Duty 4  v1.7", sv_protocol->integer );
@@ -700,7 +700,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	Com_Memset(newcl, 0x00, sizeof(client_t));
 #else
     #ifdef COD4X18UPDATE
-	if(version == sv_protocol->integer || newcl->challenge != challenge || newcl->state != CS_CONNECTED)
+	if(version == sv_protocol->integer || version == sv_protocol2->integer || newcl->challenge != challenge || newcl->state != CS_CONNECTED)
 	{
 		Com_Memset(newcl, 0x00, sizeof(client_t));
 	}
@@ -781,7 +781,7 @@ __optimize3 __regparm1 void SV_DirectConnect( netadr_t *from ) {
 	newcl->protocol = version;
 #ifndef COD4U
 #ifdef COD4X18UPDATE
-	if(newcl->protocol != sv_protocol->integer)
+	if(newcl->protocol != sv_protocol->integer && newcl->protocol != sv_protocol2->integer)
 	{
 		newcl->needupdate = qtrue;
 	}else{
