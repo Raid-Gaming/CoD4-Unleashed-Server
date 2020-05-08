@@ -68,7 +68,7 @@ _setObjectHeader(key, value) {
 	if (!isDefined(self.headers)) {
 		self.headers = [];
 	}
-	self.headers[self.headers.size] = "" + key + ": " + value;
+	self.headers[key] = value;
 }
 
 _setGlobalHeader(key, value) {
