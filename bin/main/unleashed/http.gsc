@@ -57,7 +57,7 @@ Usage:
 unleashed\http::setHeader("Content-type", "application/json");
 */
 setHeader(key, value) {
-	if (isDefined(self)) {
+	if (isDefined(self) && isDefined(self._unleashedHttp)) {
 		self _setObjectHeader(key, value);
 	} else {
 		_setGlobalHeader(key, value);
@@ -220,7 +220,9 @@ Usage:
 request = unleashed\http::http();
 */
 http() {
-	return spawnStruct();
+	struct = spawnStruct();
+	struct._unleashedHttp = true;
+	return struct;
 }
 
 /*
