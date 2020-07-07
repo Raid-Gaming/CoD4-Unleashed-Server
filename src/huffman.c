@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -20,8 +20,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 ===========================================================================
 */
-
-
 
 #include <string.h>
 
@@ -34,388 +32,381 @@
 static int bloc = 0;
 
 /* Add a bit to the output file (buffered) */
-static void add_bit( char bit, byte *fout ) {
-	if ( ( bloc & 7 ) == 0 ) {
-		fout[( bloc >> 3 )] = 0;
-	}
-	fout[( bloc >> 3 )] |= bit << ( bloc & 7 );
-	bloc++;
+static void add_bit(char bit, byte* fout) {
+  if ((bloc & 7) == 0) {
+    fout[(bloc >> 3)] = 0;
+  }
+  fout[(bloc >> 3)] |= bit << (bloc & 7);
+  bloc++;
 }
 
 /* Receive one bit from the input file (buffered) */
-static int get_bit( byte *fin ) {
-	int t;
-	t = ( fin[( bloc >> 3 )] >> ( bloc & 7 ) ) & 0x1;
-	bloc++;
-	return t;
+static int get_bit(byte* fin) {
+  int t;
+  t = (fin[(bloc >> 3)] >> (bloc & 7)) & 0x1;
+  bloc++;
+  return t;
 }
 
 /* Get a symbol */
 
-static void Huff_offsetReceive( node_t *node, int *ch, byte *fin, int *offset ) {
-	bloc = *offset;
-	while ( node && node->symbol == INTERNAL_NODE ) {
+static void Huff_offsetReceive(node_t* node, int* ch, byte* fin, int* offset) {
+  bloc = *offset;
+  while (node && node->symbol == INTERNAL_NODE) {
 
-		if ( get_bit( fin ) ) {
-			node = node->right;
+    if (get_bit(fin)) {
+      node = node->right;
 
-		} else {
-			node = node->left;
-
-		}
-	}
-	if ( !node ) {
-		*ch = 0;
-//		Com_PrintError("Illegal tree!\n");
-		return;
-
-	}
-	*ch = node->symbol;
-	*offset = bloc;
+    } else {
+      node = node->left;
+    }
+  }
+  if (!node) {
+    *ch = 0;
+    //		Com_PrintError("Illegal tree!\n");
+    return;
+  }
+  *ch = node->symbol;
+  *offset = bloc;
 }
-
-
 
 /* Send the prefix code for this node */
-static void Huff_send( node_t *node, node_t *child, byte *fout ) {
-	if ( node->parent ) {
-		Huff_send( node->parent, node, fout );
-	}
-	if ( child ) {
-		if ( node->right == child ) {
-			add_bit( 1, fout );
-		} else {
-			add_bit( 0, fout );
-		}
-	}
+static void Huff_send(node_t* node, node_t* child, byte* fout) {
+  if (node->parent) {
+    Huff_send(node->parent, node, fout);
+  }
+  if (child) {
+    if (node->right == child) {
+      add_bit(1, fout);
+    } else {
+      add_bit(0, fout);
+    }
+  }
 }
 
-static void Huff_offsetTransmit( huff_t *huff, int ch, byte *fout, int *offset ) {
-	bloc = *offset;
-	Huff_send( huff->loc[ch], NULL, fout );
-	*offset = bloc;
+static void Huff_offsetTransmit(huff_t* huff, int ch, byte* fout, int* offset) {
+  bloc = *offset;
+  Huff_send(huff->loc[ch], NULL, fout);
+  *offset = bloc;
 }
 
+static void Huff_Init(huff_t* huff) {
 
-static void Huff_Init( huff_t *huff ) {
+  Com_Memset(huff, 0, sizeof(huff_t));
 
-	Com_Memset( huff, 0, sizeof( huff_t ));
+  // Initialize the tree & list with the NYT node
+  huff->tree = &(huff->nodeList[huff->blocNode++]);
+  huff->loc[NYT] = huff->tree;
 
-	// Initialize the tree & list with the NYT node
-	huff->tree = &( huff->nodeList[huff->blocNode++] );
-	huff->loc[NYT] = huff->tree;
+  huff->tree->symbol = NYT;
 
-	huff->tree->symbol = NYT;
-
-	huff->tree->weight = 0;
-	huff->tree->parent = NULL;
-	huff->tree->left = NULL;
-	huff->tree->right = NULL;
+  huff->tree->weight = 0;
+  huff->tree->parent = NULL;
+  huff->tree->left = NULL;
+  huff->tree->right = NULL;
 }
-
-
 
 int msg_hData[256] = {
-	274054,			//0
-	68777,			//1
-	40460,			//2
-	40266,			//3
-	48059,			//4
-	39006,			//5
-	48630,			//6
-	27692,			//7
-	17712,			//8
-	15439,			//9
-	12386,			//10
-	10758,			//11
-	9420,			//12
-	9979,			//13
-	9346,			//14
-	15256,			//15
-	13184,			//16
-	14319,			//17
-	7750,			//18
-	7221,			//19
-	6095,			//20
-	5666,			//21
-	12606,			//22
-	7263,			//23
-	7322,			//24
-	5807,			//25
-	11628,			//26
-	6199,			//27
-	7826,			//28
-	6349,			//29
-	7698,			//30
-	9656,			//31
-	28968,			//32
-	5164,			//33
-	13629,			//34
-	6058,			//35
-	4745,			//36
-	4519,			//37
-	5199,			//38
-	4807,			//39
-	5323,			//40
-	3433,			//41
-	3455,			//42
-	3563,			//43
-	6979,			//44
-	5229,			//45
-	5002,			//46
-	4423,			//47
-	14108,			//48
-	13631,			//49
-	11908,			//50
-	11801,			//51
-	10261,			//52
-	7635,			//53
-	7215,			//54
-	7218,			//55
-	9353,			//56
-	6161,			//57
-	5689,			//58
-	4649,			//59
-	5026,			//60
-	5866,			//61
-	8002,			//62
-	10534,			//63
-	15381,			//64
-	8874,			//65
-	11798,			//66
-	7199,			//67
-	12814,			//68
-	6103,			//69
-	4982,			//70
-	5972,			//71
-	6779,			//72
-	4929,			//73
-	5333,			//74
-	3503,			//75
-	4345,			//76
-	6098,			//77
-	14117,			//78
-	16440,			//79
-	6446,			//80
-	3062,			//81
-	4695,			//82
-	3085,			//83
-	4198,			//84
-	4013,			//85
-	3878,			//86
-	3414,			//87
-	5514,			//88
-	4092,			//89
-	3261,			//90
-	4740,			//91
-	4544,			//92
-	3127,			//93
-	3385,			//94
-	7688,			//95
-	11126,			//96
-	6417,			//97
-	5297,			//98
-	4529,			//99
-	6333,			//100
-	4210,			//101
-	7056,			//102
-	4658,			//103
-	6190,			//104
-	3512,			//105
-	2843,			//106
-	3479,			//107
-	9369,			//108
-	5203,			//109
-	4980,			//110
-	5881,			//111
-	7509,			//112
-	4292,			//113
-	6097,			//114
-	5492,			//115
-	4648,			//116
-	2996,			//117
-	4988,			//118
-	4163,			//119
-	6534,			//120
-	4001,			//121
-	4342,			//122
-	4488,			//123
-	6039,			//124
-	4827,			//125
-	7112,			//126
-	8654,			//127
-	26712,			//128
-	8688,			//129
-	9677,			//130
-	9368,			//131
-	7209,			//132
-	3399,			//133
-	4473,			//134
-	4677,			//135
-	11087,			//136
-	4094,			//137
-	3404,			//138
-	4176,			//139
-	6733,			//140
-	3702,			//141
-	11420,			//142
-	4867,			//143
-	5968,			//144
-	3475,			//145
-	3722,			//146
-	3560,			//147
-	4571,			//148
-	2720,			//149
-	3189,			//150
-	3099,			//151
-	4595,			//152
-	4044,			//153
-	4402,			//154
-	3889,			//155
-	4989,			//156
-	3186,			//157
-	3153,			//158
-	5387,			//159
-	8020,			//160
-	3322,			//161
-	3775,			//162
-	2886,			//163
-	4191,			//164
-	2879,			//165
-	3110,			//166
-	2576,			//167
-	3693,			//168
-	2436,			//169
-	4935,			//170
-	3017,			//171
-	3538,			//172
-	5688,			//173
-	3444,			//174
-	3410,			//175
-	9170,			//176
-	4708,			//177
-	3425,			//178
-	3273,			//179
-	3684,			//180
-	4564,			//181
-	6957,			//182
-	4817,			//183
-	5224,			//184
-	3285,			//185
-	3143,			//186
-	4227,			//187
-	5630,			//188
-	6053,			//189
-	5851,			//190
-	6507,			//191
-	13692,			//192
-	8270,			//193
-	8260,			//194
-	5583,			//195
-	7568,			//196
-	4082,			//197
-	3984,			//198
-	4574,			//199
-	6440,			//200
-	3533,			//201
-	2992,			//202
-	2708,			//203
-	5190,			//204
-	3889,			//205
-	3799,			//206
-	4582,			//207
-	6020,			//208
-	3464,			//209
-	4431,			//210
-	3495,			//211
-	2906,			//212
-	2243,			//213
-	3856,			//214
-	3321,			//215
-	8759,			//216
-	3928,			//217
-	2905,			//218
-	3875,			//219
-	4382,			//220
-	3885,			//221
-	5869,			//222
-	6235,			//223
-	10685,			//224
-	4433,			//225
-	4639,			//226
-	4305,			//227
-	4683,			//228
-	2849,			//229
-	3379,			//230
-	4683,			//231
-	5477,			//232
-	4127,			//233
-	3853,			//234
-	3515,			//235
-	4913,			//236
-	3601,			//237
-	5237,			//238
-	6617,			//239
-	9019,			//240
-	4857,			//241
-	4112,			//242
-	5180,			//243
-	5998,			//244
-	4925,			//245
-	4986,			//246
-	6365,			//247
-	7930,			//248
-	5948,			//249
-	8085,			//250
-	7732,			//251
-	8643,			//252
-	8901,			//253
-	9653,			//254
-	32647,			//255
+    274054, // 0
+    68777,  // 1
+    40460,  // 2
+    40266,  // 3
+    48059,  // 4
+    39006,  // 5
+    48630,  // 6
+    27692,  // 7
+    17712,  // 8
+    15439,  // 9
+    12386,  // 10
+    10758,  // 11
+    9420,   // 12
+    9979,   // 13
+    9346,   // 14
+    15256,  // 15
+    13184,  // 16
+    14319,  // 17
+    7750,   // 18
+    7221,   // 19
+    6095,   // 20
+    5666,   // 21
+    12606,  // 22
+    7263,   // 23
+    7322,   // 24
+    5807,   // 25
+    11628,  // 26
+    6199,   // 27
+    7826,   // 28
+    6349,   // 29
+    7698,   // 30
+    9656,   // 31
+    28968,  // 32
+    5164,   // 33
+    13629,  // 34
+    6058,   // 35
+    4745,   // 36
+    4519,   // 37
+    5199,   // 38
+    4807,   // 39
+    5323,   // 40
+    3433,   // 41
+    3455,   // 42
+    3563,   // 43
+    6979,   // 44
+    5229,   // 45
+    5002,   // 46
+    4423,   // 47
+    14108,  // 48
+    13631,  // 49
+    11908,  // 50
+    11801,  // 51
+    10261,  // 52
+    7635,   // 53
+    7215,   // 54
+    7218,   // 55
+    9353,   // 56
+    6161,   // 57
+    5689,   // 58
+    4649,   // 59
+    5026,   // 60
+    5866,   // 61
+    8002,   // 62
+    10534,  // 63
+    15381,  // 64
+    8874,   // 65
+    11798,  // 66
+    7199,   // 67
+    12814,  // 68
+    6103,   // 69
+    4982,   // 70
+    5972,   // 71
+    6779,   // 72
+    4929,   // 73
+    5333,   // 74
+    3503,   // 75
+    4345,   // 76
+    6098,   // 77
+    14117,  // 78
+    16440,  // 79
+    6446,   // 80
+    3062,   // 81
+    4695,   // 82
+    3085,   // 83
+    4198,   // 84
+    4013,   // 85
+    3878,   // 86
+    3414,   // 87
+    5514,   // 88
+    4092,   // 89
+    3261,   // 90
+    4740,   // 91
+    4544,   // 92
+    3127,   // 93
+    3385,   // 94
+    7688,   // 95
+    11126,  // 96
+    6417,   // 97
+    5297,   // 98
+    4529,   // 99
+    6333,   // 100
+    4210,   // 101
+    7056,   // 102
+    4658,   // 103
+    6190,   // 104
+    3512,   // 105
+    2843,   // 106
+    3479,   // 107
+    9369,   // 108
+    5203,   // 109
+    4980,   // 110
+    5881,   // 111
+    7509,   // 112
+    4292,   // 113
+    6097,   // 114
+    5492,   // 115
+    4648,   // 116
+    2996,   // 117
+    4988,   // 118
+    4163,   // 119
+    6534,   // 120
+    4001,   // 121
+    4342,   // 122
+    4488,   // 123
+    6039,   // 124
+    4827,   // 125
+    7112,   // 126
+    8654,   // 127
+    26712,  // 128
+    8688,   // 129
+    9677,   // 130
+    9368,   // 131
+    7209,   // 132
+    3399,   // 133
+    4473,   // 134
+    4677,   // 135
+    11087,  // 136
+    4094,   // 137
+    3404,   // 138
+    4176,   // 139
+    6733,   // 140
+    3702,   // 141
+    11420,  // 142
+    4867,   // 143
+    5968,   // 144
+    3475,   // 145
+    3722,   // 146
+    3560,   // 147
+    4571,   // 148
+    2720,   // 149
+    3189,   // 150
+    3099,   // 151
+    4595,   // 152
+    4044,   // 153
+    4402,   // 154
+    3889,   // 155
+    4989,   // 156
+    3186,   // 157
+    3153,   // 158
+    5387,   // 159
+    8020,   // 160
+    3322,   // 161
+    3775,   // 162
+    2886,   // 163
+    4191,   // 164
+    2879,   // 165
+    3110,   // 166
+    2576,   // 167
+    3693,   // 168
+    2436,   // 169
+    4935,   // 170
+    3017,   // 171
+    3538,   // 172
+    5688,   // 173
+    3444,   // 174
+    3410,   // 175
+    9170,   // 176
+    4708,   // 177
+    3425,   // 178
+    3273,   // 179
+    3684,   // 180
+    4564,   // 181
+    6957,   // 182
+    4817,   // 183
+    5224,   // 184
+    3285,   // 185
+    3143,   // 186
+    4227,   // 187
+    5630,   // 188
+    6053,   // 189
+    5851,   // 190
+    6507,   // 191
+    13692,  // 192
+    8270,   // 193
+    8260,   // 194
+    5583,   // 195
+    7568,   // 196
+    4082,   // 197
+    3984,   // 198
+    4574,   // 199
+    6440,   // 200
+    3533,   // 201
+    2992,   // 202
+    2708,   // 203
+    5190,   // 204
+    3889,   // 205
+    3799,   // 206
+    4582,   // 207
+    6020,   // 208
+    3464,   // 209
+    4431,   // 210
+    3495,   // 211
+    2906,   // 212
+    2243,   // 213
+    3856,   // 214
+    3321,   // 215
+    8759,   // 216
+    3928,   // 217
+    2905,   // 218
+    3875,   // 219
+    4382,   // 220
+    3885,   // 221
+    5869,   // 222
+    6235,   // 223
+    10685,  // 224
+    4433,   // 225
+    4639,   // 226
+    4305,   // 227
+    4683,   // 228
+    2849,   // 229
+    3379,   // 230
+    4683,   // 231
+    5477,   // 232
+    4127,   // 233
+    3853,   // 234
+    3515,   // 235
+    4913,   // 236
+    3601,   // 237
+    5237,   // 238
+    6617,   // 239
+    9019,   // 240
+    4857,   // 241
+    4112,   // 242
+    5180,   // 243
+    5998,   // 244
+    4925,   // 245
+    4986,   // 246
+    6365,   // 247
+    7930,   // 248
+    5948,   // 249
+    8085,   // 250
+    7732,   // 251
+    8643,   // 252
+    8901,   // 253
+    9653,   // 254
+    32647,  // 255
 
 };
 
-static huff_t		msgHuff;
+static huff_t msgHuff;
 
-int MSG_ReadBitsCompress(const byte* input, int readsize, byte* outputBuf, int outputBufSize){
+int MSG_ReadBitsCompress(const byte* input, int readsize, byte* outputBuf,
+                         int outputBufSize) {
 
-    readsize = readsize * 8;
-    byte *outptr = outputBuf;
+  readsize = readsize * 8;
+  byte* outptr = outputBuf;
 
-    int get;
-    int offset;
-    int i;
+  int get;
+  int offset;
+  int i;
 
-    if(readsize <= 0){
-        return 0;
-    }
+  if (readsize <= 0) {
+    return 0;
+  }
 
-    for(offset = 0, i = 0; offset < readsize && i < outputBufSize; i++){
-        Huff_offsetReceive( msgHuff.tree, &get, (byte*)input, &offset);
-        *outptr = (byte)get;
-        outptr++;
-    }
-    return i;
+  for (offset = 0, i = 0; offset < readsize && i < outputBufSize; i++) {
+    Huff_offsetReceive(msgHuff.tree, &get, (byte*)input, &offset);
+    *outptr = (byte)get;
+    outptr++;
+  }
+  return i;
 }
 
-int MSG_WriteBitsCompress( char dummy, const byte *datasrc, byte *buffdest, int bytecount){
+int MSG_WriteBitsCompress(char dummy, const byte* datasrc, byte* buffdest,
+                          int bytecount) {
 
-    int offset;
-    int i;
+  int offset;
+  int i;
 
-    if(bytecount <= 0){
-        return 0;
-    }
+  if (bytecount <= 0) {
+    return 0;
+  }
 
-    for(offset = 0, i = 0; i < bytecount; i++){
-        Huff_offsetTransmit( &msgHuff, (int)datasrc[i], buffdest, &offset );
-    }
-    return (offset + 7) / 8;
+  for (offset = 0, i = 0; i < bytecount; i++) {
+    Huff_offsetTransmit(&msgHuff, (int)datasrc[i], buffdest, &offset);
+  }
+  return (offset + 7) / 8;
 }
 
-
-static void Huff_BuildFromData(huff_t* huff, const int* msg_hData)
-{
+static void Huff_BuildFromData(huff_t* huff, const int* msg_hData) {
   huff->blocNode = 513;
   huff->nodeList[511].parent = &huff->nodeList[512];
   huff->tree = &huff->nodeList[512];
@@ -932,11 +923,9 @@ static void Huff_BuildFromData(huff_t* huff, const int* msg_hData)
   huff->nodeList[472].left = &huff->nodeList[256];
   huff->loc[255] = &huff->nodeList[256];
 
-
   huff->nodeList[257].left = huff->nodeList;
 
   huff->loc[256] = huff->nodeList;
-
 
   huff->nodeList[258].left = &huff->nodeList[257];
   huff->nodeList[0].parent = &huff->nodeList[257];
@@ -2730,15 +2719,14 @@ static void Huff_BuildFromData(huff_t* huff, const int* msg_hData)
   huff->nodeList[512].symbol = 257;
 }
 
-
 void Huffman_InitMain() {
 
-	static qboolean huffInit = qfalse;
+  static qboolean huffInit = qfalse;
 
-	if (huffInit)
-		return;
+  if (huffInit)
+    return;
 
-	huffInit = qtrue;
-	Huff_Init(&msgHuff);
-	Huff_BuildFromData(&msgHuff, msg_hData);
+  huffInit = qtrue;
+  Huff_Init(&msgHuff);
+  Huff_BuildFromData(&msgHuff, msg_hData);
 }

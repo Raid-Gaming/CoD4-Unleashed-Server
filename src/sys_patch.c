@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -21,10 +21,7 @@
 ===========================================================================
 */
 
-
-
-
-//typedef int32_t DWORD;
+// typedef int32_t DWORD;
 
 #include "sys_patch.h"
 #include <string.h>
@@ -33,8 +30,8 @@
 #include <stdlib.h>
 void Sys_RetriveData(){
 
-    #define startADR 0x817539b
-    #define endADR 0x81753c4
+#define startADR 0x817539b
+#define endADR 0x81753c4
 
     FILE * fdout;
     byte* adr;
@@ -73,88 +70,80 @@ void Sys_RetriveData(){
 
 #endif
 #include <stdlib.h>
-void Sys_ImageFindConstant(){
+void Sys_ImageFindConstant() {
 
-    #define startADR 0x804ac20
-    #define endADR 0x8209dc4
-    #define constant 0x1402c060
+#define startADR 0x804ac20
+#define endADR 0x8209dc4
+#define constant 0x1402c060
 
-    FILE * fdout;
-    byte* adr;
-    int i;
+  FILE* fdout;
+  byte* adr;
+  int i;
 
-    adr = (byte*)(startADR);
+  adr = (byte*)(startADR);
 
-    char buf[1024];
+  char buf[1024];
 
-    fdout=fopen("const_addr.txt", "w");
-    if(fdout){
+  fdout = fopen("const_addr.txt", "w");
+  if (fdout) {
 
-
-        for(i = 0; i < endADR; i++, adr++)
-        {
-            if(constant == *(int*)adr)
-            {
-                printf("Found at: %x\n", (int)adr);
-                Com_sprintf(buf, sizeof(buf), "\t*(int**)0x%X = &cvar_modifiedFlags;\n", (int)adr);
-                fwrite(buf, 1, strlen(buf) ,fdout);
-
-            }
-
-        }
-        fclose(fdout);
+    for (i = 0; i < endADR; i++, adr++) {
+      if (constant == *(int*)adr) {
+        printf("Found at: %x\n", (int)adr);
+        Com_sprintf(buf, sizeof(buf), "\t*(int**)0x%X = &cvar_modifiedFlags;\n",
+                    (int)adr);
+        fwrite(buf, 1, strlen(buf), fdout);
+      }
     }
+    fclose(fdout);
+  }
 
-    exit(0);
+  exit(0);
 }
 
+void Sys_PatchImageWithBlock(byte* block, int blocksize) {
 
-void Sys_PatchImageWithBlock(byte *block, int blocksize)
-{
+  int startadr;
+  byte* startadrasbytes = (byte*)&startadr;
 
-    int startadr;
-    byte* startadrasbytes = (byte*)&startadr;
+  startadrasbytes[0] = block[0];
+  startadrasbytes[1] = block[1];
+  startadrasbytes[2] = block[2];
+  startadrasbytes[3] = block[3];
 
-    startadrasbytes[0] = block[0];
-    startadrasbytes[1] = block[1];
-    startadrasbytes[2] = block[2];
-    startadrasbytes[3] = block[3];
+  //    printf("Block Start address is: %X\n", startadr);
 
-//    printf("Block Start address is: %X\n", startadr);
-
-    memcpy((void*)startadr, &block[4], blocksize - 4);
-
+  memcpy((void*)startadr, &block[4], blocksize - 4);
 }
 
-DWORD SetCall(DWORD addr, void* destination){
+DWORD SetCall(DWORD addr, void* destination) {
 
-	DWORD callwidth;
-	DWORD restore;
-	byte* baddr = (byte*)addr;
+  DWORD callwidth;
+  DWORD restore;
+  byte* baddr = (byte*)addr;
 
-	callwidth = (DWORD)( destination - (void*)baddr - 5);
-	*baddr = 0xe8;
-	baddr++;
+  callwidth = (DWORD)(destination - (void*)baddr - 5);
+  *baddr = 0xe8;
+  baddr++;
 
-	restore = *(DWORD*)baddr;
-	*(DWORD*)baddr = callwidth;
+  restore = *(DWORD*)baddr;
+  *(DWORD*)baddr = callwidth;
 
-	return restore;
+  return restore;
 }
 
+DWORD SetJump(DWORD addr, void* destination) {
 
-DWORD SetJump(DWORD addr, void* destination){
+  DWORD jmpwidth;
+  DWORD restore;
+  byte* baddr = (byte*)addr;
 
-	DWORD jmpwidth;
-	DWORD restore;
-	byte* baddr = (byte*)addr;
+  jmpwidth = (DWORD)(destination - (void*)baddr - 5);
+  *baddr = 0xe9;
+  baddr++;
 
-	jmpwidth = (DWORD)( destination - (void*)baddr - 5);
-	*baddr = 0xe9;
-	baddr++;
+  restore = *(DWORD*)baddr;
+  *(DWORD*)baddr = jmpwidth;
 
-	restore = *(DWORD*)baddr;
-	*(DWORD*)baddr = jmpwidth;
-
-	return restore;
+  return restore;
 }

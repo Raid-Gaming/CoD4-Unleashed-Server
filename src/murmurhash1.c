@@ -17,8 +17,7 @@
 
 //-----------------------------------------------------------------------------
 
-uint32_t MurmurHash1 ( const void * key, int len, uint32_t seed )
-{
+uint32_t MurmurHash1(const void* key, int len, uint32_t seed) {
   const unsigned int m = 0xc6a4a793;
 
   const int r = 16;
@@ -27,11 +26,10 @@ uint32_t MurmurHash1 ( const void * key, int len, uint32_t seed )
 
   //----------
 
-  const unsigned char * data = (const unsigned char *)key;
+  const unsigned char* data = (const unsigned char*)key;
 
-  while(len >= 4)
-  {
-    unsigned int k = *(unsigned int *)data;
+  while (len >= 4) {
+    unsigned int k = *(unsigned int*)data;
 
     h += k;
     h *= m;
@@ -43,8 +41,7 @@ uint32_t MurmurHash1 ( const void * key, int len, uint32_t seed )
 
   //----------
 
-  switch(len)
-  {
+  switch (len) {
   case 3:
     h += data[2] << 16;
   case 2:

@@ -1,10 +1,9 @@
+#include "q_shared.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "q_shared.h"
 
-typedef struct
-{
-  FILE *yy_input_file;
+typedef struct {
+  FILE* yy_input_file;
   byte* yy_ch_buf;
   byte* yy_buf_pos;
   int yy_buf_size;
@@ -14,16 +13,14 @@ typedef struct
   int yy_at_bol;
   int yy_fill_buffer;
   int yy_buffer_status;
-}yy_buffer_state;
+} yy_buffer_state;
 
-yy_buffer_state* __cdecl yy_create_buffer(FILE *file, int bufferSize)
-{
-  yy_buffer_state *yybufState;
+yy_buffer_state* __cdecl yy_create_buffer(FILE* file, int bufferSize) {
+  yy_buffer_state* yybufState;
 
-  yybufState = (yy_buffer_state *)malloc(sizeof(yy_buffer_state));
-  if ( yybufState == NULL)
-  {
-    Com_Error(ERR_FATAL,"out of dynamic memory in yy_create_buffer()");
+  yybufState = (yy_buffer_state*)malloc(sizeof(yy_buffer_state));
+  if (yybufState == NULL) {
+    Com_Error(ERR_FATAL, "out of dynamic memory in yy_create_buffer()");
     return NULL;
   }
 
@@ -31,9 +28,8 @@ yy_buffer_state* __cdecl yy_create_buffer(FILE *file, int bufferSize)
 
   yybufState->yy_ch_buf = malloc(bufferSize + 2);
 
-  if (yybufState->yy_ch_buf == NULL)
-  {
-    Com_Error(ERR_FATAL,"out of dynamic memory in yy_create_buffer()");
+  if (yybufState->yy_ch_buf == NULL) {
+    Com_Error(ERR_FATAL, "out of dynamic memory in yy_create_buffer()");
     return NULL;
   }
 

@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -21,13 +21,11 @@
 ===========================================================================
 */
 
-
-
-#include "q_shared.h"
 #include "entity.h"
+#include "q_shared.h"
 #include "scr_vm.h"
 
-//Only CoD4 gamescript callback functions here
+// Only CoD4 gamescript callback functions here
 
 /*
 
@@ -72,45 +70,46 @@ qboolean Scr_PlayerSay(gentity_t* from, int mode, const char* text){
 
 */
 
-qboolean Scr_ScriptCommand(int clientnum, const char* cmd, const char* args){
+qboolean Scr_ScriptCommand(int clientnum, const char* cmd, const char* args) {
 
-    int callback;
-    int threadId;
+  int callback;
+  int threadId;
 
-    int i, j;
+  int i, j;
 
-    char textbuf[MAX_STRING_CHARS];
-    /* Clean control characters */
-    for(i = 0, j = 0; i < sizeof(textbuf) -1 && args[i]; ++i)
-    {
-        textbuf[j] = args[i];
+  char textbuf[MAX_STRING_CHARS];
+  /* Clean control characters */
+  for (i = 0, j = 0; i < sizeof(textbuf) - 1 && args[i]; ++i) {
+    textbuf[j] = args[i];
 
-        if(textbuf[j] < ' ')
-        {
-            continue;
-        }
-        ++j;
+    if (textbuf[j] < ' ') {
+      continue;
     }
-    textbuf[j] = '\0';
+    ++j;
+  }
+  textbuf[j] = '\0';
 
-    callback = script_CallBacks_new[SCR_CB_SCRIPTCOMMAND];
-    if(!callback){
-        Scr_Error("Attempt to call a script added function without a registered callback: maps/mp/gametypes/_callbacksetup::CodeCallback_ScriptCommand\nMaybe you have not used addscriptcommand() like it is supposed to use?");
-        return qfalse;
-    }
+  callback = script_CallBacks_new[SCR_CB_SCRIPTCOMMAND];
+  if (!callback) {
+    Scr_Error(
+        "Attempt to call a script added function without a registered "
+        "callback: "
+        "maps/mp/gametypes/_callbacksetup::CodeCallback_ScriptCommand\nMaybe "
+        "you have not used addscriptcommand() like it is supposed to use?");
+    return qfalse;
+  }
 
-    Scr_AddString(textbuf);
+  Scr_AddString(textbuf);
 
-    Scr_AddString(cmd);
+  Scr_AddString(cmd);
 
-    if(clientnum < 0 || clientnum > 63)
-    {
-        threadId = Scr_ExecThread(callback, 2);
-    }else{
-        threadId = Scr_ExecEntThread(&g_entities[clientnum], callback, 2);
-    }
+  if (clientnum < 0 || clientnum > 63) {
+    threadId = Scr_ExecThread(callback, 2);
+  } else {
+    threadId = Scr_ExecEntThread(&g_entities[clientnum], callback, 2);
+  }
 
-    Scr_FreeThread(threadId);
+  Scr_FreeThread(threadId);
 
-    return qtrue;
+  return qtrue;
 }
