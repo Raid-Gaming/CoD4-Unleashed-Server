@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -21,11 +21,9 @@
 ===========================================================================
 */
 
-
-
-#include <string.h>
 #include "cmd.h"
 #include "cvar.h"
+#include <string.h>
 
 /*
 ========================================================================
@@ -35,12 +33,9 @@ Command line parsing
 ========================================================================
 */
 
-
-
-#define		MAX_CONSOLE_LINES	32
-int		com_numConsoleLines;
-char		*com_consoleLines[MAX_CONSOLE_LINES];
-
+#define MAX_CONSOLE_LINES 32
+int com_numConsoleLines;
+char* com_consoleLines[MAX_CONSOLE_LINES];
 
 /*
 ===============
@@ -53,23 +48,22 @@ before the filesystem is started, but all other sets should
 be after execing the config and default.
 ===============
 */
-void Com_StartupVariable( const char *match ) {
-	int		i;
-	for (i=0 ; i < com_numConsoleLines ; i++) {
-		Cmd_TokenizeString( com_consoleLines[i] );
+void Com_StartupVariable(const char* match) {
+  int i;
+  for (i = 0; i < com_numConsoleLines; i++) {
+    Cmd_TokenizeString(com_consoleLines[i]);
 
-		if(!match || !strcmp(Cmd_Argv(1), match))
-		{
-			if ( !strcmp( Cmd_Argv(0), "set" )){
-				Cvar_Set_f();
-				Cmd_EndTokenizedString();
-				continue;
-			}else if( !strcmp( Cmd_Argv(0), "seta" ) ) {
-				Cvar_SetA_f();
-			}
-		}
-		Cmd_EndTokenizedString();
-	}
+    if (!match || !strcmp(Cmd_Argv(1), match)) {
+      if (!strcmp(Cmd_Argv(0), "set")) {
+        Cvar_Set_f();
+        Cmd_EndTokenizedString();
+        continue;
+      } else if (!strcmp(Cmd_Argv(0), "seta")) {
+        Cvar_SetA_f();
+      }
+    }
+    Cmd_EndTokenizedString();
+  }
 }
 
 /*
@@ -83,28 +77,28 @@ Returns qtrue if any late commands were added, which
 will keep the demoloop from immediately starting
 =================
 */
-qboolean Com_AddStartupCommands( void ) {
-	int		i;
-	qboolean	added;
-	char		buf[1024];
-	added = qfalse;
-	// quote every token, so args with semicolons can work
-	for (i=0 ; i < com_numConsoleLines ; i++) {
-		if ( !com_consoleLines[i] || !com_consoleLines[i][0] ) {
-			continue;
-		}
+qboolean Com_AddStartupCommands(void) {
+  int i;
+  qboolean added;
+  char buf[1024];
+  added = qfalse;
+  // quote every token, so args with semicolons can work
+  for (i = 0; i < com_numConsoleLines; i++) {
+    if (!com_consoleLines[i] || !com_consoleLines[i][0]) {
+      continue;
+    }
 
-		// set commands already added with Com_StartupVariable
-		if ( !Q_stricmpn( com_consoleLines[i], "set", 3 )) {
-			continue;
-		}
+    // set commands already added with Com_StartupVariable
+    if (!Q_stricmpn(com_consoleLines[i], "set", 3)) {
+      continue;
+    }
 
-		added = qtrue;
-		Com_sprintf(buf,sizeof(buf),"%s\n",com_consoleLines[i]);
-		Cbuf_ExecuteText( EXEC_APPEND, buf);
-	}
+    added = qtrue;
+    Com_sprintf(buf, sizeof(buf), "%s\n", com_consoleLines[i]);
+    Cbuf_ExecuteText(EXEC_APPEND, buf);
+  }
 
-	return added;
+  return added;
 }
 
 /*
@@ -114,96 +108,84 @@ Com_ParseCommandLine
 Break it up into multiple console lines
 ==================
 */
-void Com_ParseCommandLine( char *commandLine ) {
+void Com_ParseCommandLine(char* commandLine) {
 
-    com_consoleLines[0] = commandLine;
-    com_numConsoleLines = 1;
-	char* line;
-	int numQuotes, i;
+  com_consoleLines[0] = commandLine;
+  com_numConsoleLines = 1;
+  char* line;
+  int numQuotes, i;
 
-    while ( *commandLine ) {
+  while (*commandLine) {
 
-		// look for a + seperating character
-        // if commandLine came from a file, we might have real line seperators
-        if ( (*commandLine == '+') || *commandLine == '\n'  || *commandLine == '\r' ) {
-            if ( com_numConsoleLines == MAX_CONSOLE_LINES ) {
-                return;
-            }
-			if(*(commandLine +1) != '\n')
-			{
-				com_consoleLines[com_numConsoleLines] = commandLine + 1;
-				com_numConsoleLines = (com_numConsoleLines)+1;
-			}
-            *commandLine = 0;
-        }
-        commandLine++;
+    // look for a + seperating character
+    // if commandLine came from a file, we might have real line seperators
+    if ((*commandLine == '+') || *commandLine == '\n' || *commandLine == '\r') {
+      if (com_numConsoleLines == MAX_CONSOLE_LINES) {
+        return;
+      }
+      if (*(commandLine + 1) != '\n') {
+        com_consoleLines[com_numConsoleLines] = commandLine + 1;
+        com_numConsoleLines = (com_numConsoleLines) + 1;
+      }
+      *commandLine = 0;
+    }
+    commandLine++;
+  }
+
+  for (i = 0; i < com_numConsoleLines; i++) {
+    line = com_consoleLines[i];
+    /* Remove trailling spaces and / or bad quotes */
+    while ((*line == ' ' || *line == '\"') && *line != '\0') {
+      line++;
     }
 
-	for (i = 0; i < com_numConsoleLines; i++)
-	{
-		line = com_consoleLines[i];
-		/* Remove trailling spaces and / or bad quotes */
-		while ( (*line == ' ' || *line == '\"') && *line != '\0') {
-			line++;
-		}
+    memmove(com_consoleLines[i], line, strlen(line) + 1);
 
-		memmove(com_consoleLines[i], line, strlen(line) +1);
+    numQuotes = 0;
 
-		numQuotes = 0;
+    /* Now verify quotes */
+    while (*line) {
 
-		/* Now verify quotes */
-		while (*line)
-		{
+      while (*line != '\"' && *line != '\0') {
+        line++;
+      }
+      if (*line == '\"' && *(line - 1) != ' ')
+        break;
 
-			while (*line != '\"' && *line != '\0')
-			{
-				line ++;
-			}
-			if(*line == '\"' && *(line -1) != ' ')
-				break;
+      if (*line == '\"')
+        numQuotes++;
 
-			if(*line == '\"')
-				numQuotes++;
+      if (*line != '\0') {
+        line++;
+      }
 
-			if(*line != '\0')
-			{
-				line ++;
-			}
+      while (*line != '\"' && *line != '\0') {
+        line++;
+      }
+      if (*line == '\"' && *(line + 1) != ' ' && *(line + 1) != '\0')
+        break;
 
-			while (*line != '\"' && *line != '\0')
-			{
-				line ++;
-			}
-			if(*line == '\"' && *(line +1) != ' ' && *(line +1) != '\0'  )
-				break;
+      if (*line == '\"')
+        numQuotes++;
 
-			if(*line == '\"')
-				numQuotes++;
+      if (*line != '\0') {
+        line++;
+      }
+    }
 
-			if(*line != '\0')
-			{
-				line ++;
-			}
-		}
-
-		/* if we have bad quotes or an odd number of quotes we replace them all with ' ' */
-		if(*line != '\0' || numQuotes & 1)
-		{
-			line = com_consoleLines[i];
-			while (*line != '\0')
-			{
-				if(*line == '\"')
-				{
-					*line = ' ';
-
-				}
-				line++;
-			}
-		}
-
-	}
+    /* if we have bad quotes or an odd number of quotes we replace them all with
+     * ' ' */
+    if (*line != '\0' || numQuotes & 1) {
+      line = com_consoleLines[i];
+      while (*line != '\0') {
+        if (*line == '\"') {
+          *line = ' ';
+        }
+        line++;
+      }
+    }
+  }
 }
-
 
 /*
 ===================
@@ -213,17 +195,18 @@ Check for "safe" on the command line, which will
 skip loading of wolfconfig.cfg
 ===================
 */
-qboolean Com_SafeMode( void ) {
-	int i;
+qboolean Com_SafeMode(void) {
+  int i;
 
-	for ( i = 0 ; i < com_numConsoleLines ; i++ ) {
-		Cmd_TokenizeString( com_consoleLines[i] );
-		if ( !Q_stricmp( Cmd_Argv( 0 ), "safe" ) || !Q_stricmp( Cmd_Argv( 0 ), "cvar_restart" ) ) {
-			com_consoleLines[i][0] = 0;
-			Cmd_EndTokenizedString( );
-			return qtrue;
-		}
-	}
-	Cmd_EndTokenizedString( );
-	return qfalse;
+  for (i = 0; i < com_numConsoleLines; i++) {
+    Cmd_TokenizeString(com_consoleLines[i]);
+    if (!Q_stricmp(Cmd_Argv(0), "safe") ||
+        !Q_stricmp(Cmd_Argv(0), "cvar_restart")) {
+      com_consoleLines[i][0] = 0;
+      Cmd_EndTokenizedString();
+      return qtrue;
+    }
+  }
+  Cmd_EndTokenizedString();
+  return qfalse;
 }

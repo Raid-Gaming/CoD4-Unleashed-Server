@@ -1,18 +1,18 @@
 /*
 ===========================================================================
-	Copyright (c) 2015-2019 atrX of Raid Gaming
+        Copyright (c) 2015-2019 atrX of Raid Gaming
     Copyright (C) 2010-2013  Ninja and TheKelm of the IceOps-Team
     Copyright (C) 1999-2005 Id Software, Inc.
 
     This file is part of CoD4-Unleashed-Server source code.
 
-    CoD4-Unleashed-Server source code is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
+    CoD4-Unleashed-Server source code is free software: you can redistribute it
+and/or modify it under the terms of the GNU Affero General Public License as
     published by the Free Software Foundation, either version 3 of the
     License, or (at your option) any later version.
 
-    CoD4-Unleashed-Server source code is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    CoD4-Unleashed-Server source code is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
 
@@ -21,41 +21,40 @@
 ===========================================================================
 */
 
+// typedef char[32] plugin_event_t;
 
+enum PluginEvents {
+  // plugin handling events
 
-//typedef char[32] plugin_event_t;
+  // PLUGINS_ONINIT,
+  PLUGINS_ONINFOREQUEST,
 
-enum PluginEvents{
-    // plugin handling events
+  // runtime events:
 
-    //PLUGINS_ONINIT,
-    PLUGINS_ONINFOREQUEST,
-
-    // runtime events:
-
-    PLUGINS_ONPLAYERDC,
-    PLUGINS_ONPLAYERCONNECT,
-    PLUGINS_ONEXITLEVEL,
-    PLUGINS_ONMESSAGESENT,
-    PLUGINS_ONFRAME,		//new
-    PLUGINS_ONONESECOND,	// new
-    PLUGINS_ONTENSECONDS,
-    PLUGINS_ONCLIENTAUTHORIZED,	// new
-    PLUGINS_ONCLIENTSPAWN,
-    PLUGINS_ONCLIENTENTERWORLD,
-    PLUGINS_ONTCPSERVERPACKET,	// new
-    PLUGINS_ONUDPNETEVENT,
-    PLUGINS_ONUDPNETSEND,
-    PLUGINS_ONSPAWNSERVER,
-    PLUGINS_ONPREFASTRESTART,
-    PLUGINS_ONPOSTFASTRESTART,
-    PLUGINS_ONPLAYERCONNECTAUTHFAIL,
-    PLUGINS_ONCLIENTUSERINFOCHANGED,
-    PLUGINS_ONCLIENTMOVECOMMAND,
-    PLUGINS_ONPLAYERWANTRESERVEDSLOT,
-    PLUGINS_ONFSSTARTED,
-    PLUGINS_ITEMCOUNT
+  PLUGINS_ONPLAYERDC,
+  PLUGINS_ONPLAYERCONNECT,
+  PLUGINS_ONEXITLEVEL,
+  PLUGINS_ONMESSAGESENT,
+  PLUGINS_ONFRAME,     // new
+  PLUGINS_ONONESECOND, // new
+  PLUGINS_ONTENSECONDS,
+  PLUGINS_ONCLIENTAUTHORIZED, // new
+  PLUGINS_ONCLIENTSPAWN,
+  PLUGINS_ONCLIENTENTERWORLD,
+  PLUGINS_ONTCPSERVERPACKET, // new
+  PLUGINS_ONUDPNETEVENT,
+  PLUGINS_ONUDPNETSEND,
+  PLUGINS_ONSPAWNSERVER,
+  PLUGINS_ONPREFASTRESTART,
+  PLUGINS_ONPOSTFASTRESTART,
+  PLUGINS_ONPLAYERCONNECTAUTHFAIL,
+  PLUGINS_ONCLIENTUSERINFOCHANGED,
+  PLUGINS_ONCLIENTMOVECOMMAND,
+  PLUGINS_ONPLAYERWANTRESERVEDSLOT,
+  PLUGINS_ONFSSTARTED,
+  PLUGINS_ITEMCOUNT
 
 };
 
-extern char PHandler_Events[PLUGINS_ITEMCOUNT][32]; // defined in plugin_handler.c
+extern char PHandler_Events[PLUGINS_ITEMCOUNT]
+                           [32]; // defined in plugin_handler.c
