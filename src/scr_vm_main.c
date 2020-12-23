@@ -521,14 +521,15 @@ void Scr_AddStockMethods() {
 }
 
 void Scr_AddCustomFunctions() {
-  // HTTP requests
-  Scr_AddFunction("httppostrequest", GScr_HttpPostRequest, 0); // DEPRECATED
-  Scr_AddFunction("httpget", GScr_HttpGet, 0);
-  Scr_AddFunction("httppost", GScr_HttpPost, 0);
-  Scr_AddFunction("httpput", GScr_HttpPut, 0);
-  Scr_AddFunction("httppatch", GScr_HttpPatch, 0);
-  Scr_AddFunction("httpdelete", GScr_HttpDelete, 0);
-  Scr_AddFunction("httprequest", GScr_HttpRequest, 0);
+    // HTTP requests
+	initHttpModule();
+	Scr_AddFunction( "httppostrequest", GScr_HttpPostRequest, 0 ); // DEPRECATED
+	Scr_AddFunction("httpget", GScr_HttpGet, 0);
+	Scr_AddFunction("httppost", GScr_HttpPost, 0);
+	Scr_AddFunction("httpput", GScr_HttpPut, 0);
+	Scr_AddFunction("httppatch", GScr_HttpPatch, 0);
+	Scr_AddFunction("httpdelete", GScr_HttpDelete, 0);
+	Scr_AddFunction("httprequest", GScr_HttpRequest, 0);
 
   // Misc
   Scr_AddFunction("toupper", GScr_ToUpper, 0);
@@ -939,7 +940,7 @@ __cdecl unsigned int Scr_LoadScript(const char* scriptname,
     scrStruct.var_10 = "+";
     scrStruct.scr_buffer_handle = scr_buffer_handle;
     ScriptParse(&result, 0);
-    object = GetObjectA(GetVariable(scrStruct.var_04, handle));
+    object = U_GetObjectA(GetVariable(scrStruct.var_04, handle));
 
     ScriptCompile(result, object, variable, precache, iarg_02);
 

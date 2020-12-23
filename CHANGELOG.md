@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Secondary protocol version to support 1.8 Steam patch
 - getProtocol function to retrieve player protocol
+- HTTPS support (using libcurl)
 
 ### Fixed
 

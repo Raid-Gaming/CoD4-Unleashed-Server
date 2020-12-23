@@ -26,7 +26,7 @@ nasm -f coff src/msg_hooks.asm             --prefix _ -o bin/msg_hooks.o
 nasm -f coff src/pluginexports.asm -dWin32 --prefix _ -o bin/pluginexports.o
 
 echo Linking...
-gcc -g -Wl,--nxcompat,--image-base,0x8040000 -Tlinkerscript_win32.ld -o bin/cod4u_win32 bin/*.o src/win32/win_cod4.res -Llib/ -ltomcrypt_win32 -ltommath_win32 -lm -lws2_32 -lwsock32 -lgdi32 -mwindows -lwinmm -static-libgcc
+gcc -g -Wl,--nxcompat,--image-base,0x8040000 -Tlinkerscript_win32.ld -o bin/cod4u_win32 bin/*.o src/win32/win_cod4.res -Llib/ -lcurl -ltomcrypt_win32 -ltommath_win32 -lm -lws2_32 -lwsock32 -lgdi32 -mwindows -lwinmm -static-libgcc
 echo Cleaning up...
 cd bin
 del *.o

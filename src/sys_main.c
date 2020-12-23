@@ -35,6 +35,12 @@ useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 #include "sys_cod4defs.h"
 #include "sys_cod4loader.h"
 #include "sys_thread.h"
+#include "punkbuster.h"
+#include "server.h"
+#include "functions/http.h"
+#include "sec_main.h"
+#include "cmd.h"
+
 #include <libgen.h>
 #include <signal.h>
 #include <stdarg.h>
@@ -157,6 +163,7 @@ Single exit point (regular exit or in case of error)
 =================
 */
 static __attribute__((noreturn)) void Sys_Exit(int exitCode) {
+  unloadHttpModule();
 
   CON_Shutdown();
   // we may be exiting to spawn another process

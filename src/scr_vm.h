@@ -404,8 +404,8 @@ unsigned int __cdecl FindObject(unsigned int);
 unsigned int __cdecl GetNewVariable(unsigned int, unsigned int);
 void* __cdecl TempMalloc(int);
 void __cdecl ScriptParse(sval_u*, byte);
-unsigned int __cdecl GetObjectA(unsigned int);
-unsigned int __cdecl GetObject(unsigned int);
+unsigned int __cdecl U_GetObjectA(unsigned int);
+// unsigned int __cdecl GetObject(unsigned int);
 unsigned int __cdecl GetVariable(unsigned int, unsigned int);
 void __cdecl ScriptCompile(sval_u, unsigned int, unsigned int, PrecacheEntry*,
                            int);
