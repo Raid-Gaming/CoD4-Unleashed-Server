@@ -135,7 +135,7 @@ lastIndexOf(item) {
 }
 
 // creates a new array with the results of calling a provided function on every element in this array
-map(callback) {
+mapArray(callback) {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
   assertEx(isDefined(callback), "argument is undefined");
@@ -147,34 +147,33 @@ map(callback) {
   return arr;
 }
 
-// removes the last element from an array and returns that element
+// removes the last element from an array
 pop() {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
 
-  item = self[self.size - 1];
   arr = [];
   for (i = 0; i < self.size - 1; i++) {
     arr[i] = self[i];
   }
-  self = arr;
-  return item;
+  return arr;
 }
 
-// adds one or more elements to the end of an array and returns the new length of the array
+// adds one or more elements to the end of an array
 push(item) {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
   assertEx(isDefined(item), "argument is undefined");
 
+  arr = self;
   if (isArray(item)) {
     for (i = 0; i < item.size; i++) {
-      self[self.size] = item[i];
+      arr[arr.size] = item[i];
     }
   } else {
-    self[self.size] = item;
+    arr[arr.size] = item;
   }
-  return self.size;
+  return arr;
 }
 
 // apply a function against an accumulator and each value of the array (from left-to-right) as to reduce it to a single value
@@ -213,25 +212,22 @@ reverse() {
   for (i = 0; i < self.size; i++) {
     arr[self.size - i - 1] = self[i];
   }
-  self = arr;
-  return self;
+  return arr;
 }
 
-// removes the first element from an array and returns that element
+// removes the first element from an array
 shift() {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
 
-  item = self[0];
   arr = [];
   for (i = 0; i < self.size - 1; i++) {
     arr[i] = self[i + 1];
   }
-  self = arr;
-  return item;
+  return arr;
 }
 
-// extracts a section of an array and returns a new array
+// extracts a section of an array
 slice(start, end) {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
@@ -240,11 +236,10 @@ slice(start, end) {
   if (start < 0) {
     start = self.size + start;
   }
-  if (isDefined(end) && end < 0) {
-    end = self.size + end;
-  }
   if (!isDefined(end)) {
     end = self.size;
+  } else if (end < 0) {
+    end = self.size + end;
   }
 
   arr = [];
@@ -283,15 +278,13 @@ splice(start, deleteCount, items) {
   }
 
   arr = [];
-  deletedItems = [];
   for (i = 0; i < self.size; i++) {
     if (i >= start && i < start + deleteCount) {
-      deletedItems[deletedItems.size] = self[i];
       continue;
     }
     arr[arr.size] = self[i];
   }
-  self = arr;
+  result = arr;
 
   if (isDefined(items)) {
     if (!isArray(items)) {
@@ -301,21 +294,21 @@ splice(start, deleteCount, items) {
     }
 
     arr = [];
-    for (i = 0; i < self.size; i++) {
+    for (i = 0; i < result.size; i++) {
       if (i == start) {
         for (j = 0; j < items.size; j++) {
           arr[arr.size] = items[j];
         }
       }
-      arr[arr.size] = self[i];
+      arr[arr.size] = result[i];
     }
-    self = arr;
+    result = arr;
   }
 
-  return deletedItems;
+  return result;
 }
 
-// adds one or more elements to the front of an array and returns the new length of the array
+// adds one or more elements to the front of an array
 unshift(item) {
   assertEx(isDefined(self), "caller undefined, should be array");
   assertEx(isArray(self), "caller should be an array");
@@ -327,11 +320,12 @@ unshift(item) {
     item = items;
   }
 
-  for (i = self.size + item.size - 1; i > item.size; i--) {
-    self[i] = self[i - item.size];
-  }
+  arr = [];
   for (i = 0; i < item.size; i++) {
-    self[i] = item[i];
+    arr[arr.size] = item[i];
   }
-  return self.size;
+  for (i = 0; i < self.size; i++) {
+    arr[arr.size] = self[i];
+  }
+  return arr;
 }
