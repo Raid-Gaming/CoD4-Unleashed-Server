@@ -521,15 +521,15 @@ void Scr_AddStockMethods() {
 }
 
 void Scr_AddCustomFunctions() {
-    // HTTP requests
-	initHttpModule();
-	Scr_AddFunction( "httppostrequest", GScr_HttpPostRequest, 0 ); // DEPRECATED
-	Scr_AddFunction("httpget", GScr_HttpGet, 0);
-	Scr_AddFunction("httppost", GScr_HttpPost, 0);
-	Scr_AddFunction("httpput", GScr_HttpPut, 0);
-	Scr_AddFunction("httppatch", GScr_HttpPatch, 0);
-	Scr_AddFunction("httpdelete", GScr_HttpDelete, 0);
-	Scr_AddFunction("httprequest", GScr_HttpRequest, 0);
+  // HTTP requests
+  initHttpModule();
+  Scr_AddFunction("httppostrequest", GScr_HttpPostRequest, 0); // DEPRECATED
+  Scr_AddFunction("httpget", GScr_HttpGet, 0);
+  Scr_AddFunction("httppost", GScr_HttpPost, 0);
+  Scr_AddFunction("httpput", GScr_HttpPut, 0);
+  Scr_AddFunction("httppatch", GScr_HttpPatch, 0);
+  Scr_AddFunction("httpdelete", GScr_HttpDelete, 0);
+  Scr_AddFunction("httprequest", GScr_HttpRequest, 0);
 
   // Misc
   Scr_AddFunction("toupper", GScr_ToUpper, 0);

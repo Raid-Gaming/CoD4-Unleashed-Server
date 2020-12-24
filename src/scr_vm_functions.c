@@ -806,8 +806,8 @@ void GScr_StrTokByPixLen() {
         break; // Cut here - no overrun
       }
       if (lWSHalfPixelCounter >=
-          maxHalfPixel / 3) { // we have a space between words inside the upper
-                              // half string length
+          maxHalfPixel / 3) {  // we have a space between words inside the upper
+                               // half string length
         *lastWordSpace = 0;    // terminate it
         Scr_AddString(string); // setting the beginning of string in our array
         Scr_AddArray();
