@@ -12,10 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Secondary protocol version to support 1.8 Steam patch
 - getProtocol function to retrieve player protocol
 - HTTPS support (using libcurl)
-
-### Fixed
-
-- Fixed getFPS function not reporting lag spikes properly
+- New FPS related functions: getCountedFps (detects lag spikes properly), isLagging
 
 ## [1.1.1] \(Hotfix) - 2019-03-09
 
