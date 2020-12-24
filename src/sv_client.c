@@ -1392,6 +1392,7 @@ __optimize3 __regparm3 void SV_UserMove(client_t* cl, msg_t* msg,
       cl->clFrames = 0;
     }
     cl->clFrames++;
+    clientFrames[clientNum].clFrames++;
 
     SV_ClientThink(cl, &cmds[i]);
 
@@ -1402,28 +1403,30 @@ __optimize3 __regparm3 void SV_UserMove(client_t* cl, msg_t* msg,
   }
 }
 
+client_frames_t clientFrames[64] = {{0, 0}};
+
 void SV_CalculateClientFramerate() {
-	client_t* cl;
-	static int prevSysTime = 0;
+  client_t* cl;
+  static int prevSysTime = 0;
 
-	int sysTime = Sys_Milliseconds();
-	int timeElapsed = sysTime - prevSysTime;
-	if (timeElapsed <= 0) {
-		timeElapsed = 1;
-	}
+  int sysTime = Sys_Milliseconds();
+  int timeElapsed = sysTime - prevSysTime;
+  if (timeElapsed <= 0) {
+    timeElapsed = 1;
+  }
 
-	int tFactor = ((1000 << 8) / (timeElapsed << 8));
+  int tFactor = ((1000 << 8) / (timeElapsed << 8));
 
-	int i;
-	for (i = 0, cl = svs.clients; i < sv_maxclients->integer; ++i, ++cl) {
-		if (cl->state == CS_ACTIVE) {
-			cl->clFPS = cl->clFrames * tFactor;
-		} else {
-			cl->clFPS = 0;
-		}
-		cl->clFrames = 0;
-	}
-	prevSysTime = sysTime;
+  int i;
+  for (i = 0, cl = svs.clients; i < sv_maxclients->integer; ++i, ++cl) {
+    if (cl->state == CS_ACTIVE) {
+      clientFrames[i].clFPS = clientFrames[i].clFrames * tFactor;
+    } else {
+      clientFrames[i].clFPS = 0;
+    }
+    clientFrames[i].clFrames = 0;
+  }
+  prevSysTime = sysTime;
 }
 
 /*

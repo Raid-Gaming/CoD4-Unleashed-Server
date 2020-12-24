@@ -242,6 +242,13 @@ typedef struct client_s { // 90b4f8c
 } client_t; // 0x0a563c
 
 typedef struct {
+  unsigned int clFrames;
+  unsigned int clFPS;
+} client_frames_t;
+
+extern client_frames_t clientFrames[64];
+
+typedef struct {
   netadr_t adr;
   int challenge;
   int clientChallenge;

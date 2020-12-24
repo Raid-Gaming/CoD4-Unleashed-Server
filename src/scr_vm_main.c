@@ -573,6 +573,7 @@ void Scr_AddCustomMethods() {
   Scr_AddMethod("setspectatedclient", PlayerCmd_SetSpectatedClient, 0);
   Scr_AddMethod("getip", PlayerCmd_GetIp, 0);
   Scr_AddMethod("getfps", PlayerCmd_GetFps, 0);
+  Scr_AddMethod("getcountedfps", PlayerCmd_GetCountedFps, 0);
   Scr_AddMethod("getClientVersion", PlayerCmd_GetClientVersion, 0);
 
   Scr_AddMethod("getProtocolVersion", PlayerCmd_GetProtocolVersion, 0);
