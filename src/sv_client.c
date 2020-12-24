@@ -1386,15 +1386,12 @@ __optimize3 __regparm3 void SV_UserMove(client_t* cl, msg_t* msg,
       //{
       continue; // from just before a map_restart
     }
-		// See SV_CalculateClientFramerate();
-		/*
-		if(sysTime >= cl->clFrameCalcTime){
-			cl->clFrameCalcTime = sysTime + 1000;
-			cl->clFPS = cl->clFrames;
-			cl->clFrames = 0;
-		}
-		*/
-		cl->clFrames++;
+    if (sysTime >= cl->clFrameCalcTime) {
+      cl->clFrameCalcTime = sysTime + 1000;
+      cl->clFPS = cl->clFrames;
+      cl->clFrames = 0;
+    }
+    cl->clFrames++;
 
     SV_ClientThink(cl, &cmds[i]);
 
