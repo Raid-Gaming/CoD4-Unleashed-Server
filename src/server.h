@@ -184,25 +184,25 @@ typedef struct client_s { // 90b4f8c
   sharedEntity_t* gentity;                        //(0x2128c)
 
   char shortname[MAX_NAME_LENGTH]; //(0x21290) extracted from userinfo, high
-                                   //bits masked
+                                   // bits masked
   int wwwDl_var01;
   // downloading
   char downloadName[MAX_QPATH]; //(0x212a4) if not empty string, we are
-                                //downloading
+                                // downloading
   fileHandle_t download;        //(0x212e4) file being downloaded
   int downloadSize;  //(0x212e8) total bytes (can't use EOF because of paks)
   int downloadCount; //(0x212ec) bytes sent
   int downloadClientBlock;  //(0x212f0) last block we sent to the client,
-                            //awaiting ack
+                            // awaiting ack
   int downloadCurrentBlock; //(0x212f4) current block number
   int downloadXmitBlock;    //(0x212f8) last block we xmited
   unsigned char* downloadBlocks[MAX_DOWNLOAD_WINDOW]; //(0x212fc) the buffers
-                                                      //for the download blocks
+                                                      // for the download blocks
   int downloadBlockSize[MAX_DOWNLOAD_WINDOW];         //(0x2131c)
   qboolean downloadEOF; //(0x2133c) We have sent the EOF block
   int downloadSendTime; //(0x21340) time we last got an ack from the client
   char wwwDownloadURL[MAX_OSPATH]; //(0x21344) URL from where the client should
-                                   //download the current file
+                                   // download the current file
 
   qboolean wwwDownload;        // (0x21444)
   qboolean wwwDownloadStarted; // (0x21448)
@@ -221,7 +221,7 @@ typedef struct client_s { // 90b4f8c
   int ping;                  //(0x804ec)
   int rate;                  //(0x804f0)		// bytes / second
   int snapshotMsec; //(0x804f4)	// requests a snapshot every snapshotMsec unless
-                    //rate choked
+                    // rate choked
   int unknown6;
   int pureAuthentic;                                //(0x804fc)
   byte unsentBuffer[NETCHAN_UNSENTBUFFER_SIZE];     //(0x80500)
@@ -240,6 +240,13 @@ typedef struct client_s { // 90b4f8c
   byte dummy1;
   byte dummy2;
 } client_t; // 0x0a563c
+
+typedef struct {
+  unsigned int clFrames;
+  unsigned int clFPS;
+} client_frames_t;
+
+extern client_frames_t clientFrames[64];
 
 typedef struct {
   netadr_t adr;
@@ -782,8 +789,8 @@ char* SV_PlayerBannedByip(netadr_t* netadr, char* message,
 void SV_PlayerAddBanByip(
     netadr_t* remote, char* reason, int uid, char* guid, int adminuid,
     int expire); // Gets called by future implemented ban-commands and if a
-                 // prior ban got enforced again - This function can also be used
-                 // to unset bans by setting 0 bantime
+                 // prior ban got enforced again - This function can also be
+                 // used to unset bans by setting 0 bantime
 qboolean SV_RemoveBan(int uid, char* guid, char* name);
 void SV_DumpBanlist(void);
 void SV_AddSafeCommands();

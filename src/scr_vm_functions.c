@@ -350,6 +350,52 @@ void PlayerCmd_GetFps(scr_entref_t arg) {
   Scr_AddInt(cl->clFPS);
 }
 
+void PlayerCmd_GetCountedFps(scr_entref_t arg) {
+  gentity_t* gentity;
+  int entityNum = 0;
+  mvabuf;
+
+  if (HIWORD(arg)) {
+    Scr_ObjectError("Not an entity");
+  } else {
+    entityNum = LOWORD(arg);
+    gentity = &g_entities[entityNum];
+
+    if (!gentity->client) {
+      Scr_ObjectError(va("Entity: %i is not a player", entityNum));
+    }
+  }
+
+  if (Scr_GetNumParam()) {
+    Scr_Error("Usage: self getCountedFps()\n");
+  }
+
+  Scr_AddInt(clientFrames[entityNum].clFPS);
+}
+
+void PlayerCmd_IsLagging(scr_entref_t arg) {
+  gentity_t* gentity;
+  int entityNum = 0;
+  mvabuf;
+
+  if (HIWORD(arg)) {
+    Scr_ObjectError("Not an entity");
+  } else {
+    entityNum = LOWORD(arg);
+    gentity = &g_entities[entityNum];
+
+    if (!gentity->client) {
+      Scr_ObjectError(va("Entity: %i is not a player", entityNum));
+    }
+  }
+
+  if (Scr_GetNumParam()) {
+    Scr_Error("Usage: self isLagging()\n");
+  }
+
+  Scr_AddBool(clientFrames[entityNum].clFPS <= 0);
+}
+
 /*
 ============
 PlayerCmd_SetGravity
@@ -806,8 +852,8 @@ void GScr_StrTokByPixLen() {
         break; // Cut here - no overrun
       }
       if (lWSHalfPixelCounter >=
-          maxHalfPixel / 3) { // we have a space between words inside the upper
-                              // half string length
+          maxHalfPixel / 3) {  // we have a space between words inside the upper
+                               // half string length
         *lastWordSpace = 0;    // terminate it
         Scr_AddString(string); // setting the beginning of string in our array
         Scr_AddArray();
