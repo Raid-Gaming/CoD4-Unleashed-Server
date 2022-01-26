@@ -39,6 +39,6 @@ rename cod4u_win32.exe _____________________________________________cod4u_win32.
 dlltool -D _____________________________________________cod4u_win32.exe -d cod4u_win32.def -l ..\plugins\libcom_plugin.a
 rename _____________________________________________cod4u_win32.exe cod4u_win32.exe
 
-echo "Done! File is in %currentDir%/bin
+echo Done! File is in %currentDir%/bin
 pause
 REM ./version_make_progress.sh
