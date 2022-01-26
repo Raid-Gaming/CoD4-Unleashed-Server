@@ -31,4 +31,7 @@ gcc -m32 -rdynamic -Tlinkerscript.ld -o bin/cod4u_lnx bin/*.o -Llib/ -lcurl -lto
 
 rm bin/*.o
 
+cwd=$(pwd)
+echo "Success. File is in $cwd/bin"
+
 ./version_make_progress.sh
